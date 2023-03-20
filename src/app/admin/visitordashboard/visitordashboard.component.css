@@ -1,0 +1,512 @@
+.submit {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 153, 51, 1) 0%,
+    rgba(255, 102, 0, 1) 88%
+  );
+  float: right;
+  padding: 7px;
+  width: 61px;
+  border-radius: 7px;
+  border: none;
+  outline: none;
+  /* background: #a3a3cd; */
+  color: white;
+}
+/* .breadcramp {
+  background: rgb(18, 30, 63);
+  background: linear-gradient(90deg, rgba(18,30,63,1) 51%, rgba(147,172,240,1) 100%);
+  height: 70px;
+  width: 100%;
+} */
+.breadcramp {
+  font-size: 22px;
+  font-weight: 600;
+  vertical-align: middle;
+  margin: auto;
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 6px;
+  padding-left: 39px;
+}
+img {
+  height: 128px;
+  width: auto;
+  /* margin-left: 5px; */
+}
+.daterange {
+  cursor: pointer;
+}
+.visitor {
+  height: 65px;
+  width: 65px;
+  text-align: center;
+  margin-top: 30px;
+}
+.total {
+  font-size: 20px;
+  font-weight: 500;
+  /* margin-top: -5px; */
+}
+.tablee {
+  text-align: center;
+}
+.tablee td {
+  white-space: initial !important;
+}
+.tablehead {
+  background: skyblue;
+  position: sticky;
+  top: -2px;
+}
+.table-responsive {
+  overflow: auto;
+  max-height: 300px;
+}
+.charts {
+  height: 29px;
+  width: auto;
+}
+.chartcard {
+  padding: 8px;
+  border-radius: 8px;
+}
+
+@media screen and (min-width: 529px) and (max-width: 767px) {
+}
+
+@media (min-width: 320px) and (max-width: 767px) {
+  .overstayedcount1 {
+    color: #0880d0 !important;
+    font-weight: 500;
+  }
+  .overstayedcount2 {
+    font-weight: 500;
+
+    color: #e6727b !important;
+  }
+  .overstayedcount3 {
+    color: #28c74d !important;
+    font-weight: 500;
+  }
+  .hide {
+    display: none;
+  }
+  .headingsix {
+    font-size: 12px !important;
+    font-weight: 600 !important;
+  }
+  .overstayedcount {
+    font-size: 12px !important;
+    font-weight: 400;
+  }
+  .chartscol {
+    margin-left: -53px;
+  }
+  .tab-col {
+    width: 33% !important;
+    margin-top: 4px;
+  }
+  .tab-padding {
+    padding-left: 16px;
+    padding-right: 8px;
+  }
+  .maindashboard {
+    font-size: 22px;
+    font-weight: 600;
+    color: rgb(4, 53, 189) !important;
+    vertical-align: middle;
+    margin: auto;
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 6px;
+    padding-left: 20px;
+  }
+  .Bussiness_H {
+    font-size: 18px;
+    font-weight: 400 !important;
+    color: rgb(3, 3, 4) !important;
+    vertical-align: middle;
+    margin: auto;
+    /* display: flex; */
+    justify-content: flex-start;
+    margin-top: 6px;
+    padding-left: 20px;
+  }
+  .fa-suitcase {
+    height: 80px;
+    width: 80px;
+    text-align: center;
+    margin-top: 25px;
+  }
+  .totalVehicles {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    box-shadow: 0px 0px 7px -2px #818181;
+    background-color: #aed6f1 !important;
+    background-clip: border-box;
+    border-radius: 8px;
+    padding: 6px;
+    border: none;
+    margin-top: 0px !important;
+  }
+  .totalPersonal {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    box-shadow: 0px 0px 7px -2px #818181;
+    background-color: #f8d7da !important;
+    background-clip: border-box;
+    border-radius: 8px;
+    padding: 6px;
+    border: none;
+    margin-top: 0px !important;
+  }
+  .total_T {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    box-shadow: 0px 0px 7px -2px #818181;
+    background-color: #d7f0dd !important;
+    background-clip: border-box;
+    border-radius: 8px;
+    padding: 6px;
+    border: none;
+    margin-top: 0px !important;
+  }
+  .pad-top {
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+  }
+  .wid {
+    margin-bottom: 0px !important;
+    /* padding-left: 20px; */
+  }
+  .width {
+    width: 33%;
+  }
+}
+
+@media screen and (min-width: 375px) and (max-width: 569px) {
+  .width {
+    width: 100%;
+  }
+}
+
+@media screen and (min-width: 767px) and (max-width: 1600px) {
+  .Bussiness_H {
+    font-size: 18px;
+    font-weight: 600 !important;
+    color: rgb(3, 3, 4) !important;
+    vertical-align: middle;
+    margin: auto;
+    /* display: flex; */
+    /* justify-content: flex-start; */
+    margin-top: 6px;
+    /* padding-left: 40px; */
+  }
+  .pad-top {
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+  }
+  .overstayedcount1 {
+    color: #0880d0 !important;
+    font-weight: 500;
+  }
+  .overstayedcount2 {
+    font-weight: 500;
+
+    color: #e6727b !important;
+  }
+  .overstayedcount3 {
+    color: #28c74d !important;
+    font-weight: 500;
+  }
+  .totalVehicles {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    box-shadow: 0px 0px 7px -2px #818181;
+    background-color: #aed6f1 !important;
+    background-clip: border-box;
+    border-radius: 8px;
+    padding: 6px;
+    border: none;
+  }
+  .totalPersonal {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    box-shadow: 0px 0px 7px -2px #818181;
+    background-color: #f8d7da !important;
+    background-clip: border-box;
+    border-radius: 8px;
+    padding: 6px;
+    border: none;
+    margin-top: 0px !important;
+  }
+  .total_T {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    box-shadow: 0px 0px 7px -2px #818181;
+    background-color: #d7f0dd !important;
+    background-clip: border-box;
+    border-radius: 8px;
+    padding: 6px;
+    border: none;
+    margin-top: 0px !important;
+  }
+  .maindashboard {
+    font-size: 22px;
+    font-weight: 600;
+    color: rgb(4, 53, 189) !important;
+    vertical-align: middle;
+    margin: auto;
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 6px;
+    padding-left: 20px;
+  }
+}
+
+@media screen and (min-width: 1600px) and (max-width: 2566px) {
+  .Bussiness_H {
+    font-size: 18px;
+    font-weight: 600 !important;
+    color: rgb(3, 3, 4) !important;
+    vertical-align: middle;
+    margin: auto;
+    /* display: flex; */
+    /* justify-content: flex-start; */
+    margin-top: 6px;
+    /* padding-left: 40px; */
+  }
+  .pad-top {
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+  }
+  .overstayedcount1 {
+    color: #0880d0 !important;
+    font-weight: 500;
+  }
+  .overstayedcount2 {
+    font-weight: 500;
+
+    color: #e6727b !important;
+  }
+  .overstayedcount3 {
+    color: #28c74d !important;
+    font-weight: 500;
+  }
+  .totalVehicles {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    box-shadow: 0px 0px 7px -2px #818181;
+    background-color: #aed6f1 !important;
+    background-clip: border-box;
+    border-radius: 8px;
+    padding: 6px;
+    border: none;
+  }
+  .totalPersonal {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    box-shadow: 0px 0px 7px -2px #818181;
+    background-color: #f8d7da !important;
+    background-clip: border-box;
+    border-radius: 8px;
+    padding: 6px;
+    border: none;
+    margin-top: 0px !important;
+  }
+  .total_T {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    box-shadow: 0px 0px 7px -2px #818181;
+    background-color: #d7f0dd !important;
+    background-clip: border-box;
+    border-radius: 8px;
+    padding: 6px;
+    border: none;
+    margin-top: 0px !important;
+  }
+  .maindashboard {
+    font-size: 22px;
+    font-weight: 600;
+    color: rgb(4, 53, 189) !important;
+    vertical-align: middle;
+    margin: auto;
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 6px;
+    padding-left: 20px;
+  }
+}
+
+@media (max-width: 767px) {
+  .breadcramp p {
+    font-size: 20px;
+    font-weight: 600;
+    color: #000;
+    vertical-align: middle;
+    margin: auto;
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 0px;
+    margin-left: 0px;
+  }
+  .imageView {
+    padding: 0;
+    margin: inherit;
+  }
+  .breadcramp img {
+    width: inherit;
+    margin-left: 5px;
+    object-fit: cover;
+  }
+}
+@media (min-width: 768px) and (max-width: 1200px) {
+  .imageView {
+    padding: 0;
+    margin: inherit;
+  }
+  .tab-col {
+    width: 33% !important;
+    margin-top: 4px;
+  }
+  .tab-padding {
+    padding-left: 16px;
+    padding-right: 8px;
+  }
+}
+@media (min-width: 1201px) {
+  .imageView {
+    padding: 0;
+    margin: inherit;
+  }
+}
+.dashboardimg {
+  height: 45px;
+  width: 45px;
+  margin-top: -12px;
+}
+.dashboard .form-control {
+  margin-top: 3px;
+  height: 36px !important;
+}
+.dashboard .form-select {
+  margin-top: 5px;
+  cursor: pointer;
+  height: 36px !important;
+}
+.visitorcard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  box-shadow: 0px 0px 7px -2px #818181;
+  background: #ffffff;
+  background-clip: border-box;
+  border-radius: 8px;
+  padding: 6px;
+  border: none;
+}
+.headingsix {
+  font-size: 16px;
+  font-weight: 400;
+}
+.incount {
+  font-size: 16px;
+  color: blue;
+  /* margin-right: 45px;
+  float: right; */
+}
+.outcount {
+  font-size: 16px;
+  color: #ff6600;
+  /* margin-right: 45px;
+  float: right; */
+}
+.totalcount {
+  font-size: 16px;
+  color: rgb(95, 194, 95);
+  /* margin-right: 45px;
+  float: right; */
+}
+.overstayedcount {
+  font-size: 16px;
+  color: rgb(196, 38, 205);
+  /* margin-right: 45px;
+  float: right; */
+}
+.nodata {
+  font-size: 18px;
+  font-weight: 500;
+}
+.pt2 {
+  padding-top: 12px;
+}
+@media (max-width: 500px) {
+  .selectdropdowns {
+    margin-left: 0px !important;
+  }
+
+  .tab-col {
+    width: 50% !important;
+    margin-top: 4px;
+  }
+  .tab-padding {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+}
+::ng-deep .chart-legend .legend-labels {
+  width: 240px !important;
+  margin-left: 90px !important;
+  margin-top: -30px;
+  /* text-align: center !important; */
+}
+.card {
+  /* margin-left: 2%;
+  margin-right: 2%; */
+}
+.mobile-margin {
+  margin-bottom: 20px;
+}
+
+.table-responsive {
+  overflow: auto;
+  max-height: 300px;
+}
+
+.table-responsive {
+  overflow: auto;
+  max-height: 300px;
+}

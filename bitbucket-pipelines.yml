@@ -1,0 +1,37 @@
+image: node:14.15.0
+
+pipelines:
+  branches:
+    release:
+      - step:
+          name: Installation
+          caches:
+            - node
+          script:
+            - npm install
+          artifacts:
+            - node_modules/** # Save modules for next steps
+      - step:
+          name: Build
+          script:
+            - npm run build
+          artifacts:
+            - dist/** # Save build for next steps
+      - step:
+          name: Deploy artifacts using SCP to PROD
+          deployment: production
+          script:
+            - pipe: atlassian/scp-deploy:1.2.1
+              variables:
+                USER: $USER
+                SERVER: $SERVER
+                DEBUG: 'true'
+                REMOTE_PATH: '/var/www/gipss-ui'
+                LOCAL_PATH: '/opt/atlassian/pipelines/agent/build/dist/gipss/*'
+      #- step:
+      #    name: Deploy
+      #    script: 
+      #      - echo "$(ls -la)"
+      #      - echo "$(ls -la dist)"
+      #      - ssh ubuntu@43.205.158.191 sudo rm -rf /var/sftp/files/dist
+      #      - scp -r dist/* ubuntu@43.205.158.191:/var/sftp/files/dist

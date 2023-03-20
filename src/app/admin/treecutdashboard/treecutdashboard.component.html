@@ -1,0 +1,257 @@
+<div class="container-fluid maindashboard">
+  <div class="row dashboard pt2">
+    <div class="col-md-2 col-sm-2 col-xs-2 col-s-2 me-5">
+      <p>
+        <span class="hTitle hTitle1">Tree&nbsp;Cut&nbsp;Dashboard</span>
+        <!-- <img
+          src="../../../assets/treecut/tree-cut-small-icon.png"
+          class="dashboardimg me-2"
+        /> -->
+      </p>
+    </div>
+  </div>
+</div>
+<!-- <div class="col-md-2 col-2 col-sm-2 col-xs-2">
+      <select
+        class="form-select"
+        aria-label="Default select example"
+        name="site"
+        [(ngModel)]="dashboard.site"
+        (change)="getLocFrSite()"
+      >
+        <option selected disabled [value]="null">Select Site</option>
+        <option [ngValue]="item.siteId" *ngFor="let item of sitedata">
+          {{ item.siteName }}
+        </option>
+      </select>
+    </div>
+    <div class="col-md-2 col-2 col-sm-2 col-xs-2">
+      <select
+        class="form-select"
+        aria-label="Default select example"
+        [(ngModel)]="dashboard.location"
+        (change)="getData()"
+      >
+        <option selected disabled [value]="null">Select Location</option>
+        <option [ngValue]="item.locationId" *ngFor="let item of LocationList">
+          {{ item.locationName }}
+        </option>
+      </select>
+    </div> -->
+<div class="main-content">
+  <div class="row pt-2 tab-padding">
+    <div class="col-md-2 col-sm-6 pb-1 tab-col">
+      <input type="text" autocomplete="off" bsDaterangepicker class="form-control daterange" name="date"
+        [(ngModel)]="bsRangeValue" [bsConfig]="{
+          containerClass: 'theme-dark-blue',
+          adaptivePosition: true,
+          rangeInputFormat: 'YYYY-MM-DD'
+        }" (ngModelChange)="updateMyDate($event)" placeholder="Select Date Range" />
+    </div>
+    <div class="col-md-2 col-xs-12 pb-1 dashboardcol2 tab-col">
+      <select class="form-select" aria-label="Default select example" [(ngModel)]="dashboard.filterfor"
+        (change)="getData()">
+        <option class="dropdown-item" value="">Filter By</option>
+
+        <option value="region">Region</option>
+        <option value="state">State</option>
+        <option value="cluster">Cluster</option>
+        <option value="site">Site</option>
+      </select>
+    </div>
+    <div class="col-md-2 col-xs-12 pb-1 dashboardcol3 tab-col">
+      <select class="form-select" aria-label="Default select example" [(ngModel)]="dashboard.region"
+        (change)="getRegionData()">
+        <option class="dropdown-item" value="">Select Region</option>
+        <option value="{{ item }}" *ngFor="let item of RegionList">
+          {{ item | titlecase }}
+        </option>
+      </select>
+    </div>
+    <div class="col-md-2 col-xs-12 pb-1 dashboardcol3 tab-col">
+      <select class="form-select" aria-label="Default select example" [(ngModel)]="dashboard.state"
+        (change)="getStateData()">
+        <option class="dropdown-item" value="">Select State</option>
+
+        <option value="{{ item }}" *ngFor="let item of StateList">
+          {{ item | titlecase }}
+        </option>
+      </select>
+    </div>
+    <div class="col-md-2 col-xs-12 pb-1 dashboardcol3 tab-col">
+      <select class="form-select" aria-label="Default select example" [(ngModel)]="dashboard.cluster"
+        (change)="getClusterData()">
+        <option class="dropdown-item" value="">Select Cluster</option>
+        <option value="{{ item }}" *ngFor="let item of ClusterList">
+          {{ item | titlecase }}
+        </option>
+      </select>
+    </div>
+    <div class="col-md-2 col-xs-12 dashboardcol3 tab-col">
+      <select class="form-select" aria-label="Default select example" name="site" [(ngModel)]="dashboard.site"
+        (change)="getSiteData()">
+        <!-- <option selected disabled [value]="null">Select Site</option> -->
+        <option class="dropdown-item" value="">Select Site</option>
+        <option [ngValue]="item.siteName" *ngFor="let item of sitedata">
+          {{ item.name }}
+        </option>
+      </select>
+    </div>
+  </div>
+  <div class="row mt-5">
+    <div class="col-lg-4 col-sm-6 col-xs-6 mobile-margin pb-2">
+      <!-- <div style="margin-left:20px;">
+        <h5>Total Trees &nbsp;&nbsp;
+          <img src="../../../assets/treecut/tree.svg" class="treecut" />
+        </h5>
+      </div> -->
+      <div class="card customcard blue-card">
+        <!-- <h4>Total Trees</h4> -->
+        <div class="row">
+          <!-- <div class="col-1 me-2">
+            <img src="../../../assets/treecut/tree.svg" class="treecut" />
+          </div> -->
+          <div class="col-7">
+            <!-- <div class="row"> -->
+            <p class="total">Total Trees</p>
+            </div>
+            <div class="col-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-tree" viewBox="0 0 16 16" color="black">
+                <path d="M8.416.223a.5.5 0 0 0-.832 0l-3 4.5A.5.5 0 0 0 5 5.5h.098L3.076 8.735A.5.5 0 0 0 3.5 9.5h.191l-1.638 3.276a.5.5 0 0 0 .447.724H7V16h2v-2.5h4.5a.5.5 0 0 0 .447-.724L12.31 9.5h.191a.5.5 0 0 0 .424-.765L10.902 5.5H11a.5.5 0 0 0 .416-.777l-3-4.5zM6.437 4.758A.5.5 0 0 0 6 4.5h-.066L8 1.401 10.066 4.5H10a.5.5 0 0 0-.424.765L11.598 8.5H11.5a.5.5 0 0 0-.447.724L12.69 12.5H3.309l1.638-3.276A.5.5 0 0 0 4.5 8.5h-.098l2.022-3.235a.5.5 0 0 0 .013-.507z"/>
+              </svg>
+          </div>
+          <!-- </div>
+          <div class="row"> -->
+          <div class="col-md-12">
+            <h4 class="headingsix pb-2">
+              Total No. of Trees:&nbsp;<span class="supcount">{{
+                totaltrees
+                }}</span>
+            </h4>
+          </div>
+        </div>
+        <!-- </div> -->
+        <!-- <h6 class="headingsix">
+          Deployed Guards:<span class="guardscount">{{
+            totaldataguard || 0
+          }}</span>
+        </h6> -->
+
+
+      </div>
+    </div>
+
+    <div class="col-lg-4 col-sm-6 col-xs-6 mobile-margin pb-2">
+      <!-- <div style="margin-left:20px;">
+        <h5>Total Weight &nbsp;&nbsp;
+          <img src="../../../assets/treecut/weight.svg" class="treecut" />
+        </h5>
+      </div> -->
+      <div class="card customcard orange-card">
+        <div class="row">
+        <div class="col-7">
+          <p class="total">Total&nbsp;Weight</p>
+          </div>
+          <div class="col-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-diagram-3" viewBox="0 0 16 16" color="black">
+              <path fill-rule="evenodd" d="M6 3.5A1.5 1.5 0 0 1 7.5 2h1A1.5 1.5 0 0 1 10 3.5v1A1.5 1.5 0 0 1 8.5 6v1H14a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0v-1A.5.5 0 0 1 2 7h5.5V6A1.5 1.5 0 0 1 6 4.5v-1zM8.5 5a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1zM0 11.5A1.5 1.5 0 0 1 1.5 10h1A1.5 1.5 0 0 1 4 11.5v1A1.5 1.5 0 0 1 2.5 14h-1A1.5 1.5 0 0 1 0 12.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zm4.5.5A1.5 1.5 0 0 1 7.5 10h1a1.5 1.5 0 0 1 1.5 1.5v1A1.5 1.5 0 0 1 8.5 14h-1A1.5 1.5 0 0 1 6 12.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zm4.5.5a1.5 1.5 0 0 1 1.5-1.5h1a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1z"/>
+            </svg>
+          </div>
+          <h6 class="headingsix pb-2">
+            Total weight of tree:&nbsp;<span class="supcount">{{ totalweight }} (tonnes)</span>
+          </h6>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-sm-6 col-xs-6 mobile-margin pb-2">
+      <!-- <div style="margin-left:20px;">
+        <h5>Total Logs &nbsp;&nbsp;
+          <img src="../../../assets/treecut/logs.svg" class="treecut" />
+        </h5>
+      </div> -->
+      <div class="card customcard purple-card">
+        <div class="row"> 
+        <div class="col-6">
+          <p class="total">Total Logs</p>
+         </div>
+         <div class="col-2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-boxes" viewBox="0 0 16 16" color="black">
+            <path d="M7.752.066a.5.5 0 0 1 .496 0l3.75 2.143a.5.5 0 0 1 .252.434v3.995l3.498 2A.5.5 0 0 1 16 9.07v4.286a.5.5 0 0 1-.252.434l-3.75 2.143a.5.5 0 0 1-.496 0l-3.502-2-3.502 2.001a.5.5 0 0 1-.496 0l-3.75-2.143A.5.5 0 0 1 0 13.357V9.071a.5.5 0 0 1 .252-.434L3.75 6.638V2.643a.5.5 0 0 1 .252-.434L7.752.066ZM4.25 7.504 1.508 9.071l2.742 1.567 2.742-1.567L4.25 7.504ZM7.5 9.933l-2.75 1.571v3.134l2.75-1.571V9.933Zm1 3.134 2.75 1.571v-3.134L8.5 9.933v3.134Zm.508-3.996 2.742 1.567 2.742-1.567-2.742-1.567-2.742 1.567Zm2.242-2.433V3.504L8.5 5.076V8.21l2.75-1.572ZM7.5 8.21V5.076L4.75 3.504v3.134L7.5 8.21ZM5.258 2.643 8 4.21l2.742-1.567L8 1.076 5.258 2.643ZM15 9.933l-2.75 1.571v3.134L15 13.067V9.933ZM3.75 14.638v-3.134L1 9.933v3.134l2.75 1.571Z"/>
+          </svg>
+        </div>
+        <h6 class="headingsix pb-2">
+          Total No. of Logs:&nbsp;<span class="supcount">{{
+            totallogs
+            }}</span>
+        </h6>
+      </div>
+    </div>
+</div>
+    <!-- <div class="col-md-4 pb-2">
+      <div class="card treecutcard">
+        <div class="row"> -->
+    <!-- <div class="col-1 me-2">
+            <img src="../../../assets/treecut/weight.svg" class="treecut" />
+          </div> -->
+    <!-- <div class="col-9"> -->
+    <!-- <div class="row"> -->
+    <!-- <p class="total">Total Weight</p> -->
+    <!-- </div>
+          <div class="row"> -->
+    <!-- <h6 class="headingsix pb-2">
+              Total weight of tree:&nbsp;<span class="supcount"
+                >{{ totalweight }} (tonnes)</span
+              >
+            </h6> -->
+    <!-- </div> -->
+    <!-- <h6 class="headingsix">
+          Deployed Guards:<span class="guardscount">{{
+            dashboarddataday.depGudCount || 0
+          }}</span>
+        </h6> -->
+    <!-- </div> -->
+    <!-- </div> -->
+
+    <div class="row mt-3" *ngIf="treecutdata.length !== 0">
+      <div class="col-md-5">
+        <div class="card chartcard" *ngIf="tableshow">
+          <div class="row">
+            <div class="col-1 me-3">
+              <img src="../../../assets/security/chart.svg" class="charts" />
+            </div>
+            <div class="col-7">
+              <h6 class="total mt-2">All Locations</h6>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-hover tablee mb-0">
+              <thead class="tablehead">
+                <th>{{ resName | titlecase }}</th>
+                <th>Trees</th>
+                <th>Weight</th>
+                <th>Logs</th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of treecutdata">
+                  <td>{{ item.name | titlecase }}</td>
+                  <td>{{ item.totalTrees }}</td>
+                  <td>{{ item.totalWeight }}</td>
+                  <td>{{ item.totalLogs }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 chartscol" #ContainerRef>
+        <ngx-charts-bar-vertical-2d (window:resize)="resizeChart(ContainerRef.offsetWidth)" [view]="view"
+          [scheme]="colorScheme" [results]="multi" [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis"
+          [legend]="showLegend" [legendTitle]="legendTitle" [legendPosition]="'below'" [showXAxisLabel]="showXAxisLabel"
+          [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [showDataLabel]="true">
+        </ngx-charts-bar-vertical-2d>
+      </div>
+    </div>
+    <div class="row mt-4" *ngIf="treecutdata.length === 0">
+      <strong class="text-center nodata">No Data Found</strong>
+    </div>
+  </div>

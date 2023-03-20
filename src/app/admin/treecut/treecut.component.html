@@ -1,0 +1,1003 @@
+<div class="container-fluid breadcramp">
+  <div class="row">
+    <!-- <div class="col-md-6 col-6 col-sm-6 col-xs-6 mt-4">
+      <p><i class="bi bi-shield-check shield"></i>Tree Cutting Details</p>
+    </div>
+    <div class="col-md-6 col-6 col-sm-6 col-xs-6 imageView">
+      <img src="../../../assets/treecut.png" alt="" >
+    </div> -->
+    <div class="col-md-9 col-xs-3 col-sm-6 col-s-3">
+      <ul class="nav nav-pills navbars" id="pills-tab" role="tablist">
+        <li class="nav-item tabs" role="presentation">
+          <button
+            class="nav-link active"
+            data-bs-toggle="pill"
+            data-bs-target="#Tree Cutting Details"
+            type="button"
+            role="tab"
+            [ngClass]="{ active: activeTab === 'Tree Cutting Details' }"
+            (click)="TCD('Tree Cutting Details')"
+          >
+            Tree Cutting Details
+          </button>
+        </li>
+        <li class="nav-item tabs" role="presentation">
+          <button
+            class="nav-link"
+            data-bs-toggle="pill"
+            data-bs-target="#Tree Cutting Lists"
+            type="button"
+            role="tab"
+            [ngClass]="{ active: activeTab === 'Tree Cutting Lists' }"
+            (click)="TCLIST('Tree Cutting Lists')"
+          >
+            Tree Cutting Lists
+          </button>
+        </li>
+      </ul>
+    </div>
+    <div class="col-md-3 col-s-4">
+      <input
+        autocomplete="off"
+        *ngIf="activeTab === 'Tree Cutting Lists'"
+        type="search"
+        placeholder="Search By Tree Number/Name"
+        class="form-control padding"
+        [(ngModel)]="search.name"
+        (input)="seartreeName()"
+      />
+    </div>
+  </div>
+</div>
+<div class="main-content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <!-- <ul class="nav nav-pills mb-3 navbars" id="pills-tab" role="tablist">
+            <li class="nav-item tabs" role="presentation">
+              <button
+                class="nav-link active"
+                data-bs-toggle="pill"
+                data-bs-target="#Tree Cutting Details"
+                type="button"
+                role="tab"
+                [ngClass]="{ active: activeTab === 'Tree Cutting Details' }"
+                (click)="TCD('Tree Cutting Details')"
+              >
+                Tree Cutting Details
+              </button>
+            </li>
+
+            <li class="nav-item tabs" role="presentation">
+              <button
+                class="nav-link"
+                data-bs-toggle="pill"
+                data-bs-target="#Tree Cutting Lists"
+                type="button"
+                role="tab"
+                [ngClass]="{ active: activeTab === 'Tree Cutting Lists' }"
+                (click)="TCLIST('Tree Cutting Lists')"
+              >
+                Tree Cutting Lists
+              </button>
+            </li>
+          </ul> -->
+
+          <div class="tab-content" id="pills-tabContent">
+            <div
+              class="tab-pane"
+              id="Tree Cutting Details"
+              role="tabpanel"
+              [ngClass]="{ active: activeTab === 'Tree Cutting Details' }"
+            >
+              <form
+                #treecutform="ngForm"
+                class="treeform"
+                (ngSubmit)="saveTreeCutForm(treecutform)"
+              >
+                <!--<div class="row">
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label>Region</label>
+                      <select
+                        *ngIf="btn === 'Save'"
+                        class="form-select"
+                        name="region"
+                        [(ngModel)]="treecutdata.region"
+                      >
+                        <option selected disabled [value]="null">
+                          Select Region
+                        </option>
+                        <option
+                          [ngValue]="item.regionId"
+                          *ngFor="let item of region"
+                        >
+                          {{ item.regionName }}
+                        </option>
+                      </select>
+                      <input
+                        *ngIf="btn === 'Update'"
+                        type="text"
+                        class="form-control"
+                        name="region"
+                        [(ngModel)]="treecutdata.region"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label>Cluster</label>
+                      <select
+                        *ngIf="btn === 'Save'"
+                        class="form-select"
+                        name="cluster"
+                        [(ngModel)]="treecutdata.cluster"
+                      >
+                        <option selected disabled [value]="null">
+                          Select Cluster
+                        </option>
+                        <option
+                          [ngValue]="item.clusterId"
+                          *ngFor="let item of cluster"
+                        >
+                          {{ item.clusterName }}
+                        </option>
+                      </select>
+                      <input
+                        *ngIf="btn === 'Update'"
+                        class="form-control"
+                        type="text"
+                        name="cluster"
+                        [(ngModel)]="treecutdata.cluster"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label>State</label>
+
+                      <select
+                        *ngIf="btn === 'Save'"
+                        class="form-select"
+                        name="state"
+                        [(ngModel)]="treecutdata.state"
+                      >
+                        <option selected disabled [value]="null">
+                          Select State
+                        </option>
+                        <option
+                          [ngValue]="item.stateId"
+                          *ngFor="let item of state"
+                        >
+                          {{ item.stateName }}
+                        </option>
+                      </select>
+                      <input
+                        *ngIf="btn === 'Update'"
+                        class="form-control"
+                        type="text"
+                        name="state"
+                        [(ngModel)]="treecutdata.state"
+                        required
+                      />
+                    </div>
+                  </div> 
+
+                </div>-->
+                <div class="row">
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label>Site<span class="mandetoryinput">*</span></label>
+                      <select
+                        *ngIf="btn === 'Save'"
+                        class="form-select"
+                        name="site_id"
+                        [(ngModel)]="treecutdata.site_id"
+                      >
+                        <option selected disabled value="">Select Site</option>
+                        <option
+                          [ngValue]="item.siteId"
+                          *ngFor="let item of sitedata"
+                        >
+                          {{ item.siteName }}
+                        </option>
+                      </select>
+                      <input
+                        *ngIf="btn === 'Update'"
+                        class="form-control"
+                        type="text"
+                        name="site_id"
+                        [(ngModel)]="treecutdata.site_id"
+                        required
+                        readonly
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label
+                        >Tree Number<span class="mandetoryinput">*</span></label
+                      >
+                      <input
+                        autocomplete="off"
+                        type="text"
+                        class="form-control"
+                        placeholder="Tree Number"
+                        name="tree_number"
+                        [(ngModel)]="treecutdata.tree_number"
+                        (keypress)="validateNumber($event)"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label
+                        >Scientific Name<span class="mandetoryinput"
+                          >*</span
+                        ></label
+                      >
+                      <input
+                        autocomplete="off"
+                        type="text"
+                        class="form-control"
+                        placeholder="Scientific Name"
+                        name="scientific_name"
+                        [(ngModel)]="treecutdata.scientific_name"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label
+                        >Common Name<span class="mandetoryinput">*</span></label
+                      >
+                      <input
+                        autocomplete="off"
+                        type="text"
+                        class="form-control"
+                        placeholder="Common Name"
+                        name="common_name"
+                        [(ngModel)]="treecutdata.common_name"
+                        required
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label
+                        >Date & Time<span class="mandetoryinput">*</span></label
+                      >
+                      <input
+                        autocomplete="off"
+                        type="datetime-local"
+                        placeholder="In Date & Time"
+                        class="form-control"
+                        name="in_date_time"
+                        [(ngModel)]="treecutdata.in_date_time"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label>Reason<span class="mandetoryinput">*</span></label>
+                      <select
+                        *ngIf="btn === 'Save'"
+                        class="form-select"
+                        name="reason"
+                        [(ngModel)]="treecutdata.reason"
+                      >
+                        <option value="" selected disabled>
+                          Select Reason
+                        </option>
+                        <!-- <option>test</option>
+                        <option>good</option>
+                        <option>test1</option> -->
+                        <option value="for-construction">
+                          For Construction
+                        </option>
+                        <option value="poor-location">Poor Location</option>
+                        <option value="dead-tree-removal">
+                          Dead Tree Removal
+                        </option>
+                        <option value="damaged-trees">Damaged Trees</option>
+                        <option value="diseased-trees">Diseased Trees</option>
+                      </select>
+                      <input
+                        autocomplete="off"
+                        *ngIf="btn === 'Update'"
+                        class="form-control"
+                        type="text"
+                        name="reason"
+                        [(ngModel)]="treecutdata.reason"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label
+                        >Area Clearance<span class="mandetoryinput"
+                          >*</span
+                        ></label
+                      >
+                      <input
+                        autocomplete="off"
+                        type="text"
+                        placeholder="Area Clearance"
+                        class="form-control"
+                        name="area_clearance"
+                        dateFormat="yyyy/mm/dd"
+                        [(ngModel)]="treecutdata.area_clearance"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label
+                        >Survey No./Plot No<span class="mandetoryinput"
+                          >*</span
+                        ></label
+                      >
+                      <input
+                        autocomplete="off"
+                        type="text"
+                        placeholder="Survey No./Plot No."
+                        class="form-control"
+                        name="plot_number"
+                        [(ngModel)]="treecutdata.plot_number"
+                        required
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label
+                        >Classification of land<span class="mandetoryinput"
+                          >*</span
+                        ></label
+                      >
+                      <input
+                        autocomplete="off"
+                        type="text"
+                        placeholder="Classfication of land"
+                        class="form-control"
+                        name="classification_of_land"
+                        [(ngModel)]="treecutdata.classification_of_land"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label
+                        >District<span class="mandetoryinput">*</span></label
+                      >
+                      <select
+                        *ngIf="btn === 'Save'"
+                        class="form-select"
+                        name="district"
+                        [(ngModel)]="treecutdata.district"
+                      >
+                        <option value="" [selected]="true">
+                          Select District
+                        </option>
+                        <option>Adilabad</option>
+                        <option>Bhadradri Kothagudem</option>
+                        <option>Hanamkonda</option>
+                        <option>Hyderabad</option>
+                        <option>Jagtial</option>
+                        <option>Jangoan</option>
+                        <option>Jayashankar Bhupalpally</option>
+                        <option>Kamareddy</option>
+                        <option>Karimnagar</option>
+                        <option>Khammam</option>
+                        <option>Komaram bheem Asifabad</option>
+                        <option>Mahabubabad</option>
+                        <option>Mahabubnagar</option>
+                        <option>Mancherial</option>
+                        <option>Rangareddy</option>
+                        <option>Nizamabad</option>
+                      </select>
+                      <input
+                        autocomplete="off"
+                        *ngIf="btn === 'Update'"
+                        class="form-control"
+                        type="text"
+                        name="district"
+                        [(ngModel)]="treecutdata.district"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label>Mandal<span class="mandetoryinput">*</span></label>
+                      <input
+                        autocomplete="off"
+                        type="text"
+                        placeholder="Mandal"
+                        class="form-control"
+                        name="mandal"
+                        [(ngModel)]="treecutdata.mandal"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label
+                        >Gram Panchayat<span class="mandetoryinput"
+                          >*</span
+                        ></label
+                      >
+                      <input
+                        autocomplete="off"
+                        type="text"
+                        placeholder="Gram Panchayat"
+                        class="form-control"
+                        name="gram_panchayat"
+                        [(ngModel)]="treecutdata.gram_panchayat"
+                        required
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label
+                        >Village<span class="mandetoryinput">*</span></label
+                      >
+                      <input
+                        autocomplete="off"
+                        type="text"
+                        placeholder="Village"
+                        class="form-control"
+                        name="village"
+                        [(ngModel)]="treecutdata.village"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label
+                        >Latitude<span class="mandetoryinput">*</span></label
+                      >
+                      <input
+                        autocomplete="off"
+                        type="text"
+                        placeholder="Latitude"
+                        class="form-control"
+                        name="latitude"
+                        [(ngModel)]="treecutdata.latitude"
+                        (keypress)="validateNumber($event)"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label
+                        >Longitude<span class="mandetoryinput">*</span></label
+                      >
+                      <input
+                        autocomplete="off"
+                        type="text"
+                        placeholder="Longitude"
+                        class="form-control"
+                        name="longitude"
+                        [(ngModel)]="treecutdata.longitude"
+                        (keypress)="validateNumber($event)"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label
+                        >Log Numbers<span class="mandetoryinput">*</span></label
+                      >
+                      <input
+                        autocomplete="off"
+                        type="text"
+                        placeholder="Log Numbers"
+                        class="form-control"
+                        name="log_numbers"
+                        [(ngModel)]="treecutdata.log_numbers"
+                        required
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label
+                        >Volume of Timber<span class="mandetoryinput"
+                          >*</span
+                        ></label
+                      >
+                      <input
+                        autocomplete="off"
+                        type="text"
+                        placeholder="Volume of Timber"
+                        class="form-control"
+                        name="volume_of_timber"
+                        [(ngModel)]="treecutdata.volume_of_timber"
+                        (keypress)="validateNumber($event)"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label
+                        >Weight of Timber<span class="mandetoryinput"
+                          >*</span
+                        ></label
+                      >
+                      <input
+                        autocomplete="off"
+                        type="text"
+                        placeholder="Weight of Timber"
+                        class="form-control"
+                        name="weight_of_timber"
+                        [(ngModel)]="treecutdata.weight_of_timber"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label
+                        >Weight of Extra Branches<span class="mandetoryinput"
+                          >*</span
+                        ></label
+                      >
+                      <input
+                        autocomplete="off"
+                        type="text"
+                        placeholder="Weight of Extra Branches"
+                        class="form-control"
+                        name="weight_of_extra_branches"
+                        [(ngModel)]="treecutdata.weight_of_extra_branches"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label
+                        >Total Number of Logs<span class="mandetoryinput"
+                          >*</span
+                        ></label
+                      >
+                      <input
+                        autocomplete="off"
+                        type="text"
+                        placeholder="Total Number of Logs"
+                        class="form-control"
+                        name="total_number_of_logs"
+                        [(ngModel)]="treecutdata.total_number_of_logs"
+                        required
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label
+                        >Clearing of Extra Branches<span class="mandetoryinput"
+                          >*</span
+                        ></label
+                      >
+                      <input
+                        autocomplete="off"
+                        type="text"
+                        placeholder="Clearing of Extra Branches"
+                        class="form-control"
+                        name="clearing_of_extra_branches"
+                        [(ngModel)]="treecutdata.clearing_of_extra_branches"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label
+                        >Disposal type<span class="mandetoryinput"
+                          >*</span
+                        ></label
+                      >
+                      <input
+                        autocomplete="off"
+                        type="text"
+                        placeholder="Disposal type"
+                        class="form-control"
+                        name="disposal_type"
+                        [(ngModel)]="treecutdata.disposal_type"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label
+                        >Area Sensor<span class="mandetoryinput">*</span></label
+                      >
+                      <input
+                        autocomplete="off"
+                        type="text"
+                        placeholder="Area Sensor"
+                        class="form-control"
+                        name="area_sensor"
+                        [(ngModel)]="treecutdata.area_sensor"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label
+                        >Final Disposal<span class="mandetoryinput"
+                          >*</span
+                        ></label
+                      >
+                      <input
+                        autocomplete="off"
+                        type="text"
+                        placeholder="Final Disposal"
+                        class="form-control"
+                        name="final_disposal"
+                        [(ngModel)]="treecutdata.final_disposal"
+                        required
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="row pt-3" *ngIf="btn === 'Save'">
+                  <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12">
+                    <button
+                      type="button"
+                      class="photoupload me-2"
+                      (click)="treephoto.click()"
+                    >
+                      <span
+                        >Tree Photo<span class="mandetoryinput">*</span></span
+                      >
+                      <input
+                        #treephoto
+                        type="file"
+                        accept="image/png, image/jpeg,image/jpg"
+                        (change)="onTreeFileInput($event)"
+                        style="display: none"
+                      />
+                    </button>
+
+                    <span class="selectedImage">{{ selectedtreefile }}</span
+                    >&nbsp;
+                    <!-- <img src="{{ url }}" /> -->
+                    <button
+                      type="button"
+                      class="photoupload me-2"
+                      (click)="logsphoto.click()"
+                    >
+                      <span
+                        >Logs Photo<span class="mandetoryinput">*</span></span
+                      >
+                      <input
+                        #logsphoto
+                        type="file"
+                        accept="image/png, image/jpeg,image/jpg"
+                        (change)="onLogsFileInput($event)"
+                        style="display: none"
+                      />
+                    </button>
+                    <span class="selectedImage">{{ selectedlogsfile }}</span
+                    >&nbsp;
+                    <button
+                      type="button"
+                      class="photoupload mt-1"
+                      (click)="areaphoto.click()"
+                    >
+                      <span
+                        >Area Photo<span class="mandetoryinput">*</span></span
+                      >
+                      <input
+                        #areaphoto
+                        type="file"
+                        accept="image/png, image/jpeg,image/jpg"
+                        (change)="onAreaFileInput($event)"
+                        style="display: none"
+                      />
+                    </button>
+                    <span class="selectedImage">{{ selectedareafile }}</span>
+                  </div>
+                </div>
+                <div class="row mb-3 mt-3 justify-content-center">
+                  <div class="col-md-12 text-center">
+                    <p class="text-danger text-center" *ngIf="validationMsg">
+                      All Fields Are Mandatory*
+                    </p>
+                    <!-- <p class="help-block" style="color: red">{{ alert }}</p> -->
+                    <button
+                      mat-raised-button
+                      class="btn btn-primary save"
+                      type="save"
+                    >
+                      {{ btn }}
+                    </button>
+
+                    <!-- <span *ngIf="selectedareafile === ''" style="color: red">
+                      fill the field
+                    </span> -->
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div
+              class="tab-pane"
+              id="Tree Cutting Lists"
+              role="tabpanel"
+              [ngClass]="{ active: activeTab === 'Tree Cutting Lists' }"
+            >
+              <div class="row">
+                <div class="col-md-9"></div>
+                <div class="col-3">
+                  <!-- <input
+                type="search"
+               placeholder="Search By Tree Number/Name"
+                class="form-control padding"
+                 [(ngModel)]="search.name"
+                (input)="seartreeName()"> -->
+                </div>
+              </div>
+              <div class="row mt-4">
+                <div class="table-responsive">
+                  <table class="table table-hover" style="margin-bottom: 0">
+                    <thead>
+                      <th>SNo</th>
+                      <th>Tree Number</th>
+                      <th>Scientific Name</th>
+                      <th>Common Name</th>
+                      <th>Cutting Date</th>
+                      <th>Cutting Reason</th>
+                      <th>Area Clearance</th>
+                      <th>survey No./Plot No.</th>
+                      <th>Land Classification</th>
+                      <th>District</th>
+                      <th>Mandal</th>
+                      <th>Gram Panchayat</th>
+                      <th>Village</th>
+                      <th>Latitude</th>
+                      <th>Longitude</th>
+                      <th>Log Numbers</th>
+                      <th>Timber Volume</th>
+                      <th>Timber Weight</th>
+                      <th>Extra Branches Weight</th>
+                      <th>Number of Logs</th>
+                      <th>Extra Branches Clearing</th>
+                      <th>Disposal Type</th>
+                      <th>Area Sensor</th>
+                      <th>Final Disposal</th>
+                      <th>Site Name</th>
+                      <th>Created By</th>
+                      <th>Tree Photo</th>
+                      <th>Logs Photo</th>
+                      <th>Post Area Photo</th>
+                      <!-- <th>State</th> -->
+                      <th>Tcd Id</th>
+                      <th>Action</th>
+                    </thead>
+                    <tbody>
+                      <tr
+                        *ngFor="
+                          let item of tcData | paginate : config;
+                          let i = index
+                        "
+                      >
+                        <td>{{ i + 1 }}</td>
+                        <td>{{ item.treeNumber }}</td>
+                        <td>{{ item.scientificName }}</td>
+                        <td>{{ item.commonName }}</td>
+
+                        <td>
+                          {{
+                            item.cuttingDateTime
+                              | date : "yyyy-MM-dd HH:mm" : "+0000"
+                          }}
+                        </td>
+                        <td>
+                          {{ item.cuttingReason }}
+                        </td>
+                        <td>{{ item.areaClearance }}</td>
+                        <td>{{ item.surveyNoPlotNo }}</td>
+                        <td>{{ item.landClassification }}</td>
+                        <td>{{ item.district }}</td>
+                        <td>{{ item.mandal }}</td>
+                        <td>{{ item.gramPanchayat }}</td>
+                        <td>{{ item.village }}</td>
+                        <td>{{ item.latitude }}</td>
+                        <td>{{ item.longitude }}</td>
+                        <td>{{ item.logNumbers }}</td>
+                        <td>{{ item.timberVolume }}</td>
+                        <td>{{ item.timberWeight }}</td>
+                        <td>{{ item.extraBranchesWeight }}</td>
+                        <td>{{ item.numberOfLogs }}</td>
+                        <td>{{ item.extraBranchesClearing }}</td>
+                        <td>{{ item.disposalType }}</td>
+                        <td>{{ item.areaSensor }}</td>
+                        <td>{{ item.finalDisposal }}</td>
+                        <td>{{ item.siteName }}</td>
+                        <td>{{ item.createdBy }}</td>
+
+                        <td>
+                          <i
+                            style="cursor: pointer"
+                            class="fa fa-picture-o"
+                            (click)="updPhoto(item, 'treephoto')"
+                          ></i>
+                        </td>
+                        <td>
+                          <i
+                            style="cursor: pointer"
+                            class="fa fa-picture-o"
+                            (click)="updPhoto(item, 'logsphoto')"
+                          ></i>
+                        </td>
+                        <td>
+                          <i
+                            style="cursor: pointer"
+                            class="fa fa-picture-o"
+                            (click)="updPhoto(item, 'postareaphoto')"
+                          ></i>
+                        </td>
+
+                        <!-- <td>{{ item.state }}</td> -->
+
+                        <td>{{ item.tcdId }}</td>
+
+                        <td>
+                          <div class="d-flex">
+                            <button
+                              class="editbtn me-2"
+                              (click)="editdata(item)"
+                            >
+                              <i class="fa fa-pencil edit"></i>
+                            </button>
+                            <button class="editbtn" (click)="deletedata(item)">
+                              <i
+                                class="fa fa-trash trash"
+                                aria-hidden="true"
+                              ></i>
+                            </button>
+                            <!-- <button class="viewLogDetails" type="button" (click)="viewLogDetails()">View Details</button> -->
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div
+                    class="text-center mt-2 mb-2"
+                    *ngIf="tcData.length === 0"
+                  >
+                    No Data Found
+                  </div>
+                </div>
+                <div class="row mt-3" *ngIf="tcData.length > 0">
+                  <pagination-controls
+                    class="text-center"
+                    (pageChange)="pageChanged($event)"
+                  ></pagination-controls>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  bsModal
+  #deletemodal="bs-modal"
+  class="modal fade"
+  [config]="{ backdrop: 'static' }"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="mySmallModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left modalhead">
+          {{ deleteTreeNumber }}
+        </h4>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure, you want to delete Tree Cutting Details?</p>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary deletereject"
+          (click)="hideChildModal()"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary deleteconfirm"
+          (click)="deleteperminently()"
+        >
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  bsModal
+  #updatephotomodal="bs-modal"
+  class="modal fade"
+  [config]="{ backdrop: 'static' }"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="mySmallModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left modalhead">{{ logsPhoto }}</h4>
+      </div>
+      <div class="modal-body img-fluid">
+        <img class="modalImg img-fluid" src="{{ updateData }}" />
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary deletereject"
+          (click)="hideModal()"
+        >
+          Cancel
+        </button>
+
+        <button type="button" class="photoupload me-2" (click)="photo.click()">
+          <span>Update</span>
+          <input
+            #photo
+            type="file"
+            accept="image/png, image/jpeg,image/jpg"
+            (change)="updateFileInput($event)"
+            style="display: none"
+          />
+        </button>
+        <!-- <button
+          mat-raised-button
+          class="btn btn-primary save"
+          type="save"
+          (click)="saveUpdatedPhoto($event)"
+        >
+          Save
+        </button> -->
+      </div>
+    </div>
+  </div>
+</div>

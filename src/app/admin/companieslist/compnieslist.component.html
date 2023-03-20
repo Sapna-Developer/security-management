@@ -1,0 +1,481 @@
+<div class="container-fluid breadcramp">
+  <div class="row">
+    <div class="col-md-5 col-sm-4 col-xs-6 col-s-3">
+      <p><i class="bi bi-shield-check shield"></i>Companies</p>
+    </div>
+    <div class="col-md-3 col-sm-4 col-xs-6 col-s-4 ">
+      <select class="form-select" aria-label="Default select example" [(ngModel)]="organizationname" (change)="getselectedorgdata()">
+        <option selected disabled [value]="null">Select Organization</option>
+        <option [ngValue]="item.orgId" *ngFor="let item of organizationlist">{{ item.orgName }}</option>
+      </select>
+    </div>
+    <div class="col-md-3 col-sm-4 col-xs-6 col-s-4">
+      <input type="search" placeholder="Search By Company/Email" class="form-control padding" [(ngModel)]="search.name" (input)="searchbyname()"/>
+    </div>
+    <div class="col-md-1 col-sm-4 col-xs-6">
+      <button type="button" class="btn btn-primary add" (click)="addCompany()">Add</button>
+    </div>
+  </div>
+</div>
+<div class="main-content">
+<div class="row">
+  <!-- <div class="row">
+    <div class="heading">
+      <h5>Companies List</h5>
+    </div>
+  </div> -->
+
+  <!-- <div class="table-responsive">
+      <table class="table table-striped" id="dtHorizontalExample">
+        <thead>
+          <tr>
+            <th>S.No</th>
+            <th>company name</th>
+            <th class="text-end">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>greenko</td>
+            <td>
+              <div>
+                <i class="fa fa-edit"></i>&nbsp;
+                <i class="fa fa-trash"></i>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div> -->
+  <div class="col-md-12 grid-margin stretch-card pt-2">
+    <div class="card">
+      <div class="card-body">
+        <div class="row mb-4">
+        </div>
+        <div class="table-responsive">
+          <table class="table table-hover" style="margin-bottom: 0">
+            <thead>
+              <tr>
+                <th>SNo</th>
+                <th>
+                  Company Name<i
+                    (click)="onSortClick($event, 'companyname')"
+                    class="my-icon fa fa-chevron-up"
+                  ></i>
+                </th>
+                <!-- <th>
+                  Company Id
+                  <i
+                    (click)="onSortClick($event, 'companyid')"
+                    class="my-icon fa fa-chevron-up"
+                  ></i>
+                </th> -->
+                <th>
+                  Email
+                  <i
+                    (click)="onSortClick($event, 'email')"
+                    class="my-icon fa fa-chevron-up"
+                  ></i>
+                </th>
+                <th>Contact No</th>
+                <th>
+                  Address<i
+                    (click)="onSortClick($event, 'address')"
+                    class="my-icon fa fa-chevron-up"
+                  ></i>
+                </th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="
+                  let company of companyList | paginate: config;let i = index"
+              >
+                <td>{{ i + 1 }}</td>
+                <td>{{ company.companyName }}</td>
+                <!-- <td>{{ company.companyId }}</td> -->
+                <td>{{ company.companyEmail }}</td>
+                <td>{{ company.companyMobile }}</td>
+                <td>{{ company.companyAddress }}</td>
+                <td class="font-weight-medium">
+                  <div class="d-flex">
+                 <button class="editbtn me-2" (click)="editdata(company)">
+                    <i class="fa fa-pencil edit"></i
+                    ></button>
+                    <button class="editbtn" (click)="deletedata(company)">
+                    <i
+                      class="fa fa-trash trash"
+                    ></i></button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="text-center mt-3 mb-2 nodata" *ngIf="companyList.length===0">
+            No Data Found
+          </div>
+        </div>
+        <div id="pagination" *ngIf="companyList.length>0">
+          <pagination-controls
+            (pageChange)="pageChanged($event)"
+          ></pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<div
+  bsModal
+  #addModel="bs-modal"
+  class="modal fade"  [config]="{ backdrop: 'static' }"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="mySmallModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header border-0">
+        <div class="col-md-10">
+          <h6 class="modal-title headingsix1">Add Company</h6>
+        </div>
+        <div class="col-md-2">
+          <button class="model-close" (click)="closeAddModel()">
+            <i class="fa fa-times" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+      <form #companyform="ngForm" (ngSubmit)="createCompany(companyform)">
+      <div class="modal-body companies">
+        <div class="row">
+          <!-- <div class="col-3">
+            <label for="">Organization Name</label>
+          </div> -->
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="exampleInputEmail1">Organization<span class="mandetoryinput">*</span></label>
+              <select
+              class="form-select formselect1"
+              aria-label="Default select example"
+              [(ngModel)]="company.organization" name="organization"
+              (change)="getselected()"
+            >
+              <option selected disabled [value]="null">
+                Select Organization
+              </option>
+              <option [ngValue]="item.orgId" *ngFor="let item of organizationlist">
+                {{ item.orgName }}
+              </option>
+            </select>
+            </div>
+          </div>
+          <!-- <div class="col-md-3">
+            <label for="">Comapny Name</label>
+          </div> -->
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="exampleInputEmail1">Comapny Name<span class="mandetoryinput">*</span></label>
+              <input autocomplete="off"
+              placeholder="Company Name"
+              class="form-control"
+              type="text"
+              name="name"
+              [(ngModel)]="company.name"
+            />
+            </div>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <!-- <div class="col-md-3">
+            <label for="">Email</label>
+          </div> -->
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="exampleInputEmail1">Company Mail<span class="mandetoryinput">*</span></label>
+              <input autocomplete="off"
+              placeholder="Email" [pattern]="emianPattern"
+              class="form-control"
+              type="text"
+              name="email" #email="ngModel"
+              [(ngModel)]="company.email"
+            />
+            <div *ngIf="email.errors || companyform.submitted" class="text-danger mt-1">  
+              <div *ngIf="email.errors?.['pattern']">  
+                Company Mail not valid.  
+              </div>   
+            </div> 
+            </div>
+          </div>
+          <!-- <div class="col-md-3">
+            <label for="">Mobile</label>
+          </div> -->
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="exampleInputEmail1">Mobile Number<span class="mandetoryinput">*</span></label>
+              <input autocomplete="off" [pattern]="mobNumberPattern"
+              placeholder="Mobile"
+              class="form-control"
+              type="text"
+              name="mobile" #mobile="ngModel"
+              [(ngModel)]="company.mobile"
+            />
+            <div *ngIf="mobile.errors || companyform.submitted" class="text-danger mt-1">  
+              <div *ngIf="mobile.errors?.['pattern']">  
+                Mobile number not valid.  
+              </div>   
+            </div>  
+            </div>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <!-- <div class="col-md-3">
+            <label for="">Comapny Id</label>
+          </div> -->
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="exampleInputEmail1">Address<span class="mandetoryinput">*</span></label>
+              <input autocomplete="off"
+              placeholder="Address"
+              class="form-control"
+              type="text"
+              name="address"
+              [(ngModel)]="company.address"
+            />
+            </div>
+            <!-- <div class="form-group">
+              <label for="exampleInputEmail1">Company Id</label>
+              <input autocomplete="off"
+              placeholder="Company Id"
+              class="form-control"
+              type="text"
+              name="companyid"
+              [(ngModel)]="company.companyid"
+            />
+            </div> -->
+          </div>
+          <!-- <div class="col-md-3">
+            <label for="">Address</label>
+          </div> -->
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="exampleInputEmail1">Facilitates<span class="mandetoryinput">*</span></label>
+                <input autocomplete="off"
+                placeholder="Facilitates"
+                class="form-control"
+                type="text"
+                name="facilitates"
+                [(ngModel)]="company.facilitates"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer border-0">
+        <p class="text-danger" *ngIf="validationMsg">All Fields Are Mandatory*</p>
+        <button
+          type="submit"
+          class="btn btn-secondary btnsecondary"
+        >
+          Add
+        </button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div
+  bsModal
+  #editModel="bs-modal"
+  class="modal fade"  [config]="{ backdrop: 'static' }"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="mySmallModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header border-0">
+        <div class="col-md-10">
+          <h6 class="modal-title headingsix1">{{companyName}}</h6>
+        </div>
+        <div class="col-md-2">
+          <button class="model-close" (click)="closeeditModel()">
+            <i class="fa fa-times" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+      <form #companyeditform="ngForm" (ngSubmit)="updateCompany(companyeditform)">
+      <div class="modal-body companies">
+        <div class="row">
+          <!-- <div class="col-md-3">
+            <label for="">Organization Name</label>
+          </div> -->
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="exampleInputEmail1">Organization<span class="mandetoryinput">*</span></label>
+              <select
+              class="form-select formselect1"
+              aria-label="Default select example" name="organization"
+              [(ngModel)]="editcompany.organization"
+            >
+              <option selected disabled [value]="null">
+                Select Organization
+              </option>
+              <option
+              [ngValue]="item.orgId"
+                *ngFor="let item of organizationlist"
+              >
+                {{ item.orgName }}
+              </option>
+            </select>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="exampleInputEmail1">Comapny Name<span class="mandetoryinput">*</span></label>
+              <input autocomplete="off"
+              placeholder="Comapny Name"
+              class="form-control"
+              type="text"
+              name="name"
+              [(ngModel)]="editcompany.name"
+            />
+            </div>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <!-- <div class="col-md-3">
+            <label for="">Email</label>
+          </div> -->
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Company Mail<span class="mandetoryinput">*</span></label>
+              <input autocomplete="off" [pattern]="emianPattern"
+              placeholder="Email"
+              class="form-control"
+              type="text"
+              name="emailId" #emailId="ngModel"
+              [(ngModel)]="editcompany.emailId"
+            />
+            <div *ngIf="emailId.errors || companyeditform.submitted" class="text-danger mt-1">  
+              <div *ngIf="emailId.errors?.['pattern']">  
+                Company Mail not valid.  
+              </div>   
+            </div> 
+            </div>
+          </div>
+          <!-- <div class="col-md-3">
+            <label for="">Mobile</label>
+          </div> -->
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="exampleInputEmail1">Mobile Number<span class="mandetoryinput">*</span></label>
+            <input autocomplete="off" [pattern]="mobNumberPattern"
+            placeholder="Mobile"
+            class="form-control"
+            type="text"
+            name="mobileNumber" #mobileNumber="ngModel"
+            [(ngModel)]="editcompany.mobileNumber"
+          />
+          <div *ngIf="mobileNumber.errors || companyeditform.submitted" class="text-danger mt-1">  
+            <div *ngIf="mobileNumber.errors?.['pattern']">  
+              Mobile number not valid.  
+            </div>   
+          </div> 
+            </div>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <!-- <div class="col-md-3">
+            <label for="">Comapny Id</label>
+          </div> -->
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Address<span class="mandetoryinput">*</span></label>
+              <input autocomplete="off"
+              placeholder="Address"
+              class="form-control"
+              type="text"
+              name="address"
+              [(ngModel)]="editcompany.address"
+            />
+            </div>
+            <!-- <div class="form-group">
+              <label for="exampleInputEmail1">Company Id</label>
+              <input autocomplete="off"
+              class="form-control"
+              type="text"
+              name="companyid"
+              [(ngModel)]="editcompany.companyid"
+            />
+            </div> -->
+          </div>
+          <!-- <div class="col-md-3">
+            <label for="">Address</label>
+          </div> -->
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="exampleInputEmail1">Facilitates<span class="mandetoryinput">*</span></label>
+              <input autocomplete="off"
+              placeholder="Facilitates"
+              class="form-control"
+              type="text"
+              name="fecilitates"
+              [(ngModel)]="editcompany.facilitates"
+            />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer border-0">
+        <p class="text-danger" *ngIf="validationMsgedit">All Fields Are Mandatory*</p>
+        <button
+          type="submit"
+          class="btn btn-secondary updatebtn"
+        >
+          Update
+        </button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div
+  bsModal
+  #deletemodal="bs-modal"
+  class="modal fade"  [config]="{ backdrop: 'static' }"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="mySmallModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left headingsix1">{{companyNamefrDelete}}</h4>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure, you want to delete Company?</p>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary deletereject"
+          (click)="hideChildModal()"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary deleteconfirm"
+          (click)="deleteperminently()"
+        >
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

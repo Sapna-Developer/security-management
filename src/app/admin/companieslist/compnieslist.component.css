@@ -1,0 +1,222 @@
+.add-btn {
+  background-color: #33b5e5;
+  color: #fff;
+  border-radius: 50%;
+  float: right;
+}
+.add {
+  background: linear-gradient( 90deg, rgba(255, 153, 51, 1) 0%, rgba(255, 102, 0, 1) 88% );
+  /* float: right;
+  margin-right: 13px; */
+  margin-top: 14px;
+  padding: 3px 8px;
+  /* width: 56px; */
+  border-radius: 7px;
+  border: none;
+  outline: none;
+  /* background: #a3a3cd; */
+  color: white;
+}
+.add-btn:hover,
+.add-btn:active,
+.add-btn:focus {
+  background-color: #33b5e5;
+  color: #fff;
+  border-radius: 50%;
+  float: right;
+}
+
+.model-close {
+  color: #333;
+  margin-top: -4px;
+  background: none;
+  border-radius: 0;
+  float: right;
+  border: none;
+}
+.c-m{margin-top: -60px;
+min-height: 550px;}
+.model-close i {
+  font-size: 20px;
+}
+.cardtitle {
+  font-weight: 500;
+}
+.trash {
+  color: red;
+  cursor: pointer;
+  font-size: 13px;
+}
+.edit {
+  color: blue;
+  cursor: pointer;
+  font-size: 13px;
+}
+.table td {
+  padding: 0.825rem 0.975rem;
+}
+.search {
+  cursor: pointer;
+}
+.form-select {
+  padding: 0.175rem 1.25rem 0.275rem 0.85rem;
+  margin-top: 12px;
+}
+.formselect1{
+  margin-top: 0px !important;
+}
+.searchinput {
+  padding-left: 8px;
+  width: 85%;
+  border: 1px solid #e0e0e0;
+  outline: none;
+  border-radius: 5px;
+  margin-left: -8px;
+}
+#pagination {
+  margin: auto;
+  text-align: center;
+  padding-top: 20px;
+}
+.my-icon {
+  font-size: 14px;
+  color: gray;
+  cursor: pointer;
+  margin-left: 10px;
+}
+/* .breadcramp{
+  background: rgb(18,30,63);
+background: linear-gradient(90deg, rgba(18,30,63,1) 51%, rgba(147,172,240,1) 100%);
+height: 118px;
+width: 100%;
+} */
+.breadcramp p{
+  font-size: 22px;
+  font-weight: 600;
+  color: rgb(18,30,63);
+  vertical-align: middle;
+  margin: auto;
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 12px;
+  margin-left: 39px;
+  /* padding-left: 49px; */
+  /* margin-left: 12px; */
+}
+img{
+  height: 120px;
+  width: auto;
+  margin-left: 5px;
+}
+.modaldialog{
+  max-width: 800px !important;
+  width: 800px !important;
+}
+.btnsecondary{  
+  border: none;
+  outline: none;
+  border-radius: 6px;
+  padding: 4px;
+  width: 55px;
+  color: white;
+  background: linear-gradient( 90deg, rgba(255, 153, 51, 1) 0%, rgba(255, 102, 0, 1) 88% );
+}
+.updatebtn{
+  border: none;
+  outline: none;
+  border-radius: 6px;
+  padding: 4px;
+  width: 60px;
+  color: white;
+  background: linear-gradient( 90deg, rgba(255, 153, 51, 1) 0%, rgba(255, 102, 0, 1) 88% );
+}
+.modal-header{
+  background: #adc7db;
+}
+.companies .form-control{
+  height: 38px !important;
+}
+.companies .form-select{
+  height: 38px !important;
+}
+.companies label{
+  padding-bottom: 5px;
+}
+.headingsix1{
+  font-weight: 600;
+    font-size: 17px;
+}
+.deleteconfirm{
+  border: none;
+  outline: none;
+  border-radius: 6px;
+  padding: 4px;
+  width: 60px;
+  color: white;
+  background: linear-gradient( 90deg, rgba(255, 153, 51, 1) 0%, rgba(255, 102, 0, 1) 88% );
+}
+.deletereject{
+  border: none;
+  outline: none;
+  border-radius: 6px;
+  padding: 4px;
+  width: 60px;
+  color: white;
+}
+.padding{
+  padding: 0.175rem 1.25rem 0.275rem 0.85rem;
+  margin-top: 12px;
+}
+
+@media (max-width:767px) {
+  .breadcramp p{
+    font-size: 22px;
+    font-weight: 600;
+    color: rgb(18,30,63);
+    vertical-align: middle;
+    margin: auto;
+    display: flex;
+    justify-content: flex-start;
+    /* margin-top: 7px; */
+    margin-left: 0px;
+  }
+  .c-m{
+    margin-top: 60px;
+    min-height: 550px;
+  }
+  .imageView{
+    padding: 0;
+    margin: auto;
+  }
+  .breadcramp img{
+    width: -webkit-fill-available;
+    margin-left: 5px;
+    object-fit: cover;
+  }
+}
+@media (min-width:768px) and (max-width:1200px) {
+  .imageView{
+    padding: 0;
+    margin: inherit;
+  }
+}
+@media (min-width:1201px)  {
+  .imageView{
+    padding: 0;
+    margin: inherit;
+  }
+}
+
+
+
+@media screen and (min-width:750px) and (max-width:860px) {
+  .col-s-3{
+    width:80%;
+  }
+  .breadcramp p{
+    margin-left: 7px !important;
+  }
+  .col-s-4{
+    width:100%;
+  }
+}

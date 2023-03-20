@@ -1,0 +1,134 @@
+.breadcramp {
+  background: rgb(18, 30, 63);
+  /* background: linear-gradient(90deg, rgba(18,30,63,1) 51%, rgba(147,172,240,1) 100%); */
+  height: 70px;
+  width: 100%;
+}
+
+
+.modelForParameters {
+  margin-bottom: -25px;
+  margin-top: -9px;
+}
+
+.modelCount {
+  margin-top: -14px;
+  font-weight: 500;
+  font-size: 34px;
+}
+@media screen and (min-width: 700px) and (max-width: 860px) {
+  .col-s-3 {
+    width: 80%;
+  }
+  .maindashboard p {
+    margin-left: 0px !important;
+  }
+  .col-s-4 {
+    width: 100%;
+  }
+  .modelName{
+    font-size: 10px;
+  }
+}
+#icon {
+  height: 100%;
+  width: 100%;
+}
+#map {
+  height: 350px;
+  /* margin: 17px; */
+}
+.main-content {
+  margin-bottom: 10px;
+}
+.scrollDiv {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  max-height: 630px;
+}
+.tablehead {
+  background-color: #AED6F1;
+  position: sticky;
+  top: -2px;
+}
+.tablee {
+  text-align: center;
+}
+.tablee td {
+  white-space: initial !important;
+}
+.daterange {
+  cursor: pointer;
+}
+.dashboard .form-control {
+  margin-top: 14px;
+  height: 36px !important;
+  width: 65%;
+}
+.table-responsive {
+  overflow: auto;
+  max-height: 414px;
+  border-radius: 12px !important;
+  border:1px solid lightgray !important;
+
+}
+
+tr{
+  height:36px !important
+}
+/* .dashboard .form-select {
+  margin-top: 5px;
+  cursor: pointer;
+  height: 36px !important;
+} */
+
+agm-map {
+  height: 414px;
+}
+
+::ng-deep .chart-legend .legend-labels {
+  width: 240px !important;
+  margin-left: 34px !important;
+  margin-top: -45px;
+  background: transparent !important;
+  /* text-align: center !important; */
+}
+::ng-deep .textDataLabel {
+  transform: rotate(0deg);
+}
+
+::ng-deep .legend-label-text{
+  height: 15px !important;
+  color:black;
+  font-size: 10px !important;
+}
+/* .card {
+  margin-left: 35px;
+  margin-right: 14px;
+} */
+.cards {
+  margin-left: 26px;
+}
+.cards1 {
+  margin-left: 26px;
+  margin-right: 19px;
+}
+.chartheader {
+  text-align: center;
+  font-weight: 500;
+  font-size: 16px;
+  margin-top: 9px;
+}
+
+/* .scroll {
+
+    width: 100%;
+    max-width: 700px;
+    overflow-x: auto;
+} */
+.scroll {
+  border-radius: 8px;
+  align-items: center;
+  background: #ffffff89 !important;
+  box-shadow: 0px 0px 7px -2px #b8b7b7;
+}

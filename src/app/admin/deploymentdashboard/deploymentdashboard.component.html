@@ -1,0 +1,293 @@
+<div class="container-fluid maindashboard">
+  <div class="row dashboard pt-1">
+    <div class="col-md-2 col-sm-2 col-xs-2 col-s-2 me-5">
+      <p>
+        <span class="hTitle hTitle1">Deployment&nbsp;Dashboard</span>
+      </p>
+    </div>
+  </div>
+</div>
+<div class="main-content">
+  <div class="row pt-2 tab-padding">
+    <div class="col-md-2 col-sm-6 tab-col">
+      <input
+        type="text"
+        autocomplete="off"
+        bsDaterangepicker
+        class="form-control form-control-sm daterange"
+        name="date"
+        [(ngModel)]="bsRangeValue"
+        [bsConfig]="{
+          containerClass: 'theme-dark-blue',
+          adaptivePosition: true,
+          rangeInputFormat: 'YYYY-MM-DD'
+        }"
+        (ngModelChange)="updateMyDate($event)"
+        placeholder="Select Date Range"
+      />
+    </div>
+    <div class="col-md-2 col-xs-12 pb-1 dashboardcol2 tab-col">
+      <select
+        class="form-select form-select-sm"
+        aria-label="Default select example"
+        [(ngModel)]="dashboard.filterfor"
+        (change)="getdata()"
+      >
+        <option class="dropdown-item" value="">Filter By</option>
+
+        <option value="region">region</option>
+        <option value="state">state</option>
+        <option value="cluster">cluster</option>
+        <option value="site">site</option>
+      </select>
+    </div>
+    <div class="col-md-2 col-xs-12 pb-1 dashboardcol3 tab-col">
+      <select
+        class="form-select form-select-sm"
+        aria-label="Default select example"
+        [(ngModel)]="dashboard.region"
+        (change)="getRegionData()"
+      >
+        <option class="dropdown-item" value="">Select Region</option>
+        <option value="{{ item }}" *ngFor="let item of RegionList">
+          {{ item | titlecase }}
+        </option>
+      </select>
+    </div>
+    <div class="col-md-2 col-xs-12 pb-1 dashboardcol3 tab-col">
+      <select
+        class="form-select form-select-sm"
+        aria-label="Default select example"
+        [(ngModel)]="dashboard.state"
+        (change)="getStateData()"
+      >
+        <option class="dropdown-item" value="">Select State</option>
+        <option value="{{ item }}" *ngFor="let item of StateList">
+          {{ item | titlecase }}
+        </option>
+      </select>
+    </div>
+    <div class="col-md-2 col-xs-12 pb-1 dashboardcol3 tab-col">
+      <select
+        class="form-select form-select-sm"
+        aria-label="Default select example"
+        [(ngModel)]="dashboard.cluster"
+        (change)="getClusterData()"
+      >
+        <option class="dropdown-item" value="">Select Cluster</option>
+        <option value="{{ item }}" *ngFor="let item of ClusterList">
+          {{ item | titlecase }}
+        </option>
+      </select>
+    </div>
+    <div class="col-md-2 col-xs-12 pb-1 tab-col">
+      <select
+        class="form-select form-select-sm"
+        aria-label="Default select example"
+        name="site"
+        [(ngModel)]="dashboard.site"
+        (change)="getSiteData()"
+      >
+        <option class="dropdown-item" value="">Select Site</option>
+        <option value="{{ item.siteName }}" *ngFor="let item of sitedata">
+          {{ item.name }}
+        </option>
+      </select>
+    </div>
+  </div>
+  <div class="row mt-5">
+        <div class="col-lg-3 col-sm-6 col-xs-6 mobile-margin">
+          <div style="margin-left:20px;">
+            <h5>Day Shift &nbsp;&nbsp;
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-brightness-high" viewBox="0 0 16 16">
+                <path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
+              </svg>
+            </h5>           
+          </div>
+          <div class="card customcard blue-card">
+            <h4>Supervisors</h4>
+            <div class="row">
+              <div class="col-6">
+                Required 
+                <p class="modelCount">{{dashboarddataday.reqSupCount}}</p>
+              </div>
+              <div class="col-6">
+                Deployed  
+                <p class="modelCount">{{dashboarddataday.depSupCount}}</p>
+              </div>
+            </div>
+            <h4>Guards</h4>
+            <div class="row">
+              <div class="col-6">
+                Required 
+                <p class="modelCount">{{dashboarddataday.reqGudCount}}</p>
+              </div>
+              <div class="col-6">
+                Deployed  
+                <p class="modelCount">{{dashboarddataday.depGudCount}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-xs-6 mobile-margin">
+          <div style="margin-left:20px;">
+            <h5>Night Shift&nbsp;&nbsp;
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-moon" viewBox="0 0 16 16">
+                <path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278zM4.858 1.311A7.269 7.269 0 0 0 1.025 7.71c0 4.02 3.279 7.276 7.319 7.276a7.316 7.316 0 0 0 5.205-2.162c-.337.042-.68.063-1.029.063-4.61 0-8.343-3.714-8.343-8.29 0-1.167.242-2.278.681-3.286z"/>
+              </svg>
+            </h5>
+          </div>
+          <div class="card customcard orange-card">
+            <h4>Supervisors</h4>
+            <div class="row">
+              <div class="col-6">
+                Required 
+                <p class="modelCount">{{dashboarddataNIGHT.reqSupCount}}</p>
+              </div>
+              <div class="col-6">
+                Deployed  
+                <p class="modelCount">{{dashboarddataNIGHT.depSupCount}}</p>
+              </div>
+            </div>
+            <h4>Guards</h4>
+            <div class="row">
+              <div class="col-6">
+                Required 
+                <p class="modelCount">{{dashboarddataNIGHT.reqGudCount}}</p>
+              </div>
+              <div class="col-6">
+                Deployed  
+                <p class="modelCount">{{dashboarddataNIGHT.depGudCount}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-xs-6 mobile-margin">
+          <div style="margin-left:20px;">
+            <h5>General Shift&nbsp;&nbsp;
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-brightness-alt-high" viewBox="0 0 16 16">
+                <path d="M8 3a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 3zm8 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zm-13.5.5a.5.5 0 0 0 0-1h-2a.5.5 0 0 0 0 1h2zm11.157-6.157a.5.5 0 0 1 0 .707l-1.414 1.414a.5.5 0 1 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm-9.9 2.121a.5.5 0 0 0 .707-.707L3.05 5.343a.5.5 0 1 0-.707.707l1.414 1.414zM8 7a4 4 0 0 0-4 4 .5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5 4 4 0 0 0-4-4zm0 1a3 3 0 0 1 2.959 2.5H5.04A3 3 0 0 1 8 8z"/>
+              </svg>
+            </h5>
+          </div>
+          <div class="card customcard purple-card">
+            <h4>Supervisors</h4>
+            <div class="row">
+              <div class="col-6">
+                Required 
+                <p class="modelCount">{{dashboarddatadaygeneral.reqSupCount}}</p>
+              </div>
+              <div class="col-6">
+                Deployed  
+                <p class="modelCount">{{dashboarddatadaygeneral.depSupCount}}</p>
+              </div>
+            </div>
+            <h4>Guards</h4>
+            <div class="row">
+              <div class="col-6">
+                Required 
+                <p class="modelCount">{{dashboarddatadaygeneral.reqGudCount}}</p>
+              </div>
+              <div class="col-6">
+                Deployed  
+                <p class="modelCount">{{dashboarddatadaygeneral.depGudCount}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-xs-6 mobile-margin">
+          <div style="margin-left:20px;">
+            <h5>Total&nbsp;&nbsp;
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-dotted" viewBox="0 0 16 16">
+                <path d="M8 0c-.176 0-.35.006-.523.017l.064.998a7.117 7.117 0 0 1 .918 0l.064-.998A8.113 8.113 0 0 0 8 0zM6.44.152c-.346.069-.684.16-1.012.27l.321.948c.287-.098.582-.177.884-.237L6.44.153zm4.132.271a7.946 7.946 0 0 0-1.011-.27l-.194.98c.302.06.597.14.884.237l.321-.947zm1.873.925a8 8 0 0 0-.906-.524l-.443.896c.275.136.54.29.793.459l.556-.831zM4.46.824c-.314.155-.616.33-.905.524l.556.83a7.07 7.07 0 0 1 .793-.458L4.46.824zM2.725 1.985c-.262.23-.51.478-.74.74l.752.66c.202-.23.418-.446.648-.648l-.66-.752zm11.29.74a8.058 8.058 0 0 0-.74-.74l-.66.752c.23.202.447.418.648.648l.752-.66zm1.161 1.735a7.98 7.98 0 0 0-.524-.905l-.83.556c.169.253.322.518.458.793l.896-.443zM1.348 3.555c-.194.289-.37.591-.524.906l.896.443c.136-.275.29-.54.459-.793l-.831-.556zM.423 5.428a7.945 7.945 0 0 0-.27 1.011l.98.194c.06-.302.14-.597.237-.884l-.947-.321zM15.848 6.44a7.943 7.943 0 0 0-.27-1.012l-.948.321c.098.287.177.582.237.884l.98-.194zM.017 7.477a8.113 8.113 0 0 0 0 1.046l.998-.064a7.117 7.117 0 0 1 0-.918l-.998-.064zM16 8a8.1 8.1 0 0 0-.017-.523l-.998.064a7.11 7.11 0 0 1 0 .918l.998.064A8.1 8.1 0 0 0 16 8zM.152 9.56c.069.346.16.684.27 1.012l.948-.321a6.944 6.944 0 0 1-.237-.884l-.98.194zm15.425 1.012c.112-.328.202-.666.27-1.011l-.98-.194c-.06.302-.14.597-.237.884l.947.321zM.824 11.54a8 8 0 0 0 .524.905l.83-.556a6.999 6.999 0 0 1-.458-.793l-.896.443zm13.828.905c.194-.289.37-.591.524-.906l-.896-.443c-.136.275-.29.54-.459.793l.831.556zm-12.667.83c.23.262.478.51.74.74l.66-.752a7.047 7.047 0 0 1-.648-.648l-.752.66zm11.29.74c.262-.23.51-.478.74-.74l-.752-.66c-.201.23-.418.447-.648.648l.66.752zm-1.735 1.161c.314-.155.616-.33.905-.524l-.556-.83a7.07 7.07 0 0 1-.793.458l.443.896zm-7.985-.524c.289.194.591.37.906.524l.443-.896a6.998 6.998 0 0 1-.793-.459l-.556.831zm1.873.925c.328.112.666.202 1.011.27l.194-.98a6.953 6.953 0 0 1-.884-.237l-.321.947zm4.132.271a7.944 7.944 0 0 0 1.012-.27l-.321-.948a6.954 6.954 0 0 1-.884.237l.194.98zm-2.083.135a8.1 8.1 0 0 0 1.046 0l-.064-.998a7.11 7.11 0 0 1-.918 0l-.064.998zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+              </svg>
+            </h5>
+          </div>
+          <div class="card customcard green-card">
+            <h4>Supervisors</h4>
+            <div class="row">
+              <div class="col-6">
+                Required 
+                <p class="modelCount">{{totaldatasup.reqSupCount}}</p>
+              </div>
+              <div class="col-6">
+                Deployed  
+                <p class="modelCount">{{totaldatasup.depSupCount}}</p>
+              </div>
+            </div>
+            <h4>Guards</h4>
+            <div class="row">
+              <div class="col-6">
+                Required 
+                <p class="modelCount">{{totaldataguard.reqGudCount}}</p>
+              </div>
+              <div class="col-6">
+                Deployed  
+                <p class="modelCount">{{totaldataguard.depGudCount}}</p>
+              </div>
+            </div>
+          </div>
+
+
+  </div>
+  <div class="row mt-3" *ngIf="deploymentData.length !== 0">
+    <div class="col-md-5" *ngIf="deploymentData.length !== 0">
+      <div class="row">
+        <div class="col-1 me-3">
+          <img src="../../../assets/security/chart.svg" class="charts" />
+        </div>
+        <div class="col-7">
+          <h6 class="total mt-2">All Locations</h6>
+        </div>
+      </div>
+        <div class="table-responsive">
+          <table class="table table-hover tablee mb-0">
+            <thead class="tablehead">
+              <tr>
+                <th>{{ resName | titlecase }}</th>
+                <th>Req Sup</th>
+                <th>Dep Sup</th>
+                <th>Req Gds</th>
+                <th>Dep Gds</th>
+              </tr>
+            </thead>
+
+            <tbody style="overflow-y: scroll; max-height: 100px">
+              <tr *ngFor="let item of deploymentData">
+                <td>{{ item.name }}</td>
+                <td>{{ item.reqSupCount }}</td>
+                <td>{{ item.depSupCount }}</td>
+                <td>{{ item.reqGudCount }}</td>
+                <td>{{ item.depGudCount }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+  
+    </div>
+    <div class="col-md-7 chartscol" #ContainerRef>
+      <ngx-charts-bar-vertical-2d
+        (window:resize)="resizeChart(ContainerRef.offsetWidth)"
+        [view]="view"
+        [scheme]="colorScheme"
+        [results]="multi"
+        [legend]="showLegend"
+        [legendPosition]="'below'"
+        [legendTitle]="legendTitle"
+        [gradient]="gradient"
+        [xAxis]="showXAxis"
+        [yAxis]="showYAxis"
+        [showXAxisLabel]="showXAxisLabel"
+        [showYAxisLabel]="showYAxisLabel"
+        [xAxisLabel]="xAxisLabel"
+        [yAxisLabel]="yAxisLabel"
+        [showDataLabel]="true"
+      >
+      </ngx-charts-bar-vertical-2d>
+    </div>
+  </div>
+  <div class="row mt-4" *ngIf="deploymentData.length === 0">
+    <strong class="text-center nodata">No Data Found</strong>
+  </div>
+</div>
+</div>

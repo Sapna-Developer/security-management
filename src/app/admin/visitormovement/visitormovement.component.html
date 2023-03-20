@@ -1,0 +1,873 @@
+<div class="container-fluid breadcramp">
+  <div class="row">
+    <!-- <div class="col-md-6 col-6 col-sm-6 col-xs-6 mt-4">
+      <p><i class="bi bi-shield-check shield"></i>Visitor Movement</p>
+    </div>
+    <div class="col-md-6 col-6 col-sm-6 col-xs-6 imageView">
+      <img src="../../../assets/visitormovement.png" alt="" />
+    </div> -->
+    <div class="col-md-9 col-s-3">
+      <ul class="nav nav-pills navbars" id="pills-tab" role="tablist">
+        <li class="nav-item tabs" role="presentation">
+          <button
+            class="nav-link active"
+            data-bs-toggle="pill"
+            data-bs-target="#onarrival"
+            type="button"
+            role="tab"
+            [ngClass]="{ active: activeTab === 'onArrival' }"
+            (click)="arrival('onArrival')"
+          >
+            On Arrival
+          </button>
+        </li>
+        <li class="nav-item tabs" role="presentation">
+          <button
+            class="nav-link"
+            data-bs-toggle="pill"
+            data-bs-target="#visitorlist"
+            type="button"
+            role="tab"
+            [ngClass]="{ active: activeTab === 'visitorlist' }"
+            (click)="list('visitorlist')"
+          >
+            View Visitor List
+          </button>
+        </li>
+      </ul>
+    </div>
+    <div class="col-md-3 col-s-4">
+      <input
+        *ngIf="activeTab === 'visitorlist'"
+        type="search"
+        placeholder="Search By Visitor"
+        class="form-control padding"
+        [(ngModel)]="search.name"
+        (input)="searchbyvisitor()"
+      />
+    </div>
+  </div>
+</div>
+<div class="main-content">
+  <div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <!-- <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+            <li class="nav-item tabs" role="presentation">
+              <button
+                class="nav-link active"
+                data-bs-toggle="pill"
+                data-bs-target="#onarrival"
+                type="button"
+                role="tab"
+                [ngClass]="{ active: activeTab === 'onArrival' }"
+                (click)="arrival('onArrival')"
+              >
+                On Arrival
+              </button>
+            </li>
+            <li class="nav-item tabs" role="presentation">
+              <button
+                class="nav-link"
+                data-bs-toggle="pill"
+                data-bs-target="#visitorlist"
+                type="button"
+                role="tab"
+                [ngClass]="{ active: activeTab === 'visitorlist' }"
+                (click)="list('visitorlist')"
+              >
+                View Visitor List
+              </button>
+            </li>
+          </ul> -->
+          <div class="tab-content" id="pills-tabContent">
+            <div
+              class="tab-pane"
+              id="onarrival"
+              role="tabpanel"
+              [ngClass]="{ active: activeTab === 'onArrival' }"
+            >
+              <div class="visitorform tab1">
+                <form #visitorForm="ngForm" (ngSubmit)="submitAll(visitorForm)">
+                  <!-- <div class="row">
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label>Region</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Region"
+                          name="region"
+                          [(ngModel)]="visitormovement.region"
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label>Cluster</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Cluster"
+                          name="cluster"
+                          [(ngModel)]="visitormovement.cluster"
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label>State</label>
+
+                        <select
+                          class="form-select"
+                          name="state"
+                          [(ngModel)]="visitormovement.state"
+                        >
+                          <option value="null" [selected]="true">
+                            Select State
+                          </option>
+                          <option>Telangana</option>
+                                               </select>
+                      </div>
+                    </div>
+                  </div> -->
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label>Site<span class="mandetoryinput">*</span></label>
+                        <select
+                          class="form-select"
+                          name="site_id"
+                          [(ngModel)]="visitormovement.site_id"
+                        >
+                          <option selected disabled [value]="null">
+                            Select Site
+                          </option>
+                          <option
+                            [ngValue]="item.siteId"
+                            *ngFor="let item of sitedata"
+                          >
+                            {{ item.siteName }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label
+                          >Visitor Name<span class="mandetoryinput"
+                            >*</span
+                          ></label
+                        >
+                        <input
+                          autocomplete="off"
+                          class="form-control"
+                          placeholder="Visitor Name"
+                          type="text"
+                          name="visitorname"
+                          [(ngModel)]="visitormovement.visitorname"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label
+                          >Contact Number<span class="mandetoryinput"
+                            >*</span
+                          ></label
+                        >
+                        <input
+                          [pattern]="mobNumberPattern"
+                          autocomplete="off"
+                          class="form-control"
+                          placeholder="Contact Number"
+                          type="text"
+                          name="contactnumber"
+                          #contactnumber="ngModel"
+                          [(ngModel)]="visitormovement.contactnumber"
+                          required
+                        />
+                        <div
+                          *ngIf="contactnumber.errors || visitorForm.submitted"
+                          class="text-danger mt-1"
+                        >
+                          <div *ngIf="contactnumber.errors?.['pattern']">
+                            Mobile number not valid.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mt-2">
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label
+                          >Personal ID Type<span class="mandetoryinput"
+                            >*</span
+                          ></label
+                        >
+                        <input
+                          autocomplete="off"
+                          class="form-control"
+                          placeholder="Personal ID Type"
+                          type="text"
+                          name="idtype"
+                          [(ngModel)]="visitormovement.idtype"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label
+                          >Personal ID Number<span class="mandetoryinput"
+                            >*</span
+                          ></label
+                        >
+                        <input
+                          autocomplete="off"
+                          class="form-control"
+                          placeholder="Personal ID Number"
+                          type="text"
+                          name="number"
+                          [(ngModel)]="visitormovement.number"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label
+                          >Purpose of Visit<span class="mandetoryinput"
+                            >*</span
+                          ></label
+                        >
+                        <select
+                          class="form-select"
+                          aria-label="Default select example"
+                          name="purposeofvisit"
+                          [(ngModel)]="visitormovement.purposeofvisit"
+                        >
+                          <option selected disabled [value]="null">
+                            Select Purpose
+                          </option>
+                          <option value="business">Business</option>
+                          <option value="personal">Personal</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mt-2">
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label
+                          >Vehicle Number<span class="mandetoryinput"
+                            >*</span
+                          ></label
+                        >
+                        <input
+                          autocomplete="off"
+                          class="form-control"
+                          placeholder="Vehicle Number"
+                          type="text"
+                          name="vehiclenumber"
+                          [(ngModel)]="visitormovement.vehiclenumber"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label
+                          >Address<span class="mandetoryinput">*</span></label
+                        >
+                        <input
+                          autocomplete="off"
+                          class="form-control"
+                          placeholder="Address"
+                          type="text"
+                          name="address"
+                          [(ngModel)]="visitormovement.address"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label
+                          >In Date & Time<span class="mandetoryinput"
+                            >*</span
+                          ></label
+                        >
+                        <input
+                          type="datetime-local"
+                          class="form-control"
+                          name="datetime"
+                          [max]="currentTime"
+                          [(ngModel)]="visitormovement.datetime"
+                        />
+                        <span *ngIf="validationMessageTime" class="text-danger">
+                          Time should not exceed current time
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mt-2">
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label
+                          >Whom to Meet<span class="mandetoryinput"
+                            >*</span
+                          ></label
+                        >
+                        <input
+                          autocomplete="off"
+                          class="form-control"
+                          placeholder="Whom to Meet"
+                          type="text"
+                          name="whomtomeet"
+                          [(ngModel)]="visitormovement.whomtomeet"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label
+                          >Escorter ID<span class="mandetoryinput"
+                            >*</span
+                          ></label
+                        >
+                        <input
+                          autocomplete="off"
+                          class="form-control"
+                          placeholder="Escorter ID"
+                          type="text"
+                          name="escorterid"
+                          [(ngModel)]="visitormovement.escorterid"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label
+                          >Escorter Name<span class="mandetoryinput"
+                            >*</span
+                          ></label
+                        >
+                        <input
+                          autocomplete="off"
+                          class="form-control"
+                          placeholder="Escorter Name"
+                          type="text"
+                          name="escotername"
+                          [(ngModel)]="visitormovement.escotername"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mt-2">
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label
+                          >Meeting Time<span class="mandetoryinput"
+                            >*</span
+                          ></label
+                        >
+                        <select
+                          name="meeting_time"
+                          class="form-select"
+                          type="time"
+                          required
+                          [(ngModel)]="visitormovement.meeting_time"
+                        >
+                          <option value="null" disabled selected>HH:MM</option>
+                          <option>01:00</option>
+                          <option>02:00</option>
+                          <option>03:00</option>
+                          <option>04:00</option>
+                          <option>05:00</option>
+                          <option>06:00</option>
+                          <option>07:00</option>
+                          <option>08:00</option>
+                          <option>09:00</option>
+                          <option>10:00</option>
+                          <option>11:00</option>
+                          <option>12:00</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row pt-3">
+                    <div class="col-md-12">
+                      <button
+                        type="button"
+                        class="uploadbutton me-2"
+                        (click)="opensignaturepad()"
+                      >
+                        Signature<span class="mandetoryinput">*</span>
+                      </button>
+                      <!-- </div>
+                  <div class="col-md-4"> -->
+                      <button
+                        type="button"
+                        class="uploadbutton1"
+                        (click)="fileInput.click()"
+                      >
+                        <span
+                          >Upload Photo<span class="mandetoryinput"
+                            >*</span
+                          ></span
+                        >
+                        <input
+                          #fileInput
+                          type="file"
+                          accept="image/png, image/jpeg,image/jpg"
+                          (change)="onFileInput($event)"
+                          style="display: none"
+                        />
+                      </button>
+                      <span class="selectedImage">{{ selectedfile }}</span>
+                    </div>
+                  </div>
+                  <div class="row mb-3 justify-content-center">
+                    <div class="col-md-12 text-center">
+                      <p class="text-danger text-center" *ngIf="validationMsg">
+                        All Fields Are Mandatory*
+                      </p>
+                      <button type="save" class="btn btn-primary submitbtn">
+                        Submit
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <div
+              class="tab-pane"
+              id="visitorlist"
+              role="tabpanel"
+              [ngClass]="{ active: activeTab === 'visitorlist' }"
+            >
+              <div class="tab2">
+                <div class="row">
+                  <div class="col-md-9"></div>
+                  <div class="col-3">
+                    <!-- <input
+                      type="search"
+                     placeholder="Search By Visitor"
+                      class="form-control padding"
+                      [(ngModel)]="search.name"
+                      (input)="searchbyvisitor()"> -->
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <div class="col-md-12 grid-margin pt-4">
+                    <div
+                      class="card card-style"
+                      *ngFor="
+                        let user of listData | paginate : config;
+                        let i = index
+                      "
+                    >
+                      <div class="card-body detailss">
+                        <div class="row margin">
+                          <div class="col-md-1 col-sm-1 col-lg-1 col-xs-1">
+                            <img src="{{ user.photo }}" class="visitorimage" />
+                          </div>
+                          <div class="col-md-2 col-sm-2 col-lg-2 col-xs-2">
+                            <label>Name of the visitor</label>
+                            <p>{{ user.visitorName }}</p>
+                          </div>
+                          <div class="col-md-2 col-sm-2 col-lg-2 col-xs-2">
+                            <label>Contact Number</label>
+                            <p>{{ user.contactNumber }}</p>
+                          </div>
+                          <div class="col-md-2 col-sm-2 col-lg-2 col-xs-2">
+                            <label>Whom to meet</label>
+                            <p>{{ user.whomToMeet }}</p>
+                          </div>
+                          <div class="col-md-2 col-sm-2 col-lg-2 col-xs-1">
+                            <label>Purpose of visit</label>
+                            <p>{{ user.visitPurpose }}</p>
+                          </div>
+                          <div class="col-md-2 col-sm-2 col-lg-2 col-xs-1">
+                            <label>Meeting Time</label>
+                            <p>{{ transformMinute(user.meetingtime) }}</p>
+                          </div>
+                          <div
+                            class="col-md-1 col-sm-1 col-lg-1 col-xs-1 text-start"
+                          >
+                            <span class="d-flex justify-content-end">
+                              <button
+                                *ngIf="
+                                  user.visitorOutTime !== null ||
+                                  user.visitorOutTime === ''
+                                "
+                                class="detail-btn"
+                                (click)="toggleFold(user)"
+                              >
+                                Details
+                              </button>
+                              <button
+                                *ngIf="
+                                  user.visitorOutTime === null ||
+                                  user.visitorOutTime === ''
+                                "
+                                class="vto-btn"
+                                (click)="visitorData(user)"
+                              >
+                                Out&nbsp;Time
+                              </button>
+                              <button
+                                [disabled]="user.visitorOutTime !== null"
+                                class="editbtn ms-4"
+                                (click)="deletedata(user)"
+                              >
+                                <i
+                                  class="fa fa-trash trash"
+                                  aria-hidden="true"
+                                ></i>
+                              </button>
+                            </span>
+                          </div>
+                          <!-- <div class="col-md-1 col-sm-1 col-lg-1 col-xs-1 text-start">
+                             
+                          </div> -->
+                          <!-- <button class="viewLogDetails" type="button" (click)="viewLogDetails()">View Details</button> -->
+                        </div>
+                        <span *ngIf="user.toggled === true">
+                          <div class="row margin1">
+                            <div
+                              class="col-md-1 col-sm-1 col-lg-1 col-xs-1"
+                            ></div>
+                            <div
+                              class="col-md-2 col-sm-2 col-lg-2 col-xs-1 col-xxs-1"
+                            >
+                              <label>Personal ID Type</label>
+                              <p>{{ user.personalIdType }}</p>
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-lg-2 col-xs-1">
+                              <label>Personal ID Number</label>
+                              <p>{{ user.personalIdNumber }}</p>
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-lg-2 col-xs-1">
+                              <label>Address</label>
+                              <p>{{ user.address }}</p>
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-lg-2 col-xs-1">
+                              <label>Vehicle Number</label>
+                              <p>{{ user.vehicleNumber }}</p>
+                            </div>
+
+                            <div class="col-md-2 col-sm-2 col-lg-2 col-xs-1">
+                              <label>Site Name</label>
+                              <p>{{ user.siteName }}</p>
+                            </div>
+                          </div>
+                          <div class="row margin">
+                            <div
+                              class="col-md-1 col-sm-1 col-lg-1 col-xs-1"
+                            ></div>
+                            <div class="col-md-2 col-sm-2 col-lg-2 col-xs-1">
+                              <label>Escorter ID</label>
+                              <p>{{ user.escorterId }}</p>
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-lg-2 col-xs-2">
+                              <label>Escorter Name</label>
+                              <p>{{ user.escorterName }}</p>
+                            </div>
+
+                            <!-- <div class="col-md-2 col-sm-2 col-lg-2 col-xs-1">
+                              <label>VM ID</label>
+                              <p>{{ user.vmId }}</p>
+                            </div> -->
+                          </div>
+                        </span>
+                        <div
+                          id="{{ i }}"
+                          class="row margin-footer"
+                          *ngIf="user.toggled === true"
+                        >
+                          <!-- <pre>{{ folded }}</pre> -->
+                          <div class="col-md-3">
+                            <label>
+                              IN Date & Time: &nbsp;<span class="labeldata">{{
+                                user.visitorInTime
+                                  | date : "yyyy-MM-dd HH:mm" : "+0000"
+                              }}</span>
+                            </label>
+                          </div>
+                          <div class="col-md-3">
+                            <label
+                              >Visitor Out Time: &nbsp;<span
+                                class="labeldata"
+                                >{{
+                                  user.visitorOutTime
+                                    | date : "yyyy-MM-dd HH:mm" : "+0000"
+                                }}</span
+                              ></label
+                            >
+                          </div>
+                          <div class="col-md-3">
+                            <label
+                              >Card Deposited: &nbsp;<span class="labeldata">{{
+                                user.visitingCardDeposited | titlecase
+                              }}</span></label
+                            >
+                          </div>
+                          <div class="col-md-3">
+                            <label
+                              >Time Spent: &nbsp;<span class="labeldata">{{
+                                user.timespend
+                              }}</span></label
+                            >
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!--  -->
+                  <div class="row mt-3" *ngIf="listData.length > 0">
+                    <pagination-controls
+                      class="text-center"
+                      (pageChange)="pageChanged($event)"
+                    ></pagination-controls>
+                  </div>
+                  <div
+                    class="text-center mt-1 mb-2 nodata"
+                    *ngIf="listData.length === 0"
+                  >
+                    No Data Found
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  bsModal
+  #vot="bs-modal"
+  class="modal fade"
+  [config]="{ backdrop: 'static' }"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="mySmallModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modaldialog">
+    <div class="modal-content">
+      <div class="modal-header border-0">
+        <!-- <div class="row" style="width: 100%"> -->
+        <div class="col-md-10 col-sm-10">
+          <h6 class="headingsix1">{{ VisitorName | titlecase }}</h6>
+        </div>
+        <div class="col-md-2 text-right">
+          <button class="model-close" (click)="closemodal()">
+            <i class="fa fa-times"></i>
+          </button>
+        </div>
+        <!-- </div> -->
+      </div>
+      <div class="modal-body siteform">
+        <form
+          #visitoroutdetails="ngForm"
+          (ngSubmit)="submitDetails(visitoroutdetails)"
+        >
+          <div class="row">
+            <p style="font-weight: 500">
+              Visitor In Time:&nbsp;<span>{{
+                visitorintime | date : "dd-MM-yyyy HH:mm" : "+0000"
+              }}</span>
+            </p>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-6 col-lg-6 col-xl-6 col-sm-12 col-xs-12">
+              <label>Out Date&Time<span class="mandetoryinput">*</span></label>
+              <input
+                class="form-control"
+                placeholder="In Date & Time Number"
+                type="datetime-local"
+                name="visitortime"
+                [(ngModel)]="visitormovementout.visitortime"
+                (input)="gettime()"
+              />
+              <span *ngIf="validationMessageTime" class="text-danger">
+                Time should be greater than In-time & less than or equal to
+                currentTime
+              </span>
+            </div>
+            <div class="col-md-6 col-lg-6 col-xl-6 col-sm-12 col-xs-12">
+              <label>Meeting Time<span class="mandetoryinput">*</span></label>
+              <select
+                name="meetingtime"
+                class="form-select"
+                type="time"
+                required
+                [(ngModel)]="visitormovementout.meetingtime"
+              >
+                <option value="null" disabled selected>HH:MM</option>
+                <option>01:00</option>
+                <option>02:00</option>
+                <option>03:00</option>
+                <option>04:00</option>
+                <option>05:00</option>
+                <option>06:00</option>
+                <option>07:00</option>
+                <option>08:00</option>
+                <option>09:00</option>
+                <option>10:00</option>
+                <option>11:00</option>
+                <option>12:00</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 col-lg-6 col-xl-6 col-sm-12 col-xs-12">
+              <label
+                ><span style="color: black"
+                  >Visiting Card Deposited<span class="mandetoryinput"
+                    >*</span
+                  ></span
+                ></label
+              >
+              <div class="row">
+                <div class="col-md-4">
+                  <input
+                    class="radiobtn"
+                    type="radio"
+                    [(ngModel)]="visitormovementout.carddeposite"
+                    value="yes"
+                    name="carddeposite"
+                    required
+                  />
+                  Yes
+                </div>
+                <div class="col">
+                  <input
+                    class="radiobtn"
+                    type="radio"
+                    value="no"
+                    name="carddeposite"
+                    [(ngModel)]="visitormovementout.carddeposite"
+                    required
+                  />
+                  No
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label
+                ><span style="color: black"
+                  >Remarks<span class="mandetoryinput">*</span></span
+                ></label
+              >
+              <textarea
+                class="form-control"
+                rows="2"
+                type="text"
+                [(ngModel)]="visitormovementout.remarks"
+                name="remarks"
+                required
+              ></textarea>
+            </div>
+          </div>
+          <div class="row mb-3 mt-3">
+            <div class="col-md-12 text-center">
+              <p class="text-danger text-center" *ngIf="validationMessage">
+                All Fields Are Mandatory*
+              </p>
+              <button class="clearbtn" type="save">Submit</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  bsModal
+  #signaturemodal="bs-modal"
+  class="modal fade"
+  [config]="{ backdrop: 'static' }"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="mySmallModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header border-0">
+        <div class="col-md-10">
+          <h6 class="headingsix1">Signature</h6>
+        </div>
+        <div class="col-md-2">
+          <button class="model-close" (click)="closesignaturemodal()">
+            <i class="fa fa-times"></i>
+          </button>
+        </div>
+      </div>
+      <div class="modal-body modalbody" style="padding: 10px">
+        <div>
+          <canvas
+            #canvas
+            width="350"
+            height="300"
+            class="canvasstyles"
+          ></canvas>
+        </div>
+        <div class="signaturebtn">
+          <button type="button" class="uploadbutton" (click)="clear()">
+            Clear</button
+          >&nbsp;&nbsp;
+          <button type="button" class="uploadbutton" (click)="saveSign()">
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  bsModal
+  #deletemodal="bs-modal"
+  class="modal fade"
+  [config]="{ backdrop: 'static' }"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="mySmallModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left modalhead">
+          {{ deleteName }}
+        </h4>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure, you want to delete visitor?</p>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary deletereject"
+          (click)="hideChildModal()"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary deleteconfirm"
+          (click)="deleteperminently()"
+        >
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,527 @@
+<div class="container-fluid breadcramp">
+  <div class="row">
+    <!-- <div class="col-md-6  col-6 col-sm-6 col-xs-6  mt-4">
+        <p><i class="bi bi-shield-check shield"></i>Sites</p>
+      </div>
+      <div class="col-md-6  col-6 col-sm-6 col-xs-6 imageView">
+        <img src="../../../assets/sites.png" alt="">
+      </div> -->
+    <div class="col-md-7 col-xs-12">
+      <p>Sites</p>
+    </div>
+    <div class="col-md-4 col-xs-12">
+      <input
+        type="search"
+        placeholder="Search By Region/State/Cluster/Site"
+        class="form-control padding s-b"
+        [(ngModel)]="search.name"
+        (input)="searchbysite()"
+      />
+    </div>
+    <div class="col-md-1 col-sm-1 col-xs-1">
+      <button type="button" class="btn btn-primary add" (click)="addsites()">
+        Add
+      </button>
+    </div>
+  </div>
+</div>
+<div class="main-content">
+  <div class="row">
+    <div class="col-md-12 grid-margin stretch-card pt-2">
+      <div class="card">
+        <div class="card-body">
+          <div class="row mb-3">
+            <div class="col-md-8">
+              <!-- <p class="card-title mb-0">Sites</p> -->
+            </div>
+            <!-- <div class="col-3">
+                  <input
+                  type="search"
+                 placeholder="Search By Region/State/Cluster/Site"
+                  class="form-control padding"
+                  [(ngModel)]="search.name"
+                  (input)="searchbysite()">
+                </div>
+              <div class="col-md-1">
+                <button
+                  type="button"
+                  class="btn btn-primary add"
+                  (click)="addsites()"
+                >
+                  Add
+                </button>
+                <button class="btn add-btn" (click)="addorganization()">
+                      <i class="fa fa-plus"></i>
+                    </button>
+              </div> -->
+          </div>
+          <div class="table-responsive">
+            <table class="table table-hover" style="margin-bottom: 0">
+              <thead>
+                <th>SNo</th>
+                <th>Region</th>
+                <th>State</th>
+                <th>Cluster</th>
+                <th>Organization</th>
+                <th>Site Name</th>
+                <th>Site Address</th>
+                <th>Created By</th>
+                <th>Action</th>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="
+                    let item of sitedata | paginate : config;
+                    let i = index
+                  "
+                >
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ item.region | titlecase }}</td>
+                  <td>{{ item.state | titlecase }}</td>
+                  <td>{{ item.cluster | titlecase }}</td>
+                  <td>{{ item.orgName }}</td>
+                  <td>{{ item.siteName }}</td>
+                  <td>{{ item.siteAddress }}</td>
+                  <td>{{ item.createdBy }}</td>
+                  <td>
+                    <div class="d-flex">
+                      <button class="editbtn me-2" (click)="editdata(item)">
+                        <i class="fa fa-pencil edit"></i>
+                      </button>
+                      <button class="editbtn" (click)="deletedata(item)">
+                        <i class="fa fa-trash trash" aria-hidden="true"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="text-center mt-3" *ngIf="sitedata.length === 0">
+              No Data Found
+            </div>
+          </div>
+          <div class="row mt-3" *ngIf="sitedata.length > 0">
+            <pagination-controls
+              class="text-center"
+              (pageChange)="pageChanged($event)"
+            ></pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  bsModal
+  #sites="bs-modal"
+  class="modal fade"
+  [config]="{ backdrop: 'static' }"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="mySmallModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header border-0">
+        <div class="col-md-10">
+          <h6 class="headingsix1">Add Site</h6>
+        </div>
+        <div class="col-md-2">
+          <button class="model-close" (click)="closemodal()">
+            <i class="fa fa-times"></i>
+          </button>
+        </div>
+      </div>
+      <form #siteform="ngForm" (ngSubmit)="createSite(siteform)">
+        <div class="modal-body siteform">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="exampleInputEmail1"
+                  >Region<span class="mandetoryinput">*</span></label
+                >
+                <select
+                  class="form-select"
+                  aria-label="Default select example"
+                  name="region"
+                  [(ngModel)]="site.region"
+                  (change)="getselectedRegion()"
+                >
+                  <option selected disabled value="null">Select Region</option>
+                  <option [ngValue]="item" *ngFor="let item of Regions">
+                    {{ item | titlecase }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="exampleInputEmail1"
+                  >State<span class="mandetoryinput">*</span></label
+                >
+                <select
+                  class="form-select"
+                  aria-label="Default select example"
+                  name="state"
+                  [(ngModel)]="site.state"
+                >
+                  <option selected disabled value="null">Select State</option>
+                  <option [ngValue]="item" *ngFor="let item of States">
+                    {{ item | titlecase }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="exampleInputEmail1"
+                  >Cluster<span class="mandetoryinput">*</span></label
+                >
+                <select
+                  class="form-select"
+                  aria-label="Default select example"
+                  name="cluster"
+                  [(ngModel)]="site.cluster"
+                >
+                  <option selected disabled value="null">Select Cluster</option>
+                  <option [ngValue]="item" *ngFor="let item of Clusters">
+                    {{ item | titlecase }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="exampleInputEmail1"
+                  >Organization<span class="mandetoryinput">*</span></label
+                >
+                <select
+                  class="form-select"
+                  aria-label="Default select example"
+                  name="organization"
+                  [(ngModel)]="site.organization"
+                >
+                  <option selected disabled [value]="null">
+                    Select Organization
+                  </option>
+                  <option
+                    [ngValue]="item.orgId"
+                    *ngFor="let item of organizationlist"
+                  >
+                    {{ item.orgName }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="exampleInputEmail1"
+                  >Site<span class="mandetoryinput">*</span></label
+                >
+                <input
+                  class="form-control"
+                  autocomplete="off"
+                  placeholder="Site Name"
+                  type="text"
+                  name="name"
+                  [(ngModel)]="site.name"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="exampleInputEmail1"
+                  >Site Address<span class="mandetoryinput">*</span></label
+                >
+                <input
+                  class="form-control"
+                  autocomplete="off"
+                  placeholder="Site Address"
+                  type="text"
+                  name="address"
+                  [(ngModel)]="site.address"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="row mb-3 mt-2">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="exampleInputEmail1"
+                  >Latitude<span class="mandetoryinput">*</span></label
+                >
+                <input
+                  class="form-control"
+                  autocomplete="off"
+                  placeholder="Latitude"
+                  type="number"
+                  name="latitude"
+                  [(ngModel)]="site.latitude"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="exampleInputEmail1"
+                  >Longitude<span class="mandetoryinput">*</span></label
+                >
+                <input
+                  class="form-control"
+                  autocomplete="off"
+                  placeholder="Longitude"
+                  type="number"
+                  name="longitude"
+                  [(ngModel)]="site.longitude"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer border-0">
+          <p class="text-danger" *ngIf="validationMsg">
+            All Fields Are Mandatory*
+          </p>
+          <button type="submit" class="btn btn-secondary btnsecondary">
+            Add
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div
+  bsModal
+  #siteeditmodal="bs-modal"
+  class="modal fade"
+  [config]="{ backdrop: 'static' }"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="mySmallModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header border-0">
+        <div class="col-md-10">
+          <h6 class="headingsix1">{{ siteName }}</h6>
+        </div>
+        <div class="col-md-2">
+          <button class="model-close" (click)="closeeditmodal()">
+            <i class="fa fa-times"></i>
+          </button>
+        </div>
+      </div>
+      <form #siteeditform="ngForm" (ngSubmit)="updatesite(siteeditform)">
+        <div class="modal-body siteform">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="exampleInputEmail1"
+                  >Region<span class="mandetoryinput">*</span></label
+                >
+                <select
+                  class="form-select"
+                  aria-label="Default select example"
+                  name="region"
+                  [(ngModel)]="editsite.region"
+                >
+                  <option selected disabled [value]="null">
+                    Select Region
+                  </option>
+                  <option [ngValue]="item" *ngFor="let item of Regions">
+                    {{ item | titlecase }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="exampleInputEmail1"
+                  >State<span class="mandetoryinput">*</span></label
+                >
+                <select
+                  class="form-select"
+                  aria-label="Default select example"
+                  name="state"
+                  [(ngModel)]="editsite.state"
+                >
+                  <option selected disabled value="null">Select State</option>
+                  <option [ngValue]="item" *ngFor="let item of States">
+                    {{ item | titlecase }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="exampleInputEmail1"
+                  >Cluster<span class="mandetoryinput">*</span></label
+                >
+                <select
+                  class="form-select"
+                  aria-label="Default select example"
+                  name="cluster"
+                  [(ngModel)]="editsite.cluster"
+                >
+                  <option selected disabled value="null">Select Cluster</option>
+                  <option [ngValue]="item" *ngFor="let item of Clusters">
+                    {{ item | titlecase }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="exampleInputEmail1"
+                  >Organization<span class="mandetoryinput">*</span></label
+                >
+                <!-- <select
+                    class="form-select"
+                    aria-label="Default select example" name="organization"
+                    [(ngModel)]="editsite.organization"
+                  >
+                    <option selected disabled [value]="null">
+                      Select Organization
+                    </option>
+                    <option
+                      [ngValue]="item.orgId"
+                      *ngFor="let item of organizationlist"
+                    >
+                      {{ item.orgName }}
+                    </option>
+                  </select> -->
+                <input
+                  class="form-control"
+                  autocomplete="off"
+                  type="text"
+                  name="organization"
+                  [(ngModel)]="editsite.organization"
+                  readonly
+                />
+              </div>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <!-- <div class="col-md-3">
+                <label for="">Name</label>
+              </div> -->
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="exampleInputEmail1"
+                  >Site<span class="mandetoryinput">*</span></label
+                >
+                <input
+                  class="form-control"
+                  autocomplete="off"
+                  placeholder="Site Name"
+                  type="text"
+                  name="name"
+                  [(ngModel)]="editsite.name"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="exampleInputEmail1"
+                  >Site Address<span class="mandetoryinput">*</span></label
+                >
+                <input
+                  class="form-control"
+                  autocomplete="off"
+                  placeholder="Site Address"
+                  type="text"
+                  name="address"
+                  [(ngModel)]="editsite.address"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="row mb-3 mt-2">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="exampleInputEmail1"
+                  >Latitude<span class="mandetoryinput">*</span></label
+                >
+                <input
+                  class="form-control"
+                  autocomplete="off"
+                  placeholder="Latitude"
+                  type="number"
+                  name="latitude"
+                  [(ngModel)]="editsite.latitude"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="exampleInputEmail1"
+                  >Longitude<span class="mandetoryinput">*</span></label
+                >
+                <input
+                  class="form-control"
+                  autocomplete="off"
+                  placeholder="Longitude"
+                  type="number"
+                  name="longitude"
+                  [(ngModel)]="editsite.longitude"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer border-0">
+          <p class="text-danger" *ngIf="validationMsgedit">
+            All Fields Are Mandatory*
+          </p>
+          <button type="submit" class="btn btn-secondary btnsecondary">
+            Update
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div
+  bsModal
+  #deletemodal="bs-modal"
+  class="modal fade"
+  [config]="{ backdrop: 'static' }"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="mySmallModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left headingsix1">{{ siteNameDelete }}</h4>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure, you want to delete Site?</p>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary deletereject"
+          (click)="hideChildModal()"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary deleteconfirm"
+          (click)="deleteperminently()"
+        >
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

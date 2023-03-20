@@ -1,0 +1,167 @@
+<div class="container-fluid breadcramp">
+  <div class="row">
+    <div class="col-md-2 col-sm-12 col-xs-6 col-s-3">
+      <p>Access Control</p>
+    </div>
+    <div class="col-md-3 col-sm-6 col-xs-6 col-s-4 ">
+      <select class="form-select" aria-label="Default select example" [(ngModel)]="modal.organization" (change)="getselectedorgdata()">
+        <option selected disabled [value]="null">Select Organization</option>
+        <option [ngValue]="item.orgId" *ngFor="let item of organizationlist">{{ item.orgName }}</option>
+      </select>
+    </div>
+    <div class="col-md-3 col-sm-6 col-xs-6 col-s-4">
+      <select class="form-select" aria-label="Default select example" [(ngModel)]="modal.company" (change)="getselectedcompany()">
+        <option selected disabled [value]="null">Select Company</option>
+        <option [ngValue]="item._id" *ngFor="let item of companyList">{{ item.companyName }}</option>
+      </select>
+    </div>
+    <div class="col-md-3 col-sm-6 col-xs-6 col-s-4">
+      <select class="form-select" aria-label="Default select example" [(ngModel)]="modal.user" (change)="getselecteduser()">
+        <option selected disabled [value]="null">Select User</option>
+        <option valu="anveshitha.s">anveshitha.s</option>
+      </select>
+    </div>
+    <div class="col-md-1 col-sm-6 col-xs-6">
+      <button type="button" class="btn btn-primary add shadow-none" (click)="saveData()">Save</button>
+    </div>
+  </div>
+</div>
+<div class="main-content">
+<div class="row">
+  <div class="col-md-12 grid-margin stretch-card pt-2">
+    <div class="card c-m">
+      <div class="card-body">
+        <div class="row mb-3">
+          <div class="col-md-2 mt-1">
+            <!-- <h4 class="card-title mb-0 acl">Access Control List</h4> -->
+          </div>
+          <div class="col-md-3">
+            <!-- <select
+              class="form-select"
+              aria-label="Default select example"
+              [(ngModel)]="modal.organization"
+              (change)="getselectedorgdata()"
+            >
+              <option selected disabled [value]="null">
+                Select Organization
+              </option>
+              <option
+                [ngValue]="item.orgId"
+                *ngFor="let item of organizationlist"
+              >
+                {{ item.orgName }}
+              </option>
+            </select> -->
+          </div>
+          <div class="col-md-3">
+            <!-- <select
+              class="form-select"
+              aria-label="Default select example"
+              [(ngModel)]="modal.company"
+              (change)="getselectedcompany()"
+            >
+              <option selected disabled [value]="null">Select Company</option>
+              <option [ngValue]="item._id" *ngFor="let item of companyList">
+                {{ item.companyName }}
+              </option>
+            </select> -->
+          </div>
+          <div class="col-md-3">
+            <!-- <select
+              class="form-select"
+              aria-label="Default select example"
+              [(ngModel)]="modal.user"
+              (change)="getselecteduser()"
+            >
+              <option selected disabled [value]="null">Select User</option>
+              <option valu="anveshitha.s">anveshitha.s</option>
+            </select> -->
+          </div>
+          <div class="col-md-1">
+            <!-- <button
+              type="button"
+              class="btn btn-primary add shadow-none"
+              (click)="saveData()"
+            >
+              Save
+            </button> -->
+          </div>
+        </div>
+        <div class="table-responsive mt-3">
+          <table class="table table-hover" style="margin-bottom: 0">
+            <thead>
+              <tr>
+                <th>SNo</th>
+                <th>Screen Name</th>
+                <th>Read Permission</th>
+                <th>Write Permission</th>
+                <th>Delete Permission</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of UserPermission; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>
+                  <div class="form-check form-switch">
+                    <input
+                      class="form-check-input checkbox1"
+                      [(ngModel)]="user.checked"
+                      value="{{ user.value }}"
+                      type="checkbox"
+                      name="user"
+                      (change)="updateChecked(user, $event)"
+                    />
+                    <label class="form-check-label" for="mySwitch">{{
+                      user.name
+                    }}</label>
+                  </div>
+                </td>
+                <td>
+                  <input
+                    class="checkedstate"
+                    [disabled]="!user.checked"
+                    type="checkbox"
+                    id="read"
+                    name="user.read"
+                    [(ngModel)]="user.read"
+                    value="read"
+                    (change)="getselectedread()"
+                  />
+                </td>
+                <td>
+                  <input
+                    class="checkedstate"
+                    [disabled]="!user.checked"
+                    type="checkbox"
+                    id="write"
+                    name="user.write"
+                    [(ngModel)]="user.write"
+                    value="write"
+                    (change)="getselectedwrite()"
+                  />
+                </td>
+                <td>
+                  <input
+                    class="checkedstate"
+                    [disabled]="!user.checked"
+                    type="checkbox"
+                    id="delete"
+                    name="user.delete"
+                    [(ngModel)]="user.delete"
+                    value="delete"
+                    (change)="getselecteddelete()"
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+
+

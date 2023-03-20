@@ -1,0 +1,307 @@
+<div class="container-fluid breadcramp">
+    <div class="row">
+      <!-- <div class="col-md-6  col-6 col-sm-6 col-xs-6  mt-4">
+        <p><i class="bi bi-shield-check shield"></i>Locations</p>
+      </div>
+      <div class="col-md-6  col-6 col-sm-6 col-xs-6 imageView">
+        <img src="../../../assets/locations.png" alt="">
+      </div> -->
+      <div class="col-md-8 col-xs-12">
+        <p>Locations</p>
+      </div>
+      <div class="col-md-3 col-xs-12">
+        <input type="search" placeholder="Search By Location" class="form-control padding s-b" [(ngModel)]="search.name" (input)="searchbylocation()">
+      </div>
+      <div class="col-md-1 col-sm-1 col-xs-1">
+        <button type="button" class="btn btn-primary add" (click)="addlocation()">Add</button>
+      </div>
+    </div>
+  </div>
+  <div class="main-content">
+  <div class="row">
+    <div class="col-md-12 grid-margin stretch-card pt-2">
+        <div class="card">
+          <div class="card-body">
+            <div class="row mb-3">
+              <div class="col-md-8">
+                <!-- <p class="card-title mb-0">Locations</p> -->
+              </div>
+              <!-- <div class="col-3">
+                <input
+                type="search"
+               placeholder="Search By Location"
+                class="form-control padding"
+                [(ngModel)]="search.name"
+                (input)="searchbylocation()">
+              </div>
+              <div class="col-md-1">
+                <button
+                  type="button"
+                  class="btn btn-primary add"
+                  (click)="addlocation()"
+                >
+                  Add
+                </button>
+                <button class="btn add-btn" (click)="addorganization()">
+                      <i class="fa fa-plus"></i>
+                    </button>
+              </div> -->
+            </div>
+            <div class="table-responsive">
+              <table class="table table-hover" style="margin-bottom: 0">
+                <thead>
+                  <th>SNo</th>
+                  <th>Organization</th>
+                  <th>Site Name</th>
+                  <th>Location Name</th>
+                  <th>Action</th>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of locationdata | paginate:config; let i= index;">
+                    <td>{{i+1}}</td>
+                    <td>{{item.orgName}}</td>
+                    <td>{{item.siteName}}</td>
+                    <td>{{item.locationName}}</td>
+                    <td>
+                      <div class="d-flex">
+                        <button class="editbtn me-2" (click)="editdata(item)">
+                          <i class="fa fa-pencil edit" ></i></button>
+                          <button class="editbtn me-2" (click)="deletedata(item)">
+                          <i class="fa fa-trash trash" aria-hidden="true"></i></button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="text-center mt-3" *ngIf="locationdata.length===0">No Data Found</div>
+            </div>
+            <div class="row mt-3" *ngIf="locationdata.length>0">
+              <pagination-controls class="text-center"
+              (pageChange)="pageChanged($event)"
+            ></pagination-controls>
+            </div>
+          </div>
+        </div>
+     
+      </div>
+    </div>
+    </div>
+    <div
+    bsModal
+    #locationmodal="bs-modal"
+    class="modal fade"  [config]="{ backdrop: 'static' }"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="mySmallModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header border-0">
+            <div class="col-md-11">
+              <h6 class="headingsix1">Add Location</h6>
+            </div>
+            <div class="col-md-1">
+              <button class="model-close" (click)="closemodal()">
+                <i class="fa fa-times"></i>
+              </button>
+            </div>
+        </div>
+        <form #locationform="ngForm" (ngSubmit)="createLocation(locationform)">
+        <div class="modal-body locationform">
+            <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Organization<span class="mandetoryinput">*</span></label>
+                    <select
+                    class="form-select"
+                    aria-label="Default select example" name="organization"
+                    [(ngModel)]="locations.organization" (change)="getSelectedOrg()"
+                  >
+                    <option selected disabled [value]="null">
+                      Select Organization
+                    </option>
+                    <option
+                      [ngValue]="item.orgId"
+                      *ngFor="let item of organizationlist"
+                    >
+                      {{ item.orgName }}
+                    </option>
+                  </select>
+                  </div>
+                </div>
+              </div>
+          <div class="row mt-2">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="exampleInputEmail1">Site<span class="mandetoryinput">*</span></label>
+                <select
+                class="form-select"
+                aria-label="Default select example" name="site"
+                [(ngModel)]="locations.site"
+              >
+                <option selected disabled [value]="null">
+                  Select Site
+                </option>
+                <option
+                  [ngValue]="item.siteId"
+                  *ngFor="let item of sitedata"
+                >
+                  {{ item.siteName }}
+                </option>
+              </select>
+              </div>
+              <!-- <input class="form-control" placeholder="Site Name" type="text" name="name" [(ngModel)]="site.name"> -->
+            </div>
+          </div>
+          <div class="row mb-3 mt-2">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="exampleInputEmail1">Location Name<span class="mandetoryinput">*</span></label>
+                <input class="form-control" autocomplete="off" placeholder="Location Name" type="text" name="name" [(ngModel)]="locations.name">             
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer border-0">
+          <p class="text-danger" *ngIf="validationMsg">All Fields Are Mandatory*</p>
+          <button
+            type="submit"
+            class="btn btn-secondary btnsecondary"
+          >
+            Add
+          </button>
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
+  <div
+      bsModal
+      #locationeditmodal="bs-modal"
+      class="modal fade"  [config]="{ backdrop: 'static' }"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="mySmallModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header border-0">
+              <div class="col-md-10">
+                <h6 class="headingsix1">{{locationName}}</h6>
+              </div>
+              <div class="col-md-2">
+                <button class="model-close" (click)="closeeditmodal()">
+                  <i class="fa fa-times"></i>
+                </button>
+              </div>
+          </div>
+          <form #locationeditform="ngForm" (ngSubmit)="updatelocation(locationeditform)">
+          <div class="modal-body locationform">
+            <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Organization<span class="mandetoryinput">*</span></label>
+                    <!-- <select
+                    class="form-select"
+                    aria-label="Default select example" name="organization"
+                    [(ngModel)]="editlocations.organization" (change)="getSelectedOrg()"
+                  >
+                    <option selected disabled [value]="null">
+                      Select Organization
+                    </option>
+                    <option
+                      [ngValue]="item.orgId"
+                      *ngFor="let item of organizationlist"
+                    >
+                      {{ item.orgName }}
+                    </option>
+                  </select> -->
+                <input class="form-control" autocomplete="off" type="text" name="organization"
+                [(ngModel)]="editlocations.organization" readonly>             
+                  </div>
+                </div>
+              </div>
+          <div class="row mt-2">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="exampleInputEmail1">Site<span class="mandetoryinput">*</span></label>
+                <select
+                class="form-select"
+                aria-label="Default select example" name="site"
+                [(ngModel)]="editlocations.site"
+              >
+                <option selected disabled [value]="null">
+                  Select Site
+                </option>
+                <option
+                  [ngValue]="item.siteId"
+                  *ngFor="let item of sitedata"
+                >
+                  {{ item.siteName }}
+                </option>
+              </select>
+              </div>
+              <!-- <input class="form-control" placeholder="Site Name" type="text" name="name" [(ngModel)]="site.name"> -->
+            </div>
+          </div>
+          <div class="row mb-3 mt-2">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="exampleInputEmail1">Location Name<span class="mandetoryinput">*</span></label>
+                <input class="form-control" autocomplete="off" placeholder="Location Name" type="text" name="name" [(ngModel)]="editlocations.name">             
+              </div>
+            </div>
+          </div>
+          </div>
+          <div class="modal-footer border-0">
+            <p class="text-danger" *ngIf="validationeditMsg">All Fields Are Mandatory*</p>
+            <button
+              type="submit"
+              class="btn btn-secondary btnsecondary"
+            >
+              Update
+            </button>
+          </div>
+        </form>
+        </div>
+      </div>
+    </div>
+  <div
+  bsModal
+  #deletemodal="bs-modal"
+  class="modal fade"  [config]="{ backdrop: 'static' }"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="mySmallModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left headingsix1">{{locationNameDelete}}</h4>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure, you want to delete Location?</p>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary deletereject"
+          (click)="hideChildModal()"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary deleteconfirm"
+          (click)="deleteperminently()"
+        >
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,1058 @@
+<div class="container-fluid breadcramp">
+  <div class="row">
+    <!-- <div class="col-md-6  col-6 col-sm-6 col-xs-6  mt-4">
+      <p><i class="bi bi-shield-check shield"></i>Deployment Of Security</p>
+    </div>
+    <div class="col-md-6  col-6 col-sm-6 col-xs-6 imageView">
+      <img src="../../../assets/security-deployment.png" alt="">
+    </div> -->
+    <div class="col-md-12 col-s-3 col-lg-12">
+      <div class="nav nav-pills navbars" id="pills-tab" role="tablist">
+        <div class="nav-item tabs M-view" role="presentation">
+          <button
+            class="nav-link hover-underline-animation Mobile-V1"
+            data-bs-toggle="pill"
+            data-bs-target="#securitydeploy"
+            type="button"
+            role="tab"
+            [ngClass]="{ active: activeTab === 'securitydeploy' }"
+            (click)="securityDeploy('securitydeploy')"
+          >
+            Deploy Security Officers
+          </button>
+          <button
+            class="nav-link hover-underline-animation Mobile-V"
+            data-bs-toggle="pill"
+            data-bs-target="#securitydeploy"
+            type="button"
+            role="tab"
+            [ngClass]="{ active: activeTab === 'securitydeploy' }"
+            (click)="securityDeploy('securitydeploy')"
+          >
+            Deploy S.O
+          </button>
+        </div>
+        <div class="nav-item tabs M-view" role="presentation">
+          <button
+            class="nav-link active hover-underline-animation"
+            data-bs-toggle="pill"
+            data-bs-target="#deployedlist"
+            type="button"
+            role="tab"
+            [ngClass]="{ active: activeTab === 'deployedlist' }"
+            (click)="deployedList('deployedlist')"
+          >
+            Deployed List
+          </button>
+        </div>
+        <div class="nav-item tabs M-view" role="presentation">
+          <button
+            class="nav-link hover-underline-animation"
+            data-bs-toggle="pill"
+            data-bs-target="#deploysup"
+            type="button"
+            role="tab"
+            [ngClass]="{ active: activeTab === 'deploysup' }"
+            (click)="deploysupervisors('deploysup')"
+          >
+            Deploy Sup/Guards
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2"></div>
+    <div class="col-md-3 col-s-4 search">
+      <input
+        *ngIf="activeTab === 'deployedlist'"
+        type="search"
+        placeholder="Search By SO/Site/Location"
+        class="form-control padding"
+        [(ngModel)]="search.name"
+        (input)="searchbyname()"
+      />
+      <input
+        *ngIf="activeTab === 'deploysup'"
+        type="search"
+        placeholder="Search By Site/Location"
+        class="form-control padding"
+        [(ngModel)]="searchSO.name"
+        (input)="searchbysite()"
+      />
+    </div>
+  </div>
+</div>
+<div class="main-content m-6">
+  <div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+      <!-- *ngIf="userdetails.data.app_details.roles[0]==='superAdmin'" -->
+      <div class="card">
+        <div class="card-body">
+          <!-- <ul class="nav nav-pills navbars" id="pills-tab" role="tablist">
+              <li class="nav-item tabs" role="presentation">
+                <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#securitydeploy" type="button" role="tab" [ngClass]="{ 'active':activeTab==='securitydeploy'}"
+                (click)="securityDeploy('securitydeploy')">Deploy Security Officers</button>
+              </li>
+                <li class="nav-item tabs" role="presentation">
+                  <button class="nav-link" data-bs-toggle="pill" data-bs-target="#deployedlist" type="button" role="tab" [ngClass]="{ 'active':activeTab==='deployedlist'}"
+                  (click)="deployedList('deployedlist')">Deployed List</button>
+                </li>
+                 <li class="nav-item tabs" role="presentation">
+                <button class="nav-link" data-bs-toggle="pill" data-bs-target="#deploysup" type="button" role="tab" [ngClass]="{ 'active':activeTab==='deploysup'}"
+                (click)="deploysupervisors('deploysup')">Deploy Sup/Guards</button>
+              </li>
+              <li class="nav-item" role="presentation">
+                  <button class="nav-link" data-bs-toggle="pill" data-bs-target="#Stores Outward" type="button" role="tab" [ngClass]="{ 'active':activeTab==='Stores Outward'}"
+                  (click)="SO('Stores Outward')"></button>
+                </li> 
+            </ul> -->
+          <div class="tab-content" id="pills-tabContent">
+            <div
+              class="tab-pane"
+              id="securitydeploy"
+              role="tabpanel"
+              [ngClass]="{ active: activeTab === 'securitydeploy' }"
+            >
+              <div class="card vehiclecard">
+                <div class="card-body cardbody">
+                  <form
+                    #securityform="ngForm"
+                    (ngSubmit)="saveData(securityform)"
+                  >
+                    <div class="row">
+                      <div class="col-md-6 col-xs-6 col-6">
+                        <div class="form-group">
+                          <label
+                            >Organization<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <select
+                            *ngIf="btn === 'Submit'"
+                            class="form-select"
+                            aria-label="Default select example"
+                            name="organization"
+                            [(ngModel)]="security.organization"
+                            (change)="getSelectedorg()"
+                          >
+                            <option selected disabled [value]="null">
+                              Select Organization
+                            </option>
+                            <option
+                              [ngValue]="item.orgId"
+                              *ngFor="let item of organizationlist"
+                            >
+                              {{ item.orgName }}
+                            </option>
+                          </select>
+                          <input
+                            *ngIf="btn === 'Update'"
+                            class="form-control"
+                            type="text"
+                            name="organization"
+                            [(ngModel)]="security.organization"
+                            readonly
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-6 col-xs-6 col-6">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Site<span class="mandetoryinput">*</span></label
+                          >
+                          <select
+                            *ngIf="btn === 'Submit'"
+                            class="form-select"
+                            name="site"
+                            [(ngModel)]="security.site"
+                            (change)="getLocationFrSite()"
+                          >
+                            <option selected disabled [value]="null">
+                              Select Site
+                            </option>
+                            <option
+                              [ngValue]="item.siteId"
+                              *ngFor="let item of sitedata"
+                            >
+                              {{ item.siteName }}
+                            </option>
+                          </select>
+                          <input
+                            *ngIf="btn === 'Update'"
+                            class="form-control"
+                            type="text"
+                            name="site"
+                            [(ngModel)]="security.site"
+                            readonly
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row mt-2">
+                      <div class="col-md-6 col-xs-6 col-6">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Location<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <select
+                            *ngIf="btn === 'Submit'"
+                            class="form-select"
+                            name="location"
+                            [(ngModel)]="security.location"
+                          >
+                            <option selected disabled [value]="null">
+                              Select Location
+                            </option>
+                            <option
+                              [ngValue]="item.locationId"
+                              *ngFor="let item of LocationList"
+                            >
+                              {{ item.locationName }}
+                            </option>
+                          </select>
+                          <!-- <ng-multiselect-dropdown
+                            [placeholder]="'Select Locations'"
+                            [settings]="dropdownSettings"
+                            name="location"
+                            [(ngModel)]="security.location"
+                            [data]="dropdownList"
+                          >
+                          </ng-multiselect-dropdown> -->
+                          <input
+                            *ngIf="btn === 'Update'"
+                            class="form-control"
+                            type="text"
+                            name="location"
+                            [(ngModel)]="security.location"
+                            readonly
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-6 col-xs-6 col-6">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Security Officer<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <div *ngIf="btn === 'Submit'" class="autocomplete">
+                            <input
+                              type="search"
+                              placeholder="Search SO"
+                              autocomplete="off"
+                              class="form-control"
+                              (input)="onSeachDropdownValue($event)"
+                              name="so"
+                              [(ngModel)]="security.so"
+                            />
+                            <!-- <div class="dropdown-selector " > -->
+
+                            <div
+                              *ngIf="selectedValue"
+                              class="autocompleteinput"
+                            >
+                              <div
+                                class="autocomplete-options"
+                                *ngFor="let option of SOList"
+                                (click)="onSelectDropdownValue(option)"
+                              >
+                                <span>{{ option.username | titlecase }}</span>
+                              </div>
+                              <div
+                                class="autocomplete-options"
+                                *ngIf="SOList.length === 0"
+                              >
+                                No Users Found
+                              </div>
+                            </div>
+                            <!-- </div> -->
+                          </div>
+                          <!-- <select *ngIf="btn==='Submit'"
+                                  class="form-select"
+                                  aria-label="Default select example" name="so"
+                                  [(ngModel)]="security.so"
+                                >
+                                  <option selected disabled [value]="null">
+                                    Select Security Officer
+                                  </option>
+                                  <option
+                                    [ngValue]="item.employee_id"
+                                    *ngFor="let item of SOList"
+                                  >
+                                    {{ item.username }}
+                                  </option>
+                                </select> -->
+                          <input
+                            *ngIf="btn === 'Update'"
+                            class="form-control"
+                            type="text"
+                            name="so"
+                            [(ngModel)]="security.so"
+                            readonly
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row mt-2">
+                      <div class="col-md-6 col-6">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Shift<span class="mandetoryinput">*</span></label
+                          >
+                          <select
+                            *ngIf="btn === 'Submit'"
+                            class="form-select"
+                            name="shift"
+                            [(ngModel)]="security.shift"
+                          >
+                            <option selected disabled [value]="null">
+                              Select Shift
+                            </option>
+                            <!-- <option
+                                  [ngValue]="item._id"
+                                  *ngFor="let item of organizationlist"
+                                >
+                                  {{ item.name }}
+                                </option> -->
+                            <option value="day">Day</option>
+                            <option value="night">Night</option>
+                            <option value="general">General</option>
+                          </select>
+                          <input
+                            *ngIf="btn === 'Update'"
+                            class="form-control"
+                            type="text"
+                            name="shift"
+                            [(ngModel)]="security.shift"
+                            readonly
+                          />
+                        </div>
+                        <!-- <select
+                                  class="form-select"
+                                  [(ngModel)]="security.supervisors"
+                                >
+                                  <option selected disabled [value]="null">
+                                    Required Supervisors
+                                  </option>
+                                  <option>one</option>
+                                  <option>one</option>
+                                  <option>one</option>
+                                </select> -->
+                      </div>
+                      <div class="col-md-6 col-6">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Supervisors<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            class="form-control"
+                            autocomplete="off"
+                            placeholder="Required Supervisors"
+                            min="0"
+                            type="number"
+                            name="supervisors"
+                            [(ngModel)]="security.supervisors"
+                            (keypress)="validateNumber($event)"
+                          />
+                        </div>
+                        <!-- <select
+                                    class="form-select"
+                                    [(ngModel)]="security.guards"
+                                  >
+                                    <option selected disabled [value]="null">
+                                     Required Guards
+                                    </option>
+                                    <option>one</option>
+                                    <option>one</option>
+                                    <option>one</option>
+                                  </select> -->
+                      </div>
+                      <div class="col-md-6 mt-2 col-6">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Guards<span class="mandetoryinput">*</span></label
+                          >
+                          <input
+                            class="form-control"
+                            autocomplete="off"
+                            placeholder="Required Guards"
+                            type="number"
+                            min="0"
+                            name="guards"
+                            [(ngModel)]="security.guards"
+                            (keypress)="validateNumber($event)"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row mt-2 text-center">
+                      <div class="col-md-md-12">
+                        <p class="text-danger" *ngIf="validationMsg">
+                          All Fields Are Mandatory*
+                        </p>
+                        <button
+                          type="submit"
+                          class="btn btn-primary submit button_width"
+                        >
+                          {{ btn }}
+                        </button>
+                        <!-- <button class="btn add-btn" (click)="addorganization()">
+                                        <i class="fa fa-plus"></i>
+                                      </button> -->
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div
+              class="tab-pane"
+              id="deployedlist"
+              role="tabpanel"
+              [ngClass]="{ active: activeTab === 'deployedlist' }"
+            >
+              <div class="card vehiclecard">
+                <div class="card-body cardbody">
+                  <div class="row">
+                    <div class="col-md-9"></div>
+                    <div class="col-md-3">
+                      <!-- <input
+                          type="search"
+                         placeholder="Search By SO/Site/Location"
+                          class="form-control padding"
+                          [(ngModel)]="search.name"
+                          (input)="searchbyname()"
+                  /> -->
+                    </div>
+                  </div>
+                  <div class="row mt-4">
+                    <div class="table-responsive text-center">
+                      <table class="table table-hover" style="margin-bottom: 0">
+                        <thead>
+                          <th>SNo</th>
+                          <th>Date&Time</th>
+                          <th>Security Officer Name</th>
+                          <th>Site Name</th>
+                          <th>Location Name</th>
+                          <th>Shift</th>
+                          <th>Required Supervisors</th>
+                          <th>Required Guards</th>
+                          <th>Created By</th>
+                          <th>Created Date</th>
+                          <th>Action</th>
+                        </thead>
+                        <tbody>
+                          <tr
+                            *ngFor="
+                              let item of soData
+                                | paginate
+                                  : {
+                                      id: 'pagination1',
+                                      itemsPerPage: pageSizeSO,
+                                      currentPage: offsetSO,
+                                      totalItems: totalSOitems
+                                    };
+                              let i = index
+                            "
+                          >
+                            <td>{{ i + 1 }}</td>
+                            <td>
+                              {{
+                                item.lastUpdatedOn
+                                  | date : "dd-MM-yyyy HH:mm" : "+0000"
+                              }}
+                            </td>
+                            <td>{{ item.securityOfficerName }}</td>
+                            <td>{{ item.siteName }}</td>
+                            <td>{{ item.locations.locationName }}</td>
+                            <td>{{ item.shift }}</td>
+                            <td>
+                              {{ item.locations.requiredSupervisorsCount }}
+                            </td>
+                            <td>{{ item.locations.requiredGaurdsCount }}</td>
+                            <td>{{ item.createdBy }}</td>
+                            <td>
+                              {{
+                                item.createdOn
+                                  | date : "yyyy-MM-dd HH:mm" : "+0000"
+                              }}
+                            </td>
+                            <td>
+                              <div class="d-flex">
+                                <button
+                                  class="editbtn me-2"
+                                  (click)="editdata(item)"
+                                >
+                                  <!-- ngbTooltip="Edit Data" placement="bottom" -->
+                                  <i class="fa fa-pencil edit"></i>
+                                </button>
+                                <button
+                                  class="editbtn"
+                                  (click)="deletedata(item)"
+                                >
+                                  <i
+                                    class="fa fa-trash trash"
+                                    aria-hidden="true"
+                                  ></i>
+                                </button>
+                                <!-- <button class="viewLogDetails" type="button" (click)="viewLogDetails()">View Details</button> -->
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="row mt-3" *ngIf="soData.length > 0">
+                      <pagination-controls
+                        class="text-center"
+                        id="pagination1"
+                        (pageChange)="pageChangedSO($event)"
+                      ></pagination-controls>
+                      <!-- <div>
+                            <ngb-pagination
+                              class="right-side mt-3"
+                              [collectionSize]="collectionSize"
+                              [(page)]="page"
+                              [pageSize]="pageSize"
+                              (pageChange)="getPremiumData($event)"
+                            >
+                              <ng-template ngbPaginationPages let-page let-pages="pages">
+                                <li class="ngb-custom-pages-item" *ngIf="pages.length > 0">
+                                  <div class="mb-3 d-flex flex-nowrap px-2">
+                                    <label
+                                      id="paginationInputLabel"
+                                      for="paginationInput"
+                                      class="col-form-label me-2 ms-1"
+                                      >Page</label
+                                    >
+                                    <input
+                                      #i
+                                      type="text"
+                                      inputmode="numeric"
+                                      pattern="[0-9]*"
+                                      class="form-control custom-pages-input"
+                                      id="paginationInput"
+                                      [value]="page"
+                                      (keyup.enter)="selectPage(i.value)"
+                                      (blur)="selectPage(i.value)"
+                                      (input)="formatInput($any($event).target)"
+                                      aria-labelledby="paginationInputLabel paginationDescription"
+                                      style="width: 2.5rem"
+                                    />
+                                    <span
+                                      id="paginationDescription"
+                                      class="col-form-label text-nowrap px-2"
+                                    >
+                                      of {{ pages.length }}</span
+                                    >
+                                  </div>
+                                </li>
+                              </ng-template>
+                            </ngb-pagination>
+                          </div> -->
+                    </div>
+                    <div
+                      class="text-center mt-3 mb-2 nodata"
+                      *ngIf="soData.length === 0"
+                    >
+                      No Data Found
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="tab-pane"
+              id="deploysup"
+              role="tabpanel"
+              [ngClass]="{ active: activeTab === 'deploysup' }"
+            >
+              <div class="card vehiclecard">
+                <div class="card-body cardbody">
+                  <div class="row">
+                    <div class="col-md-9"></div>
+                    <div class="col-3">
+                      <!-- <input
+                          type="search"
+                         placeholder="Search By Site/Location"
+                          class="form-control padding"
+                          [(ngModel)]="searchSO.name"
+                          (input)="searchbysite()"
+
+                  /> -->
+                    </div>
+                  </div>
+                  <div class="row mt-4">
+                    <div class="table-responsive text-center">
+                      <table class="table table-hover" style="margin-bottom: 0">
+                        <thead>
+                          <th>SNo</th>
+                          <!-- <th>Security Officer Name</th> -->
+                          <th>Site Name</th>
+                          <th>Location Name</th>
+                          <th>Shift</th>
+                          <th>Req Supervisors</th>
+                          <th>Dep Supervisors</th>
+                          <th>Short/Exc Supervisors</th>
+                          <th>Req Guards</th>
+                          <th>Dep Guards</th>
+                          <th>Shor/Exc Guards</th>
+                          <th>Created By</th>
+                          <th>Created Date</th>
+                          <th>Action</th>
+                        </thead>
+                        <tbody>
+                          <tr
+                            *ngFor="
+                              let item of requiredSoList
+                                | paginate
+                                  : {
+                                      id: 'pagination2',
+                                      itemsPerPage: pageSizerequiredSO,
+                                      currentPage: offsetrequiredSO,
+                                      totalItems: totalrequiredSOitems
+                                    };
+                              let i = index
+                            "
+                          >
+                            <td>{{ i + 1 }}</td>
+                            <!-- <td>{{item.securityOfficerName}}</td> -->
+                            <td>{{ item.siteName }}</td>
+                            <td>{{ item.locations.locationName }}</td>
+                            <td>{{ item.shift }}</td>
+                            <td>
+                              {{ item.locations.requiredSupervisorsCount }}
+                            </td>
+                            <td>
+                              {{ item.locations.deployedSupervisorsCount }}
+                            </td>
+                            <td>
+                              {{
+                                item.locations.requiredSupervisorsCount -
+                                  item.locations.deployedSupervisorsCount
+                              }}
+                            </td>
+                            <td>{{ item.locations.requiredGaurdsCount }}</td>
+                            <td>{{ item.locations.deployedGaurdsCount }}</td>
+                            <td>
+                              {{
+                                item.locations.requiredGaurdsCount -
+                                  item.locations.deployedGaurdsCount
+                              }}
+                            </td>
+                            <td>{{ item.createdBy }}</td>
+                            <td>
+                              {{
+                                item.createdOn
+                                  | date : "yyyy-MM-dd HH:mm" : "+0000"
+                              }}
+                            </td>
+                            <td>
+                              <div class="d-flex justify-content-center">
+                                <button
+                                  *ngIf="
+                                    item.locations.requiredSupervisorsCount >
+                                      item.locations.deployedSupervisorsCount ||
+                                    item.locations.requiredGaurdsCount >
+                                      item.locations.deployedGaurdsCount
+                                  "
+                                  type="button"
+                                  class="deployment"
+                                  (click)="openDeployemntmodal(item)"
+                                >
+                                  Deploy</button
+                                >&nbsp;
+                                <!-- <span *ngIf="(item.locations.requiredSupervisorsCount>item.locations.deployedSupervisorsCount||item.locations.requiredGaurdsCount>item.locations.deployedGaurdsCount) && (item.locations.deployedSupervisorsCount!==0||item.locations.deployedGaurdsCount!==0)">/</span> -->
+                                <button
+                                  *ngIf="
+                                    item.locations.deployedSupervisorsCount !==
+                                      0 ||
+                                    item.locations.deployedGaurdsCount !== 0
+                                  "
+                                  type="button"
+                                  class="deployment"
+                                  (click)="openReDeployemntmodal(item)"
+                                >
+                                  Re-Deploy
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <div
+                        class="text-center mt-3 mb-2 nodata"
+                        *ngIf="requiredSoList.length === 0"
+                      >
+                        No Data Found
+                      </div>
+                    </div>
+                    <div class="row mt-3" *ngIf="requiredSoList.length > 0">
+                      <pagination-controls
+                        id="pagination2"
+                        class="text-center"
+                        (pageChange)="pageChangedrequiredSO($event)"
+                      ></pagination-controls>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  bsModal
+  #deletemodal="bs-modal"
+  class="modal fade"
+  [config]="{ backdrop: 'static' }"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="mySmallModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left modalhead">{{ securityfrDelete }}</h4>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure, you want to delete Security Officers?</p>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary deletereject"
+          (click)="hideChildModal()"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary deleteconfirm"
+          (click)="deleteperminently()"
+        >
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  bsModal
+  #deploymentmodal="bs-modal"
+  class="modal fade"
+  [config]="{ backdrop: 'static' }"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="mySmallModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="col-md-10">
+          <h4 class="modal-title pull-left modalhead">{{ deploymentdata }}</h4>
+        </div>
+        <div class="col-md-2">
+          <button class="model-close" (click)="closedeploymentmodal()">
+            <i class="fa fa-times"></i>
+          </button>
+        </div>
+      </div>
+      <div class="modal-body deploymentbody">
+        <div class="row mt-3">
+          <!-- <div class="col-md-6">
+            <select
+            class="form-select"
+            aria-label="Default select example"
+            name="location"
+            [(ngModel)]="deployment.location"
+            (change)="getSelectedLocation()"
+          >
+            <option value="">Select Location</option>
+            <option [ngValue]="item.locationId" *ngFor="let item of locationsData">
+              {{ item.locationName }}
+            </option>
+          </select>
+          </div> -->
+          <div class="col-md-6">
+            <select
+              class="form-select"
+              aria-label="Default select example"
+              name="agency"
+              [(ngModel)]="deployment.agency"
+              (change)="getsupdata(); getguarddata()"
+            >
+              <option value="">Select Agency</option>
+              <option [ngValue]="item.agencyId" *ngFor="let item of agencydata">
+                {{ item.agencyName }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-md-6">
+            <h6>Available Supervisors:&nbsp;{{ supervisorscount }}</h6>
+          </div>
+          <div class="col-md-6">
+            <h6>Available Guards:&nbsp;{{ guardscount }}</h6>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-md-6">
+            <div class="card supervisorscard">
+              <div class="card-header">Select Supervisors</div>
+              <div class="card-body">
+                <table>
+                  <tbody>
+                    <tr class="form-check" *ngFor="let item of supervisorArray">
+                      <td></td>
+                      <td>
+                        <input
+                          class="form-check-input me-3"
+                          type="checkbox"
+                          value=""
+                          (click)="getcheckedvalue(item)"
+                        />
+                      </td>
+                      <td>
+                        <label class="form-check-label">
+                          {{ item.memberName }}
+                        </label>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- <ng-multiselect-dropdown
+      [placeholder]="'Select Supervisors'"
+      [settings]="dropdownSettings"  name="supervisors"
+      [(ngModel)]="deployment.supervisors"
+      [data]="supervisorArray">
+  </ng-multiselect-dropdown> -->
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card supervisorscard">
+              <div class="card-header">Select Guards</div>
+              <div class="card-body">
+                <table>
+                  <tbody>
+                    <tr class="form-check" *ngFor="let item of guardArray">
+                      <td></td>
+                      <td>
+                        <input
+                          class="form-check-input me-3"
+                          type="checkbox"
+                          value=""
+                          (click)="getcheckedvalueguard(item)"
+                        />
+                      </td>
+                      <td>
+                        <label class="form-check-label">
+                          {{ item.memberName }}
+                        </label>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- <ng-multiselect-dropdown
+      [placeholder]="'Select Supervisors'"
+      [settings]="dropdownSettings"  name="supervisors"
+      [(ngModel)]="deployment.supervisors"
+      [data]="supervisorArray">
+  </ng-multiselect-dropdown> -->
+            </div>
+            <!-- <div>
+      <ng-multiselect-dropdown
+      [placeholder]="'Select Guards'"
+      [settings]="dropdownSettings"  name="guards"
+      [(ngModel)]="deployment.guards"
+      [data]="guardArray">
+  </ng-multiselect-dropdown>
+    </div> -->
+          </div>
+        </div>
+        <div class="row mb-2 mt-2">
+          <div class="col-md-12 submitcol">
+            <button
+              class="deploymentsubmit"
+              type="button"
+              (click)="deployform()"
+            >
+              Submit
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-secondary deletereject"
+        (click)="hideChildModal()"
+      >
+        Cancel
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary deleteconfirm"
+        (click)="deleteperminently()"
+      >
+        OK
+      </button>
+    </div> -->
+    </div>
+  </div>
+</div>
+<div
+  bsModal
+  #Redeploymentmodal="bs-modal"
+  class="modal fade"
+  [config]="{ backdrop: 'static' }"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="mySmallModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="col-md-10 modalheadd">
+          <h4 class="modal-title pull-left modalhead">{{ locationNAME }}</h4>
+        </div>
+        <div class="col-md-2">
+          <button class="model-close" (click)="closeRedeploymentmodal()">
+            <i class="fa fa-times"></i>
+          </button>
+        </div>
+      </div>
+      <div class="modal-body deploymentbody">
+        <div class="row mt-1">
+          <p class="redeployp">Deployed Supervisors</p>
+        </div>
+        <div class="row">
+          <div class="card redeploycard">
+            <table>
+              <thead class="text-center headerClass">
+                <th>Name</th>
+                <th>Location</th>
+                <th>Relieve Member</th>
+              </thead>
+              <tbody class="text-center">
+                <tr *ngFor="let item of supervisorsList">
+                  <td>{{ item.memberName }}</td>
+                  <td>{{ locationNAME }}</td>
+                  <td>
+                    <button
+                      type="button"
+                      class="relieve"
+                      (click)="relievemember(item)"
+                    >
+                      Relieve
+                    </button>
+                    <!-- <select
+  class="formselect"
+  aria-label="Default select example" name="Location"
+  [(ngModel)]="Redeploy.Location"
+>
+  <option selected disabled [value]="null">
+    Select Location
+  </option>
+  <option
+    [ngValue]="item.locationId"
+    *ngFor="let item of LocationList"
+  >
+    {{ item.locationName }}
+  </option>
+</select> -->
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="text-center mt-2" *ngIf="supervisorsList.length === 0">
+              No Data Found
+            </div>
+          </div>
+        </div>
+        <div class="row mt-1">
+          <p class="redeployp">Deployed Guards</p>
+        </div>
+        <div class="row">
+          <div class="card redeploycard">
+            <table>
+              <thead class="text-center headerClass">
+                <th>Name</th>
+                <th>Location</th>
+                <th>Relieve Member</th>
+              </thead>
+              <tbody class="text-center">
+                <tr *ngFor="let item of guardsList">
+                  <td>{{ item.memberName }}</td>
+                  <td>{{ locationNAME }}</td>
+                  <td>
+                    <button
+                      type="button"
+                      class="relieve"
+                      (click)="relievemember(item)"
+                    >
+                      Relieve
+                    </button>
+                    <!-- <select
+    class="formselect"
+    aria-label="Default select example" name="Location"
+    [(ngModel)]="Redeploy.guardLocation"
+  >
+    <option selected disabled [value]="null">
+      Select Location
+    </option>
+    <option
+      [ngValue]="item.locationId"
+      *ngFor="let item of LocationList"
+    >
+      {{ item.locationName }}
+    </option>
+  </select> -->
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="text-center mt-2" *ngIf="guardsList.length === 0">
+              No Data Found
+            </div>
+          </div>
+        </div>
+        <!-- <div class="row mb-2">
+  <div class="col-md-12  submitcol">
+  <button class="deploymentsubmit" type="button" (click)="Redeployform()">Submit</button>
+</div>
+ </div> -->
+      </div>
+      <!-- <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-secondary deletereject"
+        (click)="hideChildModal()"
+      >
+        Cancel
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary deleteconfirm"
+        (click)="deleteperminently()"
+      >
+        OK
+      </button>
+    </div> -->
+    </div>
+  </div>
+</div>

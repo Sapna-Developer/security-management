@@ -1,0 +1,47 @@
+<div class="container-fluid loginpage-bg">
+  <div class="container loginbg">
+    <div class="loginbox">
+      <img class="logo" src="../../assets/logo.png" alt="" />
+      <form #fr="ngForm" (ngSubmit)="Login(fr)">
+        <div class="row text-center">
+          <div class="col-12 mt-3">
+            <input
+              type="email"
+              class="form-control"
+              id="exampleInputEmail1"
+              aria-describedby="emailHelp"
+              placeholder="Enter email"
+              name="username"
+              [(ngModel)]="username"
+            />
+          </div>
+          <div class="col-12 mt-3">
+            <input
+              type="password"
+              class="form-control"
+              id="exampleInputPassword1"
+              placeholder="Password"
+              name="password"
+              [(ngModel)]="password"
+            />
+          </div>
+          <div class="col-12 mt-3 checkboxRem">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="exampleCheck1"
+            />&nbsp;
+            <label class="form-check-label labelRem" for="exampleCheck1"
+              >Remember Me</label
+            >
+          </div>
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary loginbut text-center">
+              LOGIN
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

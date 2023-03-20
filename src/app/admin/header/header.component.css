@@ -1,0 +1,61 @@
+.user-info{
+  color: #cdcdcd
+}
+.logouticon{
+    float: right;
+    /* margin-top: -3%; */
+    font-weight: 400 !important;
+    /* margin-right: 4%; */
+    cursor: pointer;
+    padding-right: 10px;
+}
+.logout{
+    background: white;
+    color: black;
+    border: none;
+    outline: none;
+}
+.usericon{
+    font-size: 20px;
+    padding-right: 26px;
+}
+.navbar-brand img {
+    max-width: 185px;
+    height: auto;
+}
+.mainlogo{
+    cursor: pointer;
+}
+.dropdownmenu{
+    left: -109px;
+    top: 42px;
+    border: none;
+    box-shadow: 0px 3px 21px 0px rgb(0 0 0 / 20%)
+}
+a{
+    text-decoration: none;
+    color: black;
+}
+.logouticon{
+    cursor: pointer;
+}
+.togglebutton{
+    cursor: pointer;
+    padding-left: 58px;
+    margin: auto;
+    margin-top: -6px;
+    background: none;
+    border: none;
+    outline: none;
+    font-size: 18px;
+    color: #6C7383;
+  }
+  .rotate{
+    transform: rotate(0deg);
+    transition: transform 0.2s linear;
+  }
+  .not-rotate{
+    transform: rotate(180deg);
+    transition: transform 0.2s linear;
+
+  }

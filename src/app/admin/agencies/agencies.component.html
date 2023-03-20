@@ -1,0 +1,1006 @@
+<div class="container-fluid breadcramp">
+  <div class="row">
+    <!-- <div class="col-md-6  col-6 col-sm-6 col-xs-6  mt-4">
+        <p><i class="bi bi-shield-check shield"></i>Agencies</p>
+      </div>
+      <div class="col-md-6  col-6 col-sm-6 col-xs-6 imageView">
+        <img src="../../../assets/agencies.png" alt="">
+      </div> -->
+    <div class="col-md-6 col-s-3 col-xs-4">
+      <div class="nav nav-pills navbars" id="pills-tab" role="tablist">
+        <div class="nav-item tabs" role="presentation">
+          <button
+            class="nav-link active"
+            data-bs-toggle="pill"
+            data-bs-target="#agencies"
+            type="button"
+            role="tab"
+            [ngClass]="{ active: activeTab === 'agencies' }"
+            (click)="Agencies('agencies')"
+          >
+            Agencies
+          </button>
+        </div>
+        <div class="nav-item tabs" role="presentation">
+          <button
+            class="nav-link hide-btn"
+            data-bs-toggle="pill"
+            data-bs-target="#agencymembers"
+            type="button"
+            role="tab"
+            [ngClass]="{ active: activeTab === 'agencymembers' }"
+            (click)="Agencies('agencymembers')"
+          >
+            Agency Members
+          </button>
+          <button
+            class="nav-link hide-btn1"
+            data-bs-toggle="pill"
+            data-bs-target="#agencymembers"
+            type="button"
+            role="tab"
+            [ngClass]="{ active: activeTab === 'agencymembers' }"
+            (click)="Agencies('agencymembers')"
+          >
+            Members
+          </button>
+        </div>
+        <div class="nav-item tabs" role="presentation">
+          <button
+            class="nav-link hide-btn"
+            data-bs-toggle="pill"
+            data-bs-target="#dailyattendnc"
+            type="button"
+            role="tab"
+            [ngClass]="{ active: activeTab === 'dailyattendnc' }"
+            (click)="Agencies('dailyattendnc')"
+          >
+            Daily Attendance
+          </button>
+          <button
+            class="nav-link hide-btn1"
+            data-bs-toggle="pill"
+            data-bs-target="#dailyattendnc"
+            type="button"
+            role="tab"
+            [ngClass]="{ active: activeTab === 'dailyattendnc' }"
+            (click)="Agencies('dailyattendnc')"
+          >
+            Attendance
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      class="col-md-2"
+      *ngIf="activeTab === 'agencies' || activeTab === 'agencymembers'"
+    ></div>
+    <div class="col-md-1" *ngIf="activeTab === 'dailyattendnc'"></div>
+    <div class="col-md-2" *ngIf="activeTab === 'dailyattendnc'">
+      <!-- <label for="exampleInputEmail1"
+        >Agency<span class="mandetoryinput">*</span></label
+      > -->
+      <select
+        class="form-select formselect1"
+        aria-label="Default select example"
+        name="Agency"
+        [(ngModel)]="Agencymember.Agency"
+        (change)="getDailyAttendanceMembers()"
+      >
+        <option selected disabled value="">Select Agency</option>
+        <option [ngValue]="item.agencyId" *ngFor="let item of agencydata">
+          {{ item.agencyName }}
+        </option>
+      </select>
+    </div>
+    <div class="col-md-3 col-s-4 margin">
+      <input
+        *ngIf="activeTab === 'agencies'"
+        type="search"
+        placeholder="Search By Agency Name"
+        class="form-control padding"
+        [(ngModel)]="search.name"
+        (input)="searchbyagency()"
+      />
+      <input
+        *ngIf="activeTab === 'agencymembers'"
+        type="search"
+        placeholder="Search By Member Type/Name"
+        class="form-control padding"
+        [(ngModel)]="search.agencyname"
+        (input)="searchbyagencymember()"
+      />
+      <input
+        *ngIf="activeTab === 'dailyattendnc'"
+        type="search"
+        placeholder="Search By Member Type/Name"
+        class="form-control padding1"
+        [(ngModel)]="search.membername"
+        (input)="searchDailyAttMember()"
+      />
+    </div>
+    <div class="col-md-1">
+      <button
+        type="button"
+        class="btn btn-primary add"
+        (click)="addagency()"
+        *ngIf="activeTab === 'agencies'"
+      >
+        Add
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary add"
+        (click)="agencyMembers()"
+        *ngIf="activeTab === 'agencymembers'"
+      >
+        Add
+      </button>
+    </div>
+  </div>
+</div>
+<div class="main-content">
+  <div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <!-- <ul class="nav nav-pills navbars" id="pills-tab" role="tablist">
+            <li class="nav-item tabs" role="presentation">
+              <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#agencies" type="button" role="tab" [ngClass]="{ 'active':activeTab==='agencies'}"
+              (click)="Agencies('agencies')">Agencies</button>
+            </li>
+              <li class="nav-item me-2" role="presentation">
+                <button class="nav-link" data-bs-toggle="pill" data-bs-target="#sup/gua" type="button" role="tab" [ngClass]="{ 'active':activeTab==='sup/gua'}"
+                (click)="Agencies('sup/gua')">Sup/Guards</button>
+              </li>
+               <li class="nav-item tabs" role="presentation">
+              <button class="nav-link" data-bs-toggle="pill" data-bs-target="#agencymembers" type="button" role="tab" [ngClass]="{ 'active':activeTab==='agencymembers'}"
+              (click)="Agencies('agencymembers')">Agency Members</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" data-bs-toggle="pill" data-bs-target="#Stores Outward" type="button" role="tab" [ngClass]="{ 'active':activeTab==='Stores Outward'}"
+                (click)="SO('Stores Outward')"></button>
+              </li> 
+          </ul> -->
+          <div class="tab-content" id="pills-tabContent">
+            <div
+              class="tab-pane"
+              id="agencies"
+              role="tabpanel"
+              [ngClass]="{ active: activeTab === 'agencies' }"
+            >
+              <div class="card">
+                <div class="card-body">
+                  <div class="row mb-3">
+                    <div class="col-md-8">
+                      <!-- <p class="card-title mb-0">Locations</p> -->
+                    </div>
+                    <div class="col-3">
+                      <!-- <input
+                      type="search"
+                     placeholder="Search By Agency Name"
+                      class="form-control padding"
+                      [(ngModel)]="search.name"
+                      (input)="searchbyagency()"> -->
+                    </div>
+                    <div class="col-md-1">
+                      <!-- <button
+                        type="button"
+                        class="btn btn-primary add"
+                        (click)="addagency()"
+                      >
+                        Add
+                      </button> -->
+                      <!-- <button class="btn add-btn" (click)="addorganization()">
+                            <i class="fa fa-plus"></i>
+                          </button> -->
+                    </div>
+                  </div>
+                  <div class="table-responsive">
+                    <table class="table table-hover" style="margin-bottom: 0">
+                      <thead>
+                        <th>SNo</th>
+                        <th>Site Name</th>
+                        <th>Agency Name</th>
+                        <th>Address</th>
+                        <th>Created By</th>
+                        <th>Action</th>
+                      </thead>
+                      <tbody>
+                        <tr
+                          *ngFor="
+                            let item of agencydata
+                              | paginate
+                                : {
+                                    id: 'pagination1',
+                                    itemsPerPage: pageSizeAgency,
+                                    currentPage: offsetAgency,
+                                    totalItems: totalAgencys
+                                  };
+                            let i = index
+                          "
+                        >
+                          <td>{{ i + 1 }}</td>
+                          <td>{{ item.siteName }}</td>
+                          <td>{{ item.agencyName }}</td>
+                          <td>{{ item.address }}</td>
+                          <td>{{ item.createdBy }}</td>
+                          <td>
+                            <div class="d-flex">
+                              <button
+                                class="editbtn me-2"
+                                (click)="editdata(item)"
+                              >
+                                <i class="fa fa-pencil edit"></i>
+                              </button>
+                              <button
+                                class="editbtn me-2"
+                                (click)="deletedata(item)"
+                              >
+                                <i
+                                  class="fa fa-trash trash"
+                                  aria-hidden="true"
+                                ></i>
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div
+                      class="text-center mt-2"
+                      *ngIf="agencydata.length === 0"
+                    >
+                      No Data Found
+                    </div>
+                  </div>
+                  <div class="row mt-3" *ngIf="agencydata.length > 0">
+                    <pagination-controls
+                      class="text-center"
+                      id="pagination1"
+                      (pageChange)="pageChangedAgency($event)"
+                    ></pagination-controls>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="tab-pane"
+              id="agencymembers"
+              role="tabpanel"
+              [ngClass]="{ active: activeTab === 'agencymembers' }"
+            >
+              <div class="card vehiclecard">
+                <div class="card-body cardbody">
+                  <div class="row mb-3">
+                    <div class="col-md-8">
+                      <!-- <p class="card-title mb-0">Locations</p> -->
+                    </div>
+                    <div class="col-3">
+                      <!-- <input
+                          type="search"
+                         placeholder="Search By Member Type/Name"
+                          class="form-control padding"
+                          [(ngModel)]="search.agencyname"
+                          (input)="searchbyagencymember()"> -->
+                    </div>
+                    <div class="col-md-1">
+                      <!-- <button
+                            type="button"
+                            class="btn btn-primary add"
+                            (click)="agencyMembers()"
+                          >
+                            Add
+                          </button> -->
+                      <!-- <button class="btn add-btn" (click)="addorganization()">
+                                <i class="fa fa-plus"></i>
+                              </button> -->
+                    </div>
+                  </div>
+                  <div class="table-responsive">
+                    <table class="table table-hover" style="margin-bottom: 0">
+                      <thead>
+                        <th>SNo</th>
+                        <th>Agency Name</th>
+                        <th>Site Name</th>
+                        <th>Member Type</th>
+                        <th>Member Name</th>
+                        <th>Action</th>
+                      </thead>
+                      <tbody>
+                        <tr
+                          *ngFor="
+                            let item of AgencyMembersList
+                              | paginate
+                                : {
+                                    id: 'pagination2',
+                                    itemsPerPage: pageSizeMember,
+                                    currentPage: offsetMember,
+                                    totalItems: totalMembers
+                                  };
+                            let i = index
+                          "
+                        >
+                          <td>{{ i + 1 }}</td>
+                          <td>{{ item.agencyName }}</td>
+                          <td>{{ item.siteName }}</td>
+                          <td>{{ item.memberType }}</td>
+                          <td>{{ item.memberName }}</td>
+                          <td>
+                            <div class="d-flex">
+                              <button
+                                class="editbtn me-2"
+                                (click)="editMember(item)"
+                              >
+                                <i class="fa fa-pencil edit"></i>
+                              </button>
+                              <button
+                                class="editbtn me-2"
+                                (click)="deleteMember(item)"
+                              >
+                                <i
+                                  class="fa fa-trash trash"
+                                  aria-hidden="true"
+                                ></i>
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div
+                      class="text-center mt-2"
+                      *ngIf="AgencyMembersList.length === 0"
+                    >
+                      No Data Found
+                    </div>
+                  </div>
+                  <div class="row mt-3" *ngIf="AgencyMembersList.length > 0">
+                    <pagination-controls
+                      class="text-center"
+                      id="pagination2"
+                      (pageChange)="pageChangedMember($event)"
+                    ></pagination-controls>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="tab-pane"
+              id="dailyattendnc"
+              role="tabpanel"
+              [ngClass]="{ active: activeTab === 'dailyattendnc' }"
+            >
+              <div class="card vehiclecard">
+                <div class="card-body cardbody">
+                  <div class="row mt-3">
+                    <div class="table-responsive">
+                      <table class="table table-hover" style="margin-bottom: 0">
+                        <thead>
+                          <th>SNo</th>
+                          <th>Agency Name</th>
+                          <th>Member Name</th>
+                          <th>Member Type</th>
+                          <th>Present/Absent</th>
+                          <th>Status</th>
+                        </thead>
+                        <tbody>
+                          <tr
+                            *ngFor="
+                              let item of AgencyDailyAtdList
+                                | paginate
+                                  : {
+                                      id: 'pagination3',
+                                      itemsPerPage: DailypageSize,
+                                      currentPage: Dailyoffset,
+                                      totalItems: totalDailyItems
+                                    };
+                              let i = index
+                            "
+                          >
+                            <td>{{ i + 1 }}</td>
+                            <td>{{ item.agencyName }}</td>
+                            <td>{{ item.memberName }}</td>
+                            <td>{{ item.memberType }}</td>
+
+                            <td>
+                              <select
+                                class="form-select formselect"
+                                aria-label="Default select example"
+                                [(ngModel)]="item.status"
+                                (change)="onChange(item)"
+                              >
+                                <option class="dropdown-item" value="">
+                                  Select
+                                </option>
+                                <option value="LEAVE">Leave</option>
+
+                                <option value="PRESENT">Present</option>
+                                <option value="ABSENT">Absent</option>
+                              </select>
+                              <!-- <input
+                                  class="form-check-input"
+                                  type="checkbox"
+                                  name="{{ item.attendenceStatus }}"
+                                  [(ngModel)]="item.isSelected"
+                                  (change)="onChange()"
+                                />
+                                -->
+                            </td>
+
+                            <td>{{ item.attendanceStatus }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <div
+                        class="text-center mt-3"
+                        *ngIf="AgencyDailyAtdList.length === 0"
+                      >
+                        No Data Found
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row mt-3" *ngIf="AgencyDailyAtdList.length > 0">
+                    <pagination-controls
+                      id="pagination3"
+                      class="text-center"
+                      (pageChange)="pageChanged2($event)"
+                    ></pagination-controls>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  bsModal
+  #agencymodal="bs-modal"
+  class="modal fade"
+  [config]="{ backdrop: 'static' }"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="mySmallModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header border-0">
+        <div class="col-md-10">
+          <h6 class="headingsix1">Add Agency</h6>
+        </div>
+        <div class="col-md-2">
+          <button class="model-close" (click)="closemodal()">
+            <i class="fa fa-times"></i>
+          </button>
+        </div>
+      </div>
+      <form #agencyform="ngForm" (ngSubmit)="createAgency(agencyform)">
+        <div class="modal-body agencyForm">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="exampleInputEmail1"
+                  >Organization<span class="mandetoryinput">*</span></label
+                >
+                <select
+                  class="form-select"
+                  aria-label="Default select example"
+                  name="organization"
+                  [(ngModel)]="Agency.organization"
+                  (change)="getSelectedOrg()"
+                >
+                  <option selected disabled value="">
+                    Select Organization
+                  </option>
+                  <option
+                    [ngValue]="item.orgId"
+                    *ngFor="let item of organizationlist"
+                  >
+                    {{ item.orgName }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="exampleInputEmail1"
+                  >Site<span class="mandetoryinput">*</span></label
+                >
+                <select
+                  class="form-select"
+                  aria-label="Default select example"
+                  name="site"
+                  [(ngModel)]="Agency.site"
+                  (change)="getLocationFrSite()"
+                >
+                  <option selected disabled value="">Select Site</option>
+                  <option [ngValue]="item.siteId" *ngFor="let item of sitedata">
+                    {{ item.siteName }}
+                  </option>
+                </select>
+              </div>
+              <!-- <input class="form-control" placeholder="Site Name" type="text" name="name" [(ngModel)]="site.name"> -->
+            </div>
+          </div>
+          <div class="row mt-2">
+            <!-- <div class="col-md-6">
+              <div class="form-group">
+                <label for="exampleInputEmail1">Location</label>
+                <select
+                class="form-select"
+                aria-label="Default select example" name="location"
+                [(ngModel)]="Agency.location"
+              >
+                <option selected disabled [value]="null">
+                  Select Location
+                </option>
+                <option
+                  [ngValue]="item.locationId"
+                  *ngFor="let item of LocationList"
+                >
+                  {{ item.locationName }}
+                </option>
+              </select>
+              </div>
+            </div> -->
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="exampleInputEmail1"
+                  >Agency Name<span class="mandetoryinput">*</span></label
+                >
+                <input
+                  class="form-control"
+                  autocomplete="off"
+                  placeholder="Agency Name"
+                  type="text"
+                  name="name"
+                  [(ngModel)]="Agency.name"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="exampleInputEmail1"
+                  >Address<span class="mandetoryinput">*</span></label
+                >
+                <input
+                  class="form-control"
+                  autocomplete="off"
+                  placeholder="Address"
+                  type="text"
+                  name="address"
+                  [(ngModel)]="Agency.address"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer border-0 mb-1">
+          <p class="text-danger" *ngIf="validationMsg">
+            All Fields Are Mandatory*
+          </p>
+          <button type="submit" class="btn btn-secondary btnsecondary">
+            Add
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div
+  bsModal
+  #agencyeditmodal="bs-modal"
+  class="modal fade"
+  [config]="{ backdrop: 'static' }"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="mySmallModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header border-0">
+        <div class="col-md-10">
+          <h6 class="headingsix1">{{ agencyName }}</h6>
+        </div>
+        <div class="col-md-2">
+          <button class="model-close" (click)="closeeditmodal()">
+            <i class="fa fa-times"></i>
+          </button>
+        </div>
+      </div>
+      <form #agencyeditform="ngForm" (ngSubmit)="updateAgency(agencyeditform)">
+        <div class="modal-body agencyForm">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="exampleInputEmail1"
+                  >Organization<span class="mandetoryinput">*</span></label
+                >
+                <select
+                  class="form-select"
+                  aria-label="Default select example"
+                  name="organization"
+                  [(ngModel)]="Agencyedit.organization"
+                  (change)="getSelectedOrg()"
+                >
+                  <option selected disabled [value]="null">
+                    Select Organization
+                  </option>
+                  <option
+                    [ngValue]="item.orgId"
+                    *ngFor="let item of organizationlist"
+                  >
+                    {{ item.orgName }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="exampleInputEmail1"
+                  >Site<span class="mandetoryinput">*</span></label
+                >
+                <select
+                  class="form-select"
+                  aria-label="Default select example"
+                  name="site"
+                  [(ngModel)]="Agencyedit.site"
+                >
+                  <option selected disabled value="">Select Site</option>
+                  <option [ngValue]="item.siteId" *ngFor="let item of sitedata">
+                    {{ item.siteName }}
+                  </option>
+                </select>
+              </div>
+              <!-- <input class="form-control" placeholder="Site Name" type="text" name="name" [(ngModel)]="site.name"> -->
+            </div>
+          </div>
+          <div class="row mt-2">
+            <!-- <div class="col-md-6">
+            <div class="form-group">
+              <label for="exampleInputEmail1">Location</label>
+              <select
+              class="form-select"
+              aria-label="Default select example" name="location"
+              [(ngModel)]="Agencyedit.location"
+            >
+              <option selected disabled [value]="null">
+                Select Location
+              </option>
+              <option
+                [ngValue]="item.locationId"
+                *ngFor="let item of locationdata"
+              >
+                {{ item.locationName }}
+              </option>
+            </select>
+            </div>
+          </div> -->
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="exampleInputEmail1"
+                  >Agency Name<span class="mandetoryinput">*</span></label
+                >
+                <input
+                  class="form-control"
+                  autocomplete="off"
+                  placeholder="Agency Name"
+                  type="text"
+                  name="name"
+                  [(ngModel)]="Agencyedit.name"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="exampleInputEmail1"
+                  >Address<span class="mandetoryinput">*</span></label
+                >
+                <input
+                  class="form-control"
+                  autocomplete="off"
+                  placeholder="Address"
+                  type="text"
+                  name="address"
+                  [(ngModel)]="Agencyedit.address"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer border-0">
+          <p class="text-danger" *ngIf="validationeditMsg">
+            All Fields Are Mandatory*
+          </p>
+          <button type="submit" class="btn btn-secondary btnsecondary">
+            Update
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div
+  bsModal
+  #deletemodal="bs-modal"
+  class="modal fade"
+  [config]="{ backdrop: 'static' }"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="mySmallModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left headingsix1">
+          {{ agencyNameDelete }}
+        </h4>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure, you want to delete Agency?</p>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary deletereject"
+          (click)="hideChildModal()"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary deleteconfirm"
+          (click)="deleteperminently()"
+        >
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  bsModal
+  #AgencyMemberModal="bs-modal"
+  class="modal fade"
+  [config]="{ backdrop: 'static' }"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="mySmallModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header border-0">
+        <div class="col-md-10">
+          <h6 class="headingsix1">Add Agency Member</h6>
+        </div>
+        <div class="col-md-2">
+          <button class="model-close" (click)="closeAgencyMembermodal()">
+            <i class="fa fa-times"></i>
+          </button>
+        </div>
+      </div>
+      <form
+        #agencymembersform="ngForm"
+        (ngSubmit)="addAgencyMembers(agencymembersform)"
+      >
+        <div class="modal-body agencyForm">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="exampleInputEmail1"
+                  >Agency<span class="mandetoryinput">*</span></label
+                >
+                <select
+                  class="form-select"
+                  aria-label="Default select example"
+                  name="Agency"
+                  [(ngModel)]="Agencymember.Agency"
+                >
+                  <option selected disabled value="">Select Agency</option>
+                  <option
+                    [ngValue]="item.agencyId"
+                    *ngFor="let item of agencydata"
+                  >
+                    {{ item.agencyName }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="exampleInputEmail1"
+                  >Member Type<span class="mandetoryinput">*</span></label
+                >
+                <select
+                  class="form-select"
+                  aria-label="Default select example"
+                  name="site"
+                  [(ngModel)]="Agencymember.memberType"
+                >
+                  <option selected disabled value="">Select MemberType</option>
+                  <option value="supervisor">Supervisor</option>
+                  <option value="guard">Guard</option>
+                </select>
+              </div>
+              <!-- <input class="form-control" placeholder="Site Name" type="text" name="name" [(ngModel)]="site.name"> -->
+            </div>
+          </div>
+          <div class="row mb-2 mt-2">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="exampleInputEmail1"
+                  >Member Name<span class="mandetoryinput">*</span></label
+                >
+                <input
+                  class="form-control"
+                  autocomplete="off"
+                  placeholder="Member Name"
+                  type="text"
+                  name="memberName"
+                  [(ngModel)]="Agencymember.memberName"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer border-0 mb-1">
+          <p class="text-danger" *ngIf="validationmemberMsg">
+            All Fields Are Mandatory*
+          </p>
+          <button type="submit" class="btn btn-secondary btnsecondary">
+            Add
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div
+  bsModal
+  #AgencyMembereditModal="bs-modal"
+  class="modal fade"
+  tabindex="-1"
+  [config]="{ backdrop: 'static' }"
+  role="dialog"
+  aria-labelledby="mySmallModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header border-0">
+        <div class="col-md-10">
+          <h6 class="headingsix1">{{ agencyMemberName }}</h6>
+        </div>
+        <div class="col-md-2">
+          <button class="model-close" (click)="closeAgencyMembereditmodal()">
+            <i class="fa fa-times"></i>
+          </button>
+        </div>
+      </div>
+      <form
+        #agencymemberseditform="ngForm"
+        (ngSubmit)="updateAgencyMembers(agencymemberseditform)"
+      >
+        <div class="modal-body agencyForm">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="exampleInputEmail1"
+                  >Agency<span class="mandetoryinput">*</span></label
+                >
+                <select
+                  class="form-select"
+                  aria-label="Default select example"
+                  name="Agency"
+                  [(ngModel)]="AgencymemberEdit.Agency"
+                >
+                  <option selected disabled [value]="null">
+                    Select Agency
+                  </option>
+                  <option
+                    [ngValue]="item.agencyId"
+                    *ngFor="let item of agencydata"
+                  >
+                    {{ item.agencyName }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="exampleInputEmail1"
+                  >Member Type<span class="mandetoryinput">*</span></label
+                >
+                <select
+                  class="form-select"
+                  aria-label="Default select example"
+                  name="site"
+                  [(ngModel)]="AgencymemberEdit.memberType"
+                >
+                  <option selected disabled [value]="null">
+                    Select MemberType
+                  </option>
+                  <option value="supervisor">Supervisor</option>
+                  <option value="guard">Guard</option>
+                </select>
+              </div>
+              <!-- <input class="form-control" placeholder="Site Name" type="text" name="name" [(ngModel)]="site.name"> -->
+            </div>
+          </div>
+          <div class="row mb-1 mt-2">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="exampleInputEmail1"
+                  >Member Name<span class="mandetoryinput">*</span></label
+                >
+                <input
+                  class="form-control"
+                  autocomplete="off"
+                  placeholder="Member Name"
+                  type="text"
+                  name="memberName"
+                  [(ngModel)]="AgencymemberEdit.memberName"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer border-0 mb-1">
+          <p class="text-danger" *ngIf="validationmembereditMsg">
+            All Fields Are Mandatory*
+          </p>
+          <button type="submit" class="btn btn-secondary btnsecondary">
+            Update
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div
+  bsModal
+  #deleteAgencyMembermodal="bs-modal"
+  class="modal fade"
+  [config]="{ backdrop: 'static' }"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="mySmallModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left headingsix1">
+          {{ agencyMemberNameDelete }}
+        </h4>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure, you want to delete Agency Member?</p>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary deletereject"
+          (click)="hideChildModal1()"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary deleteconfirm"
+          (click)="deletememberperminently()"
+        >
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

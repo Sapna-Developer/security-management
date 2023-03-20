@@ -1,0 +1,239 @@
+<!-- common header for all components -->
+<div class="container-fluid breadcramp">
+  <div class="row">
+    <div class="col-md-8 col-sm-4 col-xs-4 col-s-2">
+      <p><i class="bi bi-shield-check shield"></i>Organizations</p>
+    </div>
+    <div class="col-md-3 col-sm-6 col-xs-6 col-s-2">
+      <input type="search" placeholder="Search By Organization" class="form-control form" [(ngModel)]="search.name" (input)="searchbyname()" />
+    </div>
+    <div class="col-md-1 col-sm-1 col-xs-1 ">
+      <button type="button" class="btn btn-primary add" (click)="addorganization()">Add</button>
+  </div>
+  </div>
+</div>
+<!-- common header ends -->
+<div class="main-content">
+<div class="row">
+  <!-- Devide grid with only col-md -->
+  <div class="col-md-12 grid-margin stretch-card pt-2">
+    <div class="card">
+      <div class="card-body">
+        <div class="row mb-3">
+          <div class="col-md-8">
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-hover" style="margin-bottom: 0">
+            <thead>
+              <th>SNo</th>
+              <th>Name</th>
+              <th>Address</th>
+              <th>Created By</th>
+              <th>Created Date</th>
+              <th>Action</th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of organizationlist;let i= index;">
+                <!-- | paginate:config; -->
+                <td>{{i+1}}</td>
+                <td>{{item.orgName}}</td>
+                <td>{{item.address}}</td>
+                <td>{{item.createdBy}}</td>
+                <td>{{item.createdOn | date:'yyyy-MM-dd HH:mm':"+0000"}}</td>
+                <td>
+                  <div class="d-flex">
+                    <button class="editbtn me-2" (click)="editdata(item)">
+                      <i class="fa fa-pencil edit"></i>
+                    </button>
+                    <button class="editbtn" (click)="deletedata(item)">
+                    <i class="fa fa-trash trash" aria-hidden="true"></i></button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="text-center mt-3 mb-2 nodata" *ngIf="organizationlist.length===0">
+            No Data Found
+          </div>
+        </div>
+        <!-- <div class="row mt-3" *ngIf="organizationlist.length>0">
+          <pagination-controls class="text-center"
+          (pageChange)="pageChanged($event)"
+        ></pagination-controls>
+        </div> -->
+      </div>
+    </div>
+    <div
+      bsModal
+      #organizationmodal="bs-modal"
+      class="modal fade"  [config]="{ backdrop: 'static' }"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="mySmallModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header border-0">
+              <div class="col-md-10">
+                <h6 class="headingsix1">Add Organization</h6>
+              </div>
+              <div class="col-md-2">
+                <button class="model-close" (click)="closemodal()">
+                  <i class="fa fa-times"></i>
+                </button>
+            </div>
+          </div>
+          <form #orgform="ngForm" (ngSubmit)="createOrganization(orgform)">
+          <div class="modal-body organizationform">
+            <div class="row">
+              <!-- <div class="col-md-3 mt-2">
+                <label for="">Name</label>
+              </div> -->
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="exampleInputEmail1" class="orglabel">Organization Name<span class="mandetoryinput">*</span></label>
+                  <input class="form-control formcontrol" autocomplete="off" placeholder="Name" type="text" name="name" [(ngModel)]="organization.name">
+                </div>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <!-- <div class="col-md-3 mt-2">
+                <label for="">Address</label>
+              </div> -->
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="exampleInputEmail1" class="orglabel">Address<span class="mandetoryinput">*</span></label>
+                  <input class="form-control formcontrol" autocomplete="off" placeholder="Address" type="text" name="address" [(ngModel)]="organization.address">
+                </div>
+              </div>
+            </div>
+            <!-- <div class="row mb-3">
+              <div class="col-md-3">
+                <label for="">Created By</label>
+              </div>
+              <div class="col-md-9">
+                <input class="form-control" type="text" name="createdby" [(ngModel)]="organization.createdby">
+              </div>
+            </div> -->
+          </div>
+          <div class="modal-footer border-0">
+            <p class="text-danger" *ngIf="validationMsg">All Fields Are Mandatory*</p>
+            <button
+              type="submit"
+              class="btn btn-secondary btnsecondary"
+            >
+              Add
+            </button>
+          </div>
+        </form>
+        </div>
+      </div>
+    </div>
+    <div
+      bsModal
+      #organizationeditmodal="bs-modal"
+      class="modal fade"  [config]="{ backdrop: 'static' }"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="mySmallModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header border-0">
+              <div class="col-md-10">
+                <h6 class="headingsix1">{{organizationName}}</h6>
+              </div>
+              <div class="col-md-2">
+                <button class="model-close" (click)="closeeditmodal()">
+                  <i class="fa fa-times"></i>
+                </button>
+              </div>
+          </div>
+          <form #orgeditForm="ngForm" (ngSubmit)="updateOrganization(orgeditForm)">
+          <div class="modal-body organizationform">
+            <div class="row">
+              <!-- <div class="col-md-3">
+                <label for="">Name</label>
+              </div> -->
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="exampleInputEmail1" class="orglabel">Organization Name<span class="mandetoryinput">*</span></label>
+                  <input class="form-control formcontrol" autocomplete="off" placeholder="Name" type="text" name="name" [(ngModel)]="editorganization.name">
+                </div>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <!-- <div class="col-md-3">
+                <label for="">Address</label>
+              </div> -->
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="exampleInputEmail1" class="orglabel">Address<span class="mandetoryinput">*</span></label>
+                  <input class="form-control formcontrol" autocomplete="off" placeholder="Address" type="text" name="address" [(ngModel)]="editorganization.address">
+                </div>
+              </div>
+            </div>
+            <!-- <div class="row mb-3">
+              <div class="col-md-3">
+                <label for="">Created By</label>
+              </div>
+              <div class="col-md-9">
+                <input class="form-control" type="text" name="createdby" [(ngModel)]="organization.createdby">
+              </div>
+            </div> -->
+          </div>
+          <div class="modal-footer border-0">
+            <p class="text-danger" *ngIf="validationMsgEdit">All Fields Are Mandatory*</p>
+            <button
+              type="submit"
+              class="btn btn-secondary btnsecondary"
+            >
+              Update
+            </button>
+          </div>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<div
+  bsModal
+  #deletemodal="bs-modal"
+  class="modal fade"  [config]="{ backdrop: 'static' }"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="mySmallModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left headingsix1">{{organizationNamefrDelete}}</h4>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure, you want to delete Organization?</p>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary deletereject"
+          (click)="hideChildModal()"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary deleteconfirm"
+          (click)="deleteperminently()"
+        >
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

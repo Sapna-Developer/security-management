@@ -1,0 +1,297 @@
+<div class="container-fluid breadcramp">
+  <div class="row">
+    <!-- <div class="col-md-6  col-6 col-sm-6 col-xs-6  mt-4">
+          <p><i class="bi bi-shield-check shield"></i>Vehicle Movement</p>
+        </div>
+        <div class="col-md-6  col-6 col-sm-6 col-xs-6 imageView">
+          <img src="../../../assets/vehicle-movement.jpg" alt="">
+        </div> -->
+    <div class="col-md-9 col-s-3 row">
+      <div class="nav nav-pills navbars col-12" id="pills-tab" role="tablist">
+        <div class="nav-item tabs col-xs-6 navigation" role="presentation">
+          <button
+            class="nav-link active"
+            data-bs-toggle="pill"
+            data-bs-target="#addparameter"
+            type="button"
+            role="tab"
+            [ngClass]="{ active: activeTab === 'addparameter' }"
+            (click)="AddParameter('addparameter')"
+          >
+            Add Parameter
+          </button>
+        </div>
+        <div class="nav-item tabs col-xs-6 navigation" role="presentation">
+          <button
+            class="nav-link"
+            data-bs-toggle="pill"
+            data-bs-target="#List"
+            type="button"
+            role="tab"
+            [ngClass]="{ active: activeTab === 'List' }"
+            (click)="AddParameter('List')"
+          >
+            Parameters List
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 col-s-4">
+      <!-- <input *ngIf="activeTab==='List'" type="search" placeholder="Search By Name" class="form-control padding" [(ngModel)]="searchparameter.name" (input)="search()"> -->
+    </div>
+  </div>
+</div>
+<div class="main-content">
+  <div class="row">
+    <div class="col-md-12 grid-margin stretch-card pt-2">
+      <div class="tab-content" id="pills-tabContent">
+        <div
+          class="tab-pane"
+          id="addparameter"
+          role="tabpanel"
+          [ngClass]="{ active: activeTab === 'addparameter' }"
+        >
+          <div class="card">
+            <div class="card-body">
+              <form
+                #parameterfr="ngForm"
+                (ngSubmit)="saveData(parameterfr)"
+                class="parameters"
+              >
+                <div class="row">
+                  <div class="col-md-6 col-6">
+                    <div class="form-group">
+                      <label for="exampleInputEmail1" class="label-H"
+                        >Site<span *ngIf="btn === 'Save'" class="mandetoryinput"
+                          >*</span
+                        ></label
+                      >
+                      <select
+                        *ngIf="btn === 'Save'"
+                        class="form-select"
+                        aria-label="Default select example"
+                        name="site"
+                        [(ngModel)]="parameters.site"
+                        (change)="getLocationFrSite()"
+                      >
+                        <option selected disabled value="">Select Site</option>
+                        <option
+                          [ngValue]="item.siteId"
+                          *ngFor="let item of sitedata"
+                        >
+                          {{ item.siteName }}
+                        </option>
+                      </select>
+                      <input
+                        type="text"
+                        *ngIf="btn === 'Update'"
+                        class="form-control"
+                        [(ngModel)]="parameters.site"
+                        name="site"
+                        readonly
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-6">
+                    <div class="form-group">
+                      <label for="exampleInputEmail1" class="label-H"
+                        >Location<span
+                          *ngIf="btn === 'Save'"
+                          class="mandetoryinput"
+                          >*</span
+                        ></label
+                      >
+                      <select
+                        *ngIf="btn === 'Save'"
+                        class="form-select"
+                        name="location"
+                        [(ngModel)]="parameters.location"
+                        (change)="getLocationsdata()"
+                      >
+                        <option selected disabled value="">
+                          Select Location
+                        </option>
+                        <option
+                          [ngValue]="item.locationId"
+                          *ngFor="let item of LocationList"
+                        >
+                          {{ item.locationName }}
+                        </option>
+                      </select>
+                      <input
+                        type="text"
+                        *ngIf="btn === 'Update'"
+                        class="form-control"
+                        [(ngModel)]="parameters.location"
+                        name="location"
+                        readonly
+                      />
+                    </div>
+                    <!-- <input type="text" class="form-control" placeholder="Location"> -->
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-md-6 col-6">
+                    <div class="form-group">
+                      <label for="exampleInputEmail1" class="label-H"
+                        >Parameter<span class="mandetoryinput">*</span></label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="parameters.name"
+                        name="name"
+                        autocomplete="off"
+                        placeholder="Parameter"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-6">
+                    <div class="form-group">
+                      <label for="exampleInputEmail1" class="label-H"
+                        >Description<span class="mandetoryinput">*</span></label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="parameters.description"
+                        name="description"
+                        autocomplete="off"
+                        placeholder="Description"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="row mb-2 mt-3">
+                  <div class="col-md-12 submitcol">
+                    <p class="text-center text-danger" *ngIf="validationMsg">
+                      All Fields Are Mandatory*
+                    </p>
+                    <button class="submit" type="submit">{{ btn }}</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div
+          class="tab-pane"
+          id="List"
+          role="tabpanel"
+          [ngClass]="{ active: activeTab === 'List' }"
+        >
+          <div class="card">
+            <div class="card-body">
+              <div class="row mt-4">
+                <div class="table-responsive">
+                  <table class="table table-hover" style="margin-bottom: 0">
+                    <thead>
+                      <th>SNo</th>
+                      <!-- <th>Date&Time</th> -->
+                      <th>Site</th>
+                      <th>Location</th>
+                      <th>Parameter</th>
+                      <th>Description</th>
+                      <th>Action</th>
+                    </thead>
+                    <tbody>
+                      <tr
+                        *ngFor="
+                          let item of paramerData
+                            | paginate
+                              : {
+                                  id: 'pagination1',
+                                  itemsPerPage: pageSize,
+                                  currentPage: offset,
+                                  totalItems: totalItems
+                                };
+                          let i = index
+                        "
+                      >
+                        <td>{{ i + 1 }}</td>
+                        <!-- <td>{{item.inDateandTime | date:'yyyy-MM-dd HH:mm':"+0000"}}</td> -->
+                        <td>{{ item.siteName }}</td>
+                        <!-- <td>{{item.vehicleType}}</td> -->
+                        <td>{{ item.locationName }}</td>
+                        <td>{{ item.code }}</td>
+                        <td>{{ item.description }}</td>
+                        <td>
+                          <div class="d-flex">
+                            <button
+                              class="editbtn me-2"
+                              (click)="editdata(item)"
+                            >
+                              <!-- ngbTooltip="Edit Data" placement="bottom" -->
+                              <i class="fa fa-pencil edit"></i>
+                            </button>
+                            <button class="editbtn" (click)="deletedata(item)">
+                              <i
+                                class="fa fa-trash trash"
+                                aria-hidden="true"
+                              ></i>
+                            </button>
+                            <!-- <button class="viewLogDetails" type="button" (click)="viewLogDetails()">View Details</button> -->
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div
+                    class="text-center mt-3 mb-2"
+                    *ngIf="paramerData.length === 0"
+                  >
+                    No Data Found
+                  </div>
+                </div>
+                <div class="row mt-3" *ngIf="paramerData.length > 0">
+                  <pagination-controls
+                    id="pagination1"
+                    class="text-center"
+                    (pageChange)="pageChanged($event)"
+                  ></pagination-controls>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  bsModal
+  #deletemodal="bs-modal"
+  class="modal fade"
+  [config]="{ backdrop: 'static' }"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="mySmallModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left headingsix1">{{ parameterName }}</h4>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure, you want to delete Parameter?</p>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary deletereject"
+          (click)="hideChildModal()"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary deleteconfirm"
+          (click)="deleteperminently()"
+        >
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

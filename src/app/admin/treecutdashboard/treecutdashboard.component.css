@@ -1,0 +1,251 @@
+.submit {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 153, 51, 1) 0%,
+    rgba(255, 102, 0, 1) 88%
+  );
+  float: right;
+  padding: 7px;
+  width: 61px;
+  border-radius: 7px;
+  border: none;
+  outline: none;
+  /* background: #a3a3cd; */
+  color: white;
+}
+/* .breadcramp {
+  background: rgb(18, 30, 63);
+  background: linear-gradient(90deg, rgba(18,30,63,1) 51%, rgba(147,172,240,1) 100%);
+  height: 70px;
+  width: 100%;
+} */
+.breadcramp {
+  font-size: 23px;
+  font-weight: 600;
+  vertical-align: middle;
+  margin: auto;
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 6px;
+  padding-left: 39px;
+}
+img {
+  height: 128px;
+  width: auto;
+  /* margin-left: 5px; */
+}
+.daterange {
+  cursor: pointer;
+}
+.treecut {
+  height: 25px;
+  width: 25px;
+  /* width: 48px; */
+  text-align: center;
+  /* margin-top: 17px; */
+ 
+}
+.total {
+  font-size: 20px;
+  font-weight: 500;
+  /* margin-top: -5px; */
+}
+@media (max-width: 767px) {
+  .breadcramp p {
+    font-size: 23px;
+    font-weight: 600;
+    color: #000;
+    vertical-align: middle;
+    margin: auto;
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 0px;
+    margin-left: 0px;
+  }
+  .imageView {
+    padding: 0;
+    margin: inherit;
+  }
+  .breadcramp img {
+    width: inherit;
+    margin-left: 5px;
+    object-fit: cover;
+  }
+}
+@media (min-width: 768px) and (max-width: 1200px) {
+  .imageView {
+    padding: 0;
+    margin: inherit;
+  }
+  .tab-col {
+    width: 33% !important;
+    margin-top: 4px;
+  }
+  .tab-padding {
+    padding-left: 16px;
+    padding-right: 8px;
+  }
+  .chartscol {
+    overflow: auto;
+  }
+  .table-responsive {
+    overflow: auto;
+  }
+}
+@media (min-width: 1201px) {
+  .imageView {
+    padding: 0;
+    margin: inherit;
+  }
+}
+.dashboardimg {
+  height: 45px;
+  width: 45px;
+  margin-top: -5px;
+}
+.dashboard .form-control {
+  margin-top: 2px;
+  height: 36px !important;
+  
+}
+.dashboard .form-select {
+  margin-top: 5px;
+  cursor: pointer;
+  height: 36px !important;
+}
+.treecutcard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  box-shadow: 0px 0px 7px -2px #818181;
+  background: #ffffff;
+  background-clip: border-box;
+  border-radius: 8px;
+  padding: 7px;
+  border: none;
+}
+.headingsix {
+  font-size: 16px;
+  font-weight: 400;
+}
+.supcount {
+  font-size: 16px;
+  color: blue;
+  /* margin-right: 35px;
+  float: right; */
+}
+.chartcard {
+  padding: 8px;
+  border-radius: 8px;
+}
+.tablee {
+  text-align: center;
+}
+.tablee td {
+  white-space: initial !important;
+}
+.tablehead {
+  background: skyblue;
+  position: sticky;
+  top: -2px;
+}
+.table-responsive {
+  overflow: auto;
+  max-height: 300px;
+  border-radius: 12px !important;
+  border: 1px solid lightgray !important;
+}
+.charts {
+  height: 29px;
+  width: auto;
+}
+.chartscol {
+  margin-left: -53px;
+}
+.selectdropdowns {
+  margin-left: 24px;
+}
+.pt2 {
+  padding-top: 16px;
+}
+.nodata {
+  font-size: 18px;
+  font-weight: 500;
+}
+@media (min-width: 320px) and (max-width: 768px) {
+  .breadcramp {
+    height: auto;
+    padding: 10px;
+  }
+  .headingsix {
+    font-size: 10px;
+  }
+  .tab-col {
+    width: 50% !important;
+    margin-top: 4px;
+  }
+  .tab-padding {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+}
+@media (max-width: 500px) {
+  .selectdropdowns {
+    margin-left: 0px !important;
+  }
+  .chartscol {
+    overflow: auto;
+  }
+  .table-responsive {
+    overflow: auto;
+  }
+}
+::ng-deep .chart-legend .legend-labels {
+  width: 240px !important;
+  margin-left: 90px !important;
+  margin-top: -30px;
+  /* text-align: center !important; */
+}
+.cardPad {
+  padding-right: 0px;
+}
+
+.customcard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  box-shadow: 0px 0px 7px -2px #b8b7b7;
+  background: #ffffff;
+  background-clip: border-box;
+  border-radius: 8px;
+  padding: 6px;
+  border: none;
+  padding: 8px 0 0 24px;
+}
+.form-control {
+  display: block;
+  width: 100%;
+  padding: 0.375rem 0.75rem;
+  font-size: .875rem!important;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  -webkit-appearance: none;
+  appearance: none;
+  border-radius: 0.25rem;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+.form-select{
+  padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    padding-left: 0.5rem;
+    font-size: .875rem;
+    border-radius: 0.25rem;
+}

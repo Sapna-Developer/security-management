@@ -1,0 +1,313 @@
+<div class="container-fluid breadcramp maindashboard-p">
+  <div class="row dashboard pt2">
+    <div class="col-md-4 col-3 col-sm-3 col-xs-12">
+      <p class="maindashboard">Visitor&nbsp;Dashboard</p>
+    </div>
+  </div>
+</div>
+<div class="main-content">
+  <div class="row pt-2 tab-padding">
+    <div class="col-md-2 col-sm-6 tab-col">
+      <input
+        type="text"
+        autocomplete="off"
+        bsDaterangepicker
+        class="form-control daterange"
+        name="date"
+        [(ngModel)]="bsRangeValue"
+        [bsConfig]="{
+          containerClass: 'theme-dark-blue',
+          adaptivePosition: true,
+          rangeInputFormat: 'YYYY-MM-DD'
+        }"
+        (ngModelChange)="updateMyDate($event)"
+        placeholder="Select Date Range"
+      />
+    </div>
+    <div class="col-md-2 col-xs-6 pb-1 dashboardcol2 tab-col">
+      <select
+        class="form-select"
+        aria-label="Default select example"
+        [(ngModel)]="dashboard.filterfor"
+        (change)="getVmDashboardReport()"
+      >
+        <option class="dropdown-item" value="">Filter By</option>
+
+        <option value="region">Region</option>
+        <option value="state">State</option>
+        <option value="cluster">Cluster</option>
+        <option value="site">Site</option>
+      </select>
+    </div>
+    <div class="col-md-2 col-xs-6 pb-1 dashboardcol3 tab-col">
+      <select
+        class="form-select"
+        aria-label="Default select example"
+        [(ngModel)]="dashboard.region"
+        (change)="getRegionData()"
+      >
+        <option class="dropdown-item" value="">Select Region</option>
+
+        <option [ngValue]="item" *ngFor="let item of Regions">
+          {{ item | titlecase }}
+        </option>
+        <!-- <option *ngFor="let item of Regions">
+          {{ item.name }}
+        </option> -->
+      </select>
+    </div>
+    <div class="col-md-2 col-xs-6 pb-1 dashboardcol3 tab-col">
+      <select
+        class="form-select"
+        aria-label="Default select example"
+        [(ngModel)]="dashboard.state"
+        (change)="getStateData()"
+      >
+        <option class="dropdown-item" value="">Select State</option>
+
+        <option [ngValue]="item" *ngFor="let item of States">
+          {{ item | titlecase }}
+        </option>
+      </select>
+    </div>
+    <div class="col-md-2 col-xs-6 pb-1 dashboardcol3 tab-col">
+      <select
+        class="form-select"
+        aria-label="Default select example"
+        [(ngModel)]="dashboard.cluster"
+        (change)="getClusterData()"
+      >
+        <option class="dropdown-item" value="">Select Cluster</option>
+        <option [ngValue]="item" *ngFor="let item of Clusters">
+          {{ item | titlecase }}
+        </option>
+      </select>
+    </div>
+    <div class="col-md-2 col-xs-6 pb-1 dashboardcol3 tab-col">
+      <select
+        class="form-select"
+        aria-label="Default select example"
+        name="site"
+        [(ngModel)]="dashboard.site"
+        (change)="getSiteData()"
+      >
+        <option value="">Select Site</option>
+        <option [ngValue]="item.siteName" *ngFor="let item of sitedata">
+          {{ item.name }}
+        </option>
+      </select>
+    </div>
+  </div>
+  <div class="row mt-5">
+    <div class="col-lg-4 col-sm-6 col-xs-6 mobile-margin">
+      <div style="margin-left: 20px">
+        <h5>
+          Bussiness &nbsp;&nbsp;
+
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-briefcase"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v8A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1h-3zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5zm1.886 6.914L15 7.151V12.5a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5V7.15l6.614 1.764a1.5 1.5 0 0 0 .772 0zM1.5 4h13a.5.5 0 0 1 .5.5v1.616L8.129 7.948a.5.5 0 0 1-.258 0L1 6.116V4.5a.5.5 0 0 1 .5-.5z"
+            />
+          </svg>
+        </h5>
+      </div>
+      <div class="card customcard blue-card">
+        <!-- <div class="row"> -->
+        <!-- <div class="col-md-12 col-xs-12 col-10 col-sm-12"> -->
+        <h4>Visitor</h4>
+        <div class="row">
+          <div class="col-3">
+            In
+            <p class="modelCount">{{ totalbusinessIn }}</p>
+          </div>
+          <div class="col-3">
+            Out
+            <p class="modelCount">{{ totalbusinessOut }}</p>
+          </div>
+          <div class="col-6">
+            Overstayed
+            <p class="modelCount">{{ totalbusinessOverstayed }}</p>
+          </div>
+        </div>
+        <!-- </div> -->
+        <!-- </div> -->
+      </div>
+    </div>
+    <div class="col-lg-4 col-sm-6 col-xs-6 mobile-margin">
+      <div style="margin-left: 20px">
+        <h5>
+          Personal &nbsp;&nbsp;
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-gear-fill"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"
+            />
+          </svg>
+        </h5>
+      </div>
+      <div class="card customcard orange-card">
+        <!-- <div class="row">
+          <div class="col-md-10"> -->
+        <h4>Visitor</h4>
+
+        <div class="row">
+          <div class="col-3">
+            In
+            <p class="modelCount">{{ totalpersonalIn }}</p>
+          </div>
+          <div class="col-3">
+            Out
+            <p class="modelCount">{{ totalpersonalOut }}</p>
+          </div>
+          <div class="col-6">
+            Overstayed
+            <p class="modelCount">{{ totalpersonalOut }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4 col-sm-6 col-xs-6 mobile-margin">
+      <div style="margin-left: 20px">
+        <h5>
+          Total &nbsp;&nbsp;
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-list-task"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M2 2.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5V3a.5.5 0 0 0-.5-.5H2zM3 3H2v1h1V3z"
+            />
+            <path
+              d="M5 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM5.5 7a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9zm0 4a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9z"
+            />
+            <path
+              fill-rule="evenodd"
+              d="M1.5 7a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H2a.5.5 0 0 1-.5-.5V7zM2 7h1v1H2V7zm0 3.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5H2zm1 .5H2v1h1v-1z"
+            />
+          </svg>
+        </h5>
+      </div>
+      <div class="card customcard green-card">
+        <!-- <div class="row">
+          <div class="col-md-10"> -->
+        <h4>Visitor</h4>
+
+        <div class="row">
+          <div class="col-3">
+            In
+            <p class="modelCount">{{ totalIn }}</p>
+          </div>
+          <div class="col-3">
+            Out
+            <p class="modelCount">{{ totalOut }}</p>
+          </div>
+          <div class="col-6">
+            Overstayed
+            <p class="modelCount">{{ totalOverstayed }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-3" *ngIf="array.length !== 0">
+    <div class="col-md-7">
+      <div class="card chartcard">
+        <div class="row">
+          <div class="col-1 me-3">
+            <img src="../../../assets/security/chart.svg" class="charts" />
+          </div>
+          <div class="col-7">
+            <h6 class="total mt-2">All Locations</h6>
+          </div>
+        </div>
+        <div>
+          <div class="table-responsive">
+            <table class="table table-hover tablee" style="margin-bottom: 0">
+              <thead class="tablehead">
+                <tr>
+                  <th rowspan="2" colspan="1" style="vertical-align: middle">
+                    {{ resName | titlecase }}
+                  </th>
+                  <th colspan="3" rowspan="1">Business</th>
+                  <th colspan="3" rowspan="1">Personal</th>
+
+                  <th colspan="3" rowspan="1">Total</th>
+                </tr>
+                <tr>
+                  <th colspan="1" rowspan="1">In</th>
+                  <th colspan="1" rowspan="1">Out</th>
+                  <th colspan="1" rowspan="1">Overstayed</th>
+                  <th colspan="1" rowspan="1">In</th>
+                  <th colspan="1" rowspan="1">Out</th>
+                  <th colspan="1" rowspan="1">Overstayed</th>
+                  <th colspan="1" rowspan="1">In</th>
+                  <th colspan="1" rowspan="1">Out</th>
+                  <th colspan="1" rowspan="1">Overstayed</th>
+                </tr>
+              </thead>
+
+              <tbody style="overflow-y: scroll; max-height: 100px">
+                <tr *ngFor="let item of array">
+                  <!-- <td>{{ item }}</td> -->
+                  <td>{{ item.name | titlecase }}</td>
+                  <td>{{ item.businessIn }}</td>
+                  <td>{{ item.businessOut }}</td>
+                  <td>{{ item.businessOverStayed }}</td>
+                  <td>{{ item.personalIn }}</td>
+                  <td>{{ item.personalOut }}</td>
+                  <td>{{ item.personalOverStayed }}</td>
+                  <td>{{ item.totalIn }}</td>
+                  <td>{{ item.totalOut }}</td>
+                  <td>{{ item.totalOverStayed }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 chartscol" #ContainerRef>
+      <ngx-charts-bar-vertical-2d
+        (window:resize)="resizeChart(ContainerRef.offsetWidth)"
+        [legendPosition]="'below'"
+        [legendTitle]="legendTitle"
+        [view]="view"
+        [scheme]="colorScheme"
+        [results]="multi"
+        [gradient]="gradient"
+        [xAxis]="showXAxis"
+        [yAxis]="showYAxis"
+        [legend]="showLegend"
+        [showXAxisLabel]="showXAxisLabel"
+        [showYAxisLabel]="showXAxisLabel"
+        (select)="onSelect($event)"
+        [showDataLabel]="true"
+      >
+        <!-- [xAxisLabel]="xAxisLabel" -->
+        <!-- [yAxisLabel]="yAxisLabel" -->
+      </ngx-charts-bar-vertical-2d>
+    </div>
+  </div>
+  <div class="text-center mt-4 nodata" *ngIf="array.length === 0">
+    No Data Found
+  </div>
+</div>

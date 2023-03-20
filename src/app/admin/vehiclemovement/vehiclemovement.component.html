@@ -1,0 +1,2951 @@
+<div class="container-fluid breadcramp">
+  <div class="row">
+    <!-- <div class="col-md-6  col-6 col-sm-6 col-xs-6  mt-4">
+        <p><i class="bi bi-shield-check shield"></i>Vehicle Movement</p>
+      </div>
+      <div class="col-md-6  col-6 col-sm-6 col-xs-6 imageView">
+        <img src="../../../assets/vehicle-movement.jpg" alt="">
+      </div> -->
+    <div class="col-md-5 col-s-3">
+      <ul class="nav nav-pills navbars" id="pills-tab" role="tablist">
+        <li class="nav-item tabs" role="presentation">
+          <button
+            class="nav-link active"
+            data-bs-toggle="pill"
+            data-bs-target="#Main Gate Entry"
+            type="button"
+            role="tab"
+            [ngClass]="{ active: activeTab === 'Main Gate Entry' }"
+            (click)="MGE('Main Gate Entry')"
+          >
+            Main Gate Entry
+          </button>
+        </li>
+        <li class="nav-item tabs" role="presentation">
+          <button
+            class="nav-link"
+            data-bs-toggle="pill"
+            data-bs-target="#Vehicle Track"
+            type="button"
+            role="tab"
+            [ngClass]="{ active: activeTab === 'Vehicle Track' }"
+            (click)="VTRACK('Vehicle Track')"
+          >
+            Vehicle Track
+          </button>
+        </li>
+        <li class="nav-item tabs" role="presentation">
+          <button
+            class="nav-link"
+            data-bs-toggle="pill"
+            data-bs-target="#Vehicle Log"
+            type="button"
+            role="tab"
+            [ngClass]="{ active: activeTab === 'Vehicle Log' }"
+            (click)="VLOG('Vehicle Log')"
+          >
+            Vehicle Log
+          </button>
+        </li>
+        <li class="nav-item tabs" role="presentation" *ngIf="viewTab">
+          <button
+            class="nav-link active"
+            data-bs-toggle="pill"
+            data-bs-target="#Location Update"
+            type="button"
+            role="tab"
+            [ngClass]="{ active: activeTab === 'Location Update' }"
+            (click)="LocationUpdate('Location Update')"
+          >
+            Location Update
+          </button>
+        </li>
+        <li class="nav-item tabs" role="presentation" *ngIf="ViewExit">
+          <button
+            class="nav-link active"
+            data-bs-toggle="pill"
+            data-bs-target="#Exit Gate"
+            type="button"
+            role="tab"
+            [ngClass]="{ active: activeTab === 'Exit Gate' }"
+            (click)="Exit('Exit Gate')"
+          >
+            Exit Gate
+          </button>
+        </li>
+      </ul>
+    </div>
+    <div class="col-md-2 col-s-4">
+      <input
+        *ngIf="activeTab === 'Vehicle Log'"
+        type="text"
+        autocomplete="off"
+        bsDaterangepicker
+        class="form-control daterange padding"
+        name="date"
+        [(ngModel)]="bsRangeValue"
+        [bsConfig]="{
+          containerClass: 'theme-dark-blue',
+          adaptivePosition: true,
+          rangeInputFormat: 'YYYY-MM-DD'
+        }"
+        (ngModelChange)="updateMyDate($event)"
+        placeholder="Select Date Range"
+      />
+    </div>
+    <div class="col-md-2 col-s-4">
+      <select
+        *ngIf="activeTab === 'Vehicle Log'"
+        class="form-select padding"
+        name="vehicle_category"
+        [(ngModel)]="maingateentry.vehicle_category"
+        (change)="getDAte()"
+      >
+        <option value="" [selected]="true">Vehicle Category</option>
+        <option value="passenger">Passenger</option>
+        <option value="goodscarrier">Goods Carrier</option>
+        <option value="machinery">Machinery</option>
+        <option value="emergency">Emergency</option>
+        <!-- <option *ngFor="let web of websiteList">{{web}}</option>   -->
+      </select>
+    </div>
+    <div class="col-md-3 col-s-4">
+      <input
+        *ngIf="activeTab === 'Vehicle Track'"
+        type="search"
+        placeholder="Search By Vehicle Number"
+        class="form-control padding"
+        [(ngModel)]="searchtrack.name"
+        (input)="searchbyvehicleNumber()"
+      />
+      <input
+        *ngIf="activeTab === 'Vehicle Log'"
+        type="search"
+        placeholder="Search By Vehicle Number"
+        class="form-control padding"
+        [(ngModel)]="search.name"
+        (input)="searchbyvehicle()"
+      />
+    </div>
+  </div>
+</div>
+<div class="main-content">
+  <div class="row">
+    <div class="col-md-12">
+      <!-- *ngIf="userdetails.data.app_details.roles[0]==='superAdmin'" -->
+      <div class="card">
+        <div class="card-body">
+          <!-- <ul class="nav nav-pills mb-3 navbars" id="pills-tab" role="tablist">
+                    <li class="nav-item tabs" role="presentation">
+                      <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#Main Gate Entry" type="button" role="tab" [ngClass]="{ 'active':activeTab==='Main Gate Entry'}"
+                      (click)="MGE('Main Gate Entry')">Main Gate Entry</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link" data-bs-toggle="pill" data-bs-target="#Stores Inward" type="button" role="tab" [ngClass]="{ 'active':activeTab==='Stores Inward'}"
+                      (click)="SI('Stores Inward')">Stores Inward</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#Stores Outward" type="button" role="tab" [ngClass]="{ 'active':activeTab==='Stores Outward'}"
+                        (click)="SO('Stores Outward')">Stores Outward</button>
+                      </li> 
+                      <li class="nav-item tabs" role="presentation">
+                        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#Vehicle Track" type="button" role="tab" [ngClass]="{ 'active':activeTab==='Vehicle Track'}"
+                        (click)="VTRACK('Vehicle Track')">Vehicle Track</button>
+                      </li>
+                      <li class="nav-item tabs" role="presentation">
+                        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#Vehicle Log" type="button" role="tab" [ngClass]="{ 'active':activeTab==='Vehicle Log'}"
+                        (click)="VLOG('Vehicle Log')">Vehicle Log</button>
+                      </li>
+                      <li class="nav-item tabs" role="presentation" *ngIf="viewTab">
+                        <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#Location Update" type="button" role="tab" [ngClass]="{ 'active':activeTab==='Location Update'}"
+                        (click)="LocationUpdate('Location Update')">Location Update</button>
+                      </li>
+                      <li class="nav-item tabs" role="presentation" *ngIf="ViewExit">
+                        <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#Exit Gate" type="button" role="tab" [ngClass]="{ 'active':activeTab==='Exit Gate'}"
+                        (click)="Exit('Exit Gate')">Exit Gate</button>
+                      </li>
+                  </ul> -->
+          <div class="tab-content" id="pills-tabContent">
+            <div
+              class="tab-pane"
+              id="Main Gate Entry"
+              role="tabpanel"
+              [ngClass]="{ active: activeTab === 'Main Gate Entry' }"
+            >
+              <div class="card vehiclecard">
+                <div class="card-body cardbody">
+                  <form
+                    #maingatefr="ngForm"
+                    class="vehicleform"
+                    (ngSubmit)="saveMainGateData(maingatefr)"
+                  >
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Vehicle Category<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <select
+                            class="form-select"
+                            name="vehicle_category"
+                            [(ngModel)]="maingateentry.vehicle_category"
+                          >
+                            <option disabled value="" [selected]="true">
+                              Vehicle Category
+                            </option>
+                            <option value="passenger">Passenger</option>
+                            <option value="goodscarrier">Goods Carrier</option>
+                            <option value="machinery">Machinery</option>
+                            <option value="emergency">Emergency</option>
+                            <!-- <option *ngFor="let web of websiteList">{{web}}</option>   -->
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Vehicle Type<span
+                              class="mandetoryinput"
+                              *ngIf="
+                                maingateentry.vehicle_category !== 'emergency'
+                              "
+                              >*</span
+                            ></label
+                          >
+                          <select
+                            class="form-select"
+                            name="vehicle_type"
+                            [(ngModel)]="maingateentry.vehicle_type"
+                          >
+                            <option selected disabled value="">
+                              Vehicle Type
+                            </option>
+                            <option value="companyowned">Company Owned</option>
+                            <option value="visitor">Visitor</option>
+                            <option value="companyhired">Company Hired</option>
+                            <option value="deliveryvehicle">
+                              Delivery Vehicle
+                            </option>
+                            <option value="ambulance">Ambulance</option>
+                            <option value="fireengine">Fire Engine</option>
+                            <!-- <option *ngFor="let web of websiteList">{{web}}</option>   -->
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div
+                          class="form-group"
+                          *ngIf="maingateentry.vehicle_category !== 'emergency'"
+                        >
+                          <label for="exampleInputEmail1"
+                            >Carrying Materials<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            type="text"
+                            autocomplete="off"
+                            class="form-control"
+                            placeholder="Carrying materials"
+                            name="carrying_material"
+                            [(ngModel)]="maingateentry.carrying_material"
+                          />
+                        </div>
+                        <div
+                          class="form-group"
+                          *ngIf="maingateentry.vehicle_category === 'emergency'"
+                        >
+                          <label for="exampleInputEmail1">Incident Type</label>
+                          <select
+                            class="form-select"
+                            name="vehicle_type"
+                            [(ngModel)]="maingateentry.incident_type"
+                          >
+                            <option
+                              disabled
+                              value="undefined"
+                              [selected]="true"
+                            >
+                              Incident Type
+                            </option>
+                            <option value="fire">Fire</option>
+                            <option value="accident">Accident</option>
+                            <!-- <option *ngFor="let web of websiteList">{{web}}</option>   -->
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row mt-2">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Site<span class="mandetoryinput">*</span></label
+                          >
+                          <select
+                            class="form-select"
+                            name="site"
+                            [(ngModel)]="maingateentry.site"
+                            (change)="getLocationsInSite()"
+                          >
+                            <option value="" [selected]="true">
+                              Select Site
+                            </option>
+                            <option
+                              [ngValue]="item.siteId"
+                              *ngFor="let item of sitedata"
+                            >
+                              {{ item.siteName }}
+                            </option>
+                          </select>
+                        </div>
+                        <!-- <input placeholder="To Location (In the plant)"
+                                      type="text"
+                                      class="form-control"
+                                      name="to_location"
+                                      [(ngModel)]="maingateentry.to_location"
+                                    /> -->
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >To Location(In The Plant)<span
+                              class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <ng-multiselect-dropdown
+                            [placeholder]="'To Location (In the plant)'"
+                            [settings]="dropdownSettings"
+                            name="to_location"
+                            [(ngModel)]="maingateentry.to_location"
+                            [data]="dropdownList"
+                          >
+                          </ng-multiselect-dropdown>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Vehicle Number<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            autocomplete="off"
+                            type="text"
+                            placeholder="Vehicle Number"
+                            class="form-control"
+                            name="vehicle_number"
+                            [(ngModel)]="maingateentry.vehicle_number"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row mt-2">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >In Date&Time<span
+                              class="mandetoryinput"
+                              *ngIf="
+                                maingateentry.vehicle_category !== 'emergency'
+                              "
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            type="datetime-local"
+                            class="form-control"
+                            name="in_date_time"
+                            [(ngModel)]="maingateentry.in_date_time"
+                            [max]="maingateentry.in_date_time"
+                          />
+                          <span
+                            *ngIf="validationMessageTime"
+                            class="text-danger"
+                          >
+                            Time should not exceed current time
+                          </span>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Driver Name<span
+                              class="mandetoryinput"
+                              *ngIf="
+                                maingateentry.vehicle_category !== 'emergency'
+                              "
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            autocomplete="off"
+                            type="text"
+                            placeholder="Driver Name"
+                            class="form-control"
+                            name="driver_name"
+                            [(ngModel)]="maingateentry.driver_name"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Driver Contact Details<span
+                              class="mandetoryinput"
+                              *ngIf="
+                                maingateentry.vehicle_category !== 'emergency'
+                              "
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            [pattern]="mobNumberPattern"
+                            autocomplete="off"
+                            type="text"
+                            placeholder="Driver Contact Details"
+                            class="form-control"
+                            name="driver_contact_details"
+                            #driver_contact_details="ngModel"
+                            [(ngModel)]="maingateentry.driver_contact_details"
+                          />
+                          <div
+                            *ngIf="
+                              driver_contact_details.errors ||
+                              maingatefr.submitted
+                            "
+                            class="text-danger mt-1"
+                          >
+                            <div
+                              *ngIf="driver_contact_details.errors?.['pattern']"
+                            >
+                              Mobile number not valid.
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row mt-2">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Driver License Number<span
+                              class="mandetoryinput"
+                              *ngIf="
+                                maingateentry.vehicle_category !== 'emergency'
+                              "
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            autocomplete="off"
+                            type="text"
+                            placeholder="Driver License Number"
+                            class="form-control"
+                            name="driver_license_number"
+                            [(ngModel)]="maingateentry.driver_license_number"
+                          />
+                        </div>
+                        <!-- <input
+                                          type="text" placeholder="Signature"
+                                          class="form-control"
+                                          name="signature"
+                                          [(ngModel)]="maingateentry.signature"
+                                        /> -->
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >No.of Passengers<span
+                              class="mandetoryinput"
+                              *ngIf="
+                                maingateentry.vehicle_category !== 'emergency'
+                              "
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            autocomplete="off"
+                            type="number"
+                            placeholder="No.of Passengers (Without Driver)"
+                            class="form-control"
+                            min="0"
+                            name="no_passengers"
+                            [(ngModel)]="maingateentry.no_passengers"
+                            (keypress)="validateNumber($event)"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Purpose<span
+                              class="mandetoryinput"
+                              *ngIf="
+                                maingateentry.vehicle_category !== 'emergency'
+                              "
+                              >*</span
+                            ></label
+                          >
+                          <select
+                            class="form-select"
+                            name="purpose"
+                            [(ngModel)]="maingateentry.purpose"
+                          >
+                            <option value="" [selected]="true">
+                              Select Purpose
+                            </option>
+                            <option value="meetpersonal">Meet Personal</option>
+                            <option value="pickup">Pick Up</option>
+                            <option value="drop">Drop</option>
+                            <option value="load">Load</option>
+                            <option value="unloadgoods">Unload Goods</option>
+                            <option value="lifting">Lifting</option>
+                            <option value="cleaning">Cleaning</option>
+                            <option value="leveling">Leveling</option>
+                            <option value="digging">Digging</option>
+                            <!-- <option *ngFor="let web of websiteList">{{web}}</option>   -->
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row mt-2">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Whom To Meet<span
+                              class="mandetoryinput"
+                              *ngIf="
+                                maingateentry.vehicle_category !== 'emergency'
+                              "
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            autocomplete="off"
+                            type="text"
+                            placeholder="Whom To Meet"
+                            class="form-control"
+                            name="whom_to_meet"
+                            [(ngModel)]="maingateentry.whom_to_meet"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Remarks<span
+                              class="mandetoryinput"
+                              *ngIf="
+                                maingateentry.vehicle_category !== 'emergency'
+                              "
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            autocomplete="off"
+                            type="text"
+                            placeholder="Remarks"
+                            class="form-control"
+                            name="remarks"
+                            [(ngModel)]="maingateentry.remarks"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row mt-3">
+                      <div class="col-md-12">
+                        <button
+                          type="button"
+                          class="uploadbutton me-2"
+                          (click)="opensignaturepad()"
+                        >
+                          Signature<span class="mandetoryinput">*</span>
+                        </button>
+                        <!-- </div>
+                                      <div class="col-md-4"> -->
+                        <button
+                          type="button"
+                          class="uploadbutton1"
+                          (click)="fileInput.click()"
+                        >
+                          <span
+                            >Upload Photo<span class="mandetoryinput"
+                              >*</span
+                            ></span
+                          >
+                          <input
+                            #fileInput
+                            type="file"
+                            (change)="onFileInput($event)"
+                            style="display: none"
+                          />
+                        </button>
+                        <span class="selectedImage">{{ selectedfile }}</span>
+                      </div>
+                    </div>
+                    <div class="row mt-2">
+                      <div class="col-md-12">
+                        <p
+                          class="text-danger text-center"
+                          *ngIf="validationMsg"
+                        >
+                          All Fields Are Mandatory*
+                        </p>
+                        <button
+                          mat-raised-button
+                          class="btn btn-primary submit"
+                          type="submit"
+                        >
+                          Save
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+              <!-- <div class="visitorform">
+                   <div class="row mb-3">
+                    <div class="col-md-4">
+                        <input class="form-control" placeholder="Visitor Name" type="text" name="visitorname" [(ngModel)]="visitormovement.visitorname">
+                    </div>
+                    <div class="col-md-4">
+                        <input class="form-control" placeholder="Personal ID Type" type="text" name="idtype" [(ngModel)]="visitormovement.idtype">
+                    </div>
+                    <div class="col-md-4">
+                        <input class="form-control" placeholder="Escorter ID" type="text" name="escorterid" [(ngModel)]="visitormovement.escorterid">
+                    </div>
+                   </div>
+                </div> -->
+            </div>
+            <div
+              class="tab-pane"
+              id="Location Update"
+              role="tabpanel"
+              [ngClass]="{ active: activeTab === 'Location Update' }"
+            >
+              <div class="card vehiclecard">
+                <div class="card-body cardbody">
+                  <form
+                    *ngIf="vehicleCategory === 'passenger'"
+                    #locationfr="ngForm"
+                    class="vehicleform"
+                    (ngSubmit)="UpdateLocationData(locationfr)"
+                  >
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Vehicle Category<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            type="text"
+                            placeholder="Vehicle Category"
+                            class="form-control"
+                            name="vehicle_category"
+                            [(ngModel)]="locationUpdate.vehicle_category"
+                            readonly
+                          />
+                        </div>
+                        <!-- <select class="form-select" name="vehicle_category" [(ngModel)]="maingateentry.vehicle_category">
+                                   <option disabled value="null" [selected]="true">Vehicle Category</option>
+                                   <option value="passenger">Passenger</option>
+                                   <option value="goodscarrier">Goods Carrier</option>
+                                   <option value="machinary">Machinery</option>
+                                   <option value="emergency">Emergency</option>
+                                 </select> -->
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label
+                            >Vehicle Number<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            placeholder="Vehicle Number"
+                            name="vehicle_no"
+                            [(ngModel)]="locationUpdate.vehicle_no"
+                            readonly
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Main Gate Entry In Date&Time<span
+                              class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            placeholder="Main Gate Entry In Date & Time"
+                            name="indate_time"
+                            [(ngModel)]="locationUpdate.indate_time"
+                            readonly
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Driver Name<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            type="text"
+                            placeholder="Driver Name"
+                            class="form-control"
+                            name="driver_name"
+                            [(ngModel)]="locationUpdate.driver_name"
+                            readonly
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Driver Contact Details<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            type="text"
+                            placeholder="Driver Contact Details"
+                            class="form-control"
+                            name="driver_contact_details"
+                            [(ngModel)]="locationUpdate.driver_contact_details"
+                            readonly
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Driver License Number<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            type="text"
+                            placeholder="Driver License Number"
+                            class="form-control"
+                            name="driver_license_number"
+                            [(ngModel)]="locationUpdate.driver_license_number"
+                            readonly
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Purpose<span class="mandetoryinput">*</span></label
+                          >
+                          <input
+                            type="text"
+                            placeholder="Purpose"
+                            class="form-control"
+                            name="purpose"
+                            [(ngModel)]="locationUpdate.purpose"
+                            readonly
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Whom To Meet<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            type="text"
+                            placeholder="Whom To Meet"
+                            class="form-control"
+                            name="whom_to_meet"
+                            [(ngModel)]="locationUpdate.whom_to_meet"
+                            readonly
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >No.of Passengers<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            type="number"
+                            placeholder="No.of Passengers (Without Driver)"
+                            class="form-control"
+                            name="no_passengers"
+                            [(ngModel)]="locationUpdate.no_passengers"
+                            (keypress)="validateNumber($event)"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Reaching Date&Time<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            type="datetime-local"
+                            class="form-control"
+                            value="Reaching Date & Time"
+                            name="reachingdate_time"
+                            [(ngModel)]="locationUpdate.reachingdate_time"
+                            [disabled]="leavingDate"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Reason For Delay(If Delay)<span
+                              class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            autocomplete="off"
+                            type="text"
+                            placeholder="Reason for Delay(If Delay)"
+                            class="form-control"
+                            name="delay_reason"
+                            [(ngModel)]="locationUpdate.delay_reason"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label
+                            >Purpose Status<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            autocomplete="off"
+                            type="text"
+                            placeholder="Purpose Status"
+                            class="form-control"
+                            name="purposeStatus"
+                            [(ngModel)]="locationUpdate.purposeStatus"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Select Site<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <!-- <select
+                                    class="form-select" name="site"
+                                    [(ngModel)]="locationUpdate.site"
+                                  (change)="getLocationsInSite1()">
+                                    <option selected disabled [value]="null">
+                                      Select Site
+                                    </option>
+                                    <option
+                                      [ngValue]="item.siteId"
+                                      *ngFor="let item of sitedata"
+                                    >
+                                      {{ item.siteName }}
+                                    </option>
+                                  </select> -->
+                          <input
+                            name="site"
+                            [(ngModel)]="locationUpdate.site"
+                            type="text"
+                            class="form-control"
+                            readonly
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Location<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <select
+                            [disabled]="disableLocation"
+                            class="form-select"
+                            name="location"
+                            [(ngModel)]="locationUpdate.location"
+                          >
+                            <option selected disabled [value]="null">
+                              Choose Location
+                            </option>
+                            <option
+                              [ngValue]="item.locationId"
+                              *ngFor="let item of locationDataSites"
+                            >
+                              {{ item.locationName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Remarks<span class="mandetoryinput">*</span></label
+                          >
+                          <input
+                            autocomplete="off"
+                            type="text"
+                            placeholder="Remarks"
+                            class="form-control"
+                            name="remarks"
+                            [(ngModel)]="locationUpdate.remarks"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Leaving Date&Time<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            type="datetime-local"
+                            class="form-control"
+                            value="Leaving Date & Time"
+                            name="leavingdate_time"
+                            [(ngModel)]="locationUpdate.leavingdate_time"
+                            [disabled]="!leavingDate"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-2">
+                        <div class="form-group">
+                          <button
+                            type="button"
+                            class="viewImage"
+                            (click)="viewImage()"
+                            ngbTooltip="View Vehicle Image"
+                            placement="bottom"
+                          >
+                            <i
+                              class="fa fa-image imageIcon"
+                              aria-hidden="true"
+                            ></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row mt-2">
+                      <div class="col-md-12">
+                        <p
+                          class="text-danger text-center"
+                          *ngIf="validationMsgLocUpdate"
+                        >
+                          All Fields Are Mandatory*
+                        </p>
+                        <button
+                          mat-raised-button
+                          class="btn btn-primary Update"
+                          type="submit"
+                        >
+                          Update
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                  <form
+                    *ngIf="vehicleCategory === 'machinery'"
+                    #locationfr="ngForm"
+                    class="vehicleform"
+                    (ngSubmit)="UpdateMachinaryVehLocationData(locationfr)"
+                  >
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Vehicle Category<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            type="text"
+                            placeholder="Vehicle Category"
+                            class="form-control"
+                            name="vehicle_category"
+                            [(ngModel)]="locUpdatemachinary.vehicle_category"
+                            readonly
+                          />
+                        </div>
+                        <!-- <select class="form-select" name="vehicle_category" [(ngModel)]="maingateentry.vehicle_category">
+                                  <option disabled value="null" [selected]="true">Vehicle Category</option>
+                                  <option value="passenger">Passenger</option>
+                                  <option value="goodscarrier">Goods Carrier</option>
+                                  <option value="machinary">Machinery</option>
+                                  <option value="emergency">Emergency</option>
+                                </select> -->
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label
+                            >Vehicle Number<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            placeholder="Vehicle Number"
+                            name="vehicle_no"
+                            [(ngModel)]="locUpdatemachinary.vehicle_no"
+                            readonly
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Main Gate Entry In Date&Time<span
+                              class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            placeholder="Main Gate Entry In Date & Time"
+                            name="indate_time"
+                            [(ngModel)]="locUpdatemachinary.indate_time"
+                            readonly
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Driver Name<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            type="text"
+                            placeholder="Driver Name"
+                            class="form-control"
+                            name="driver_name"
+                            [(ngModel)]="locUpdatemachinary.driver_name"
+                            readonly
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Driver Contact Details<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            type="text"
+                            placeholder="Driver Contact Details"
+                            class="form-control"
+                            name="driver_contact_details"
+                            [(ngModel)]="
+                              locUpdatemachinary.driver_contact_details
+                            "
+                            readonly
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Driver License Number<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            type="text"
+                            placeholder="Driver License Number"
+                            class="form-control"
+                            name="driver_license_number"
+                            [(ngModel)]="
+                              locUpdatemachinary.driver_license_number
+                            "
+                            readonly
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Purpose<span class="mandetoryinput">*</span></label
+                          >
+                          <input
+                            type="text"
+                            placeholder="Purpose"
+                            class="form-control"
+                            name="purpose"
+                            [(ngModel)]="locUpdatemachinary.purpose"
+                            readonly
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Select Site<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <!-- <select
+                                    class="form-select" name="site"
+                                    [(ngModel)]="locationUpdate.site"
+                                  (change)="getLocationsInSite1()">
+                                    <option selected disabled [value]="null">
+                                      Select Site
+                                    </option>
+                                    <option
+                                      [ngValue]="item.siteId"
+                                      *ngFor="let item of sitedata"
+                                    >
+                                      {{ item.siteName }}
+                                    </option>
+                                  </select> -->
+                          <input
+                            name="site"
+                            [(ngModel)]="locUpdatemachinary.site"
+                            type="text"
+                            class="form-control"
+                            readonly
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Location<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <select
+                            [disabled]="disableLocationMac"
+                            class="form-select"
+                            name="location"
+                            [(ngModel)]="locUpdatemachinary.location"
+                          >
+                            <option selected disabled [value]="null">
+                              Choose Location
+                            </option>
+                            <option
+                              [ngValue]="item.locationId"
+                              *ngFor="let item of locationDataSites"
+                            >
+                              {{ item.locationName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Reaching Date&Time<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            type="datetime-local"
+                            class="form-control"
+                            value="Reaching Date & Time"
+                            name="reachingdate_time"
+                            [(ngModel)]="locUpdatemachinary.reachingdate_time"
+                            [disabled]="leavingtimemachinary"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Reason For Delay(If Delay)<span
+                              class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            autocomplete="off"
+                            type="text"
+                            placeholder="Reason for Delay(If Delay)"
+                            class="form-control"
+                            name="delay_reason"
+                            [(ngModel)]="locUpdatemachinary.delay_reason"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label
+                            >Purpose Status<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            autocomplete="off"
+                            type="text"
+                            placeholder="Purpose Status"
+                            class="form-control"
+                            name="purposeStatus"
+                            [(ngModel)]="locUpdatemachinary.purposeStatus"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Remarks<span class="mandetoryinput">*</span></label
+                          >
+                          <input
+                            autocomplete="off"
+                            type="text"
+                            placeholder="Remarks"
+                            class="form-control"
+                            name="remarks"
+                            [(ngModel)]="locUpdatemachinary.remarks"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Leaving Date&Time<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            [disabled]="!leavingtimemachinary"
+                            type="datetime-local"
+                            class="form-control"
+                            value="Leaving Date & Time"
+                            name="leavingdate_time"
+                            [(ngModel)]="locUpdatemachinary.leavingdate_time"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-2">
+                        <div class="form-group">
+                          <button
+                            type="button"
+                            class="viewImagemac"
+                            (click)="viewImage()"
+                            ngbTooltip="View Vehicle Image"
+                            placement="bottom"
+                          >
+                            <i
+                              class="fa fa-image imageIcon"
+                              aria-hidden="true"
+                            ></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row mt-2">
+                      <div class="col-md-12">
+                        <p
+                          class="text-danger text-center"
+                          *ngIf="valMsgMachinaryVehLocUpdate"
+                        >
+                          All Fields Are Mandatory*
+                        </p>
+                        <button
+                          mat-raised-button
+                          class="btn btn-primary Update"
+                          type="submit"
+                        >
+                          Update
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                  <form
+                    *ngIf="vehicleCategory === 'emergency'"
+                    #locationfr="ngForm"
+                    class="vehicleform"
+                    (ngSubmit)="UpdateEmergencyVehLocationData(locationfr)"
+                  >
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Vehicle Category<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            type="text"
+                            placeholder="Vehicle Category"
+                            class="form-control"
+                            name="vehicle_category"
+                            [(ngModel)]="locUpdateemergency.vehicle_category"
+                            readonly
+                          />
+                        </div>
+                        <!-- <select class="form-select" name="vehicle_category" [(ngModel)]="maingateentry.vehicle_category">
+                                  <option disabled value="null" [selected]="true">Vehicle Category</option>
+                                  <option value="passenger">Passenger</option>
+                                  <option value="goodscarrier">Goods Carrier</option>
+                                  <option value="machinary">Machinery</option>
+                                  <option value="emergency">Emergency</option>
+                                </select> -->
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label
+                            >Vehicle Number<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            placeholder="Vehicle Number"
+                            name="vehicle_no"
+                            [(ngModel)]="locUpdateemergency.vehicle_no"
+                            readonly
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Main Gate Entry In Date&Time</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            placeholder="Main Gate Entry In Date & Time"
+                            name="indate_time"
+                            [(ngModel)]="locUpdateemergency.indate_time"
+                            readonly
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1">Driver Name</label>
+                          <input
+                            type="text"
+                            placeholder="Driver Name"
+                            class="form-control"
+                            name="driver_name"
+                            [(ngModel)]="locUpdateemergency.driver_name"
+                            readonly
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Driver Contact Details</label
+                          >
+                          <input
+                            type="text"
+                            placeholder="Driver Contact Details"
+                            class="form-control"
+                            name="driver_contact_details"
+                            [(ngModel)]="
+                              locUpdateemergency.driver_contact_details
+                            "
+                            readonly
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Driver License Number</label
+                          >
+                          <input
+                            type="text"
+                            placeholder="Driver License Number"
+                            class="form-control"
+                            name="driver_license_number"
+                            [(ngModel)]="
+                              locUpdateemergency.driver_license_number
+                            "
+                            readonly
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1">Purpose</label>
+                          <input
+                            type="text"
+                            placeholder="Purpose"
+                            class="form-control"
+                            name="purpose"
+                            [(ngModel)]="locUpdateemergency.purpose"
+                            readonly
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Select Site<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <!-- <select
+                                    class="form-select" name="site"
+                                    [(ngModel)]="locationUpdate.site"
+                                  (change)="getLocationsInSite1()">
+                                    <option selected disabled [value]="null">
+                                      Select Site
+                                    </option>
+                                    <option
+                                      [ngValue]="item.siteId"
+                                      *ngFor="let item of sitedata"
+                                    >
+                                      {{ item.siteName }}
+                                    </option>
+                                  </select> -->
+                          <input
+                            name="site"
+                            [(ngModel)]="locUpdateemergency.site"
+                            type="text"
+                            class="form-control"
+                            readonly
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Location<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <select
+                            [disabled]="disableLocationEmergency"
+                            class="form-select"
+                            name="location"
+                            [(ngModel)]="locUpdateemergency.location"
+                          >
+                            <option selected disabled [value]="null">
+                              Choose Location
+                            </option>
+                            <option
+                              [ngValue]="item.locationId"
+                              *ngFor="let item of locationDataSites"
+                            >
+                              {{ item.locationName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Reaching Date&Time</label
+                          >
+                          <input
+                            type="datetime-local"
+                            class="form-control"
+                            value="Reaching Date & Time"
+                            name="reachingdate_time"
+                            [(ngModel)]="locUpdateemergency.reachingdate_time"
+                            [disabled]="leavingtimeemergency"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Reason For Delay(If Delay)</label
+                          >
+                          <input
+                            autocomplete="off"
+                            type="text"
+                            placeholder="Reason for Delay(If Delay)"
+                            class="form-control"
+                            name="delay_reason"
+                            [(ngModel)]="locUpdateemergency.delay_reason"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>Purpose Status</label>
+                          <input
+                            autocomplete="off"
+                            type="text"
+                            placeholder="Purpose Status"
+                            class="form-control"
+                            name="purposeStatus"
+                            [(ngModel)]="locUpdateemergency.purposeStatus"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1">Remarks</label>
+                          <input
+                            autocomplete="off"
+                            type="text"
+                            placeholder="Remarks"
+                            class="form-control"
+                            name="remarks"
+                            [(ngModel)]="locUpdateemergency.remarks"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Leaving Date&Time</label
+                          >
+                          <input
+                            [disabled]="!leavingtimeemergency"
+                            type="datetime-local"
+                            class="form-control"
+                            value="Leaving Date & Time"
+                            name="leavingdate_time"
+                            [(ngModel)]="locUpdateemergency.leavingdate_time"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-2">
+                        <div class="form-group">
+                          <button
+                            type="button"
+                            class="viewImagemac"
+                            (click)="viewImage()"
+                            ngbTooltip="View Vehicle Image"
+                            placement="bottom"
+                          >
+                            <i
+                              class="fa fa-image imageIcon"
+                              aria-hidden="true"
+                            ></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row mt-2">
+                      <div class="col-md-12">
+                        <!-- <p class="text-danger text-center" *ngIf="valMsgMachinaryVehLocUpdate">All Fields Are Mandatory*</p> -->
+                        <button
+                          mat-raised-button
+                          class="btn btn-primary Update"
+                          type="submit"
+                        >
+                          Update
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                  <form
+                    *ngIf="vehicleCategory === 'goodscarrier'"
+                    #locationfr="ngForm"
+                    class="vehicleform"
+                    (ngSubmit)="UpdateGCVehLocationData(locationfr)"
+                  >
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Vehicle Category<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            type="text"
+                            placeholder="Vehicle Category"
+                            class="form-control"
+                            name="vehicle_category"
+                            [(ngModel)]="locUpdateGC.vehicle_category"
+                            readonly
+                          />
+                        </div>
+                        <!-- <select class="form-select" name="vehicle_category" [(ngModel)]="maingateentry.vehicle_category">
+                                  <option disabled value="null" [selected]="true">Vehicle Category</option>
+                                  <option value="passenger">Passenger</option>
+                                  <option value="goodscarrier">Goods Carrier</option>
+                                  <option value="machinary">Machinery</option>
+                                  <option value="emergency">Emergency</option>
+                                </select> -->
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label
+                            >Vehicle Number<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            placeholder="Vehicle Number"
+                            name="vehicle_no"
+                            [(ngModel)]="locUpdateGC.vehicle_no"
+                            readonly
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Main Gate Entry In Date&Time<span
+                              class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            placeholder="Main Gate Entry In Date & Time"
+                            name="indate_time"
+                            [(ngModel)]="locUpdateGC.indate_time"
+                            readonly
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Driver Name<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            type="text"
+                            placeholder="Driver Name"
+                            class="form-control"
+                            name="driver_name"
+                            [(ngModel)]="locUpdateGC.driver_name"
+                            readonly
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Driver Contact Details<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            type="text"
+                            placeholder="Driver Contact Details"
+                            class="form-control"
+                            name="driver_contact_details"
+                            [(ngModel)]="locUpdateGC.driver_contact_details"
+                            readonly
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Driver License Number<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            type="text"
+                            placeholder="Driver License Number"
+                            class="form-control"
+                            name="driver_license_number"
+                            [(ngModel)]="locUpdateGC.driver_license_number"
+                            readonly
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Purpose<span class="mandetoryinput">*</span></label
+                          >
+                          <input
+                            type="text"
+                            placeholder="Purpose"
+                            class="form-control"
+                            name="purpose"
+                            [(ngModel)]="locUpdateGC.purpose"
+                            readonly
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Select Site<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <!-- <select
+                                    class="form-select" name="site"
+                                    [(ngModel)]="locationUpdate.site"
+                                  (change)="getLocationsInSite1()">
+                                    <option selected disabled [value]="null">
+                                      Select Site
+                                    </option>
+                                    <option
+                                      [ngValue]="item.siteId"
+                                      *ngFor="let item of sitedata"
+                                    >
+                                      {{ item.siteName }}
+                                    </option>
+                                  </select> -->
+                          <input
+                            name="site"
+                            [(ngModel)]="locUpdateGC.site"
+                            type="text"
+                            class="form-control"
+                            readonly
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Location<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <select
+                            [disabled]="disableLocationGC"
+                            class="form-select"
+                            name="location"
+                            [(ngModel)]="locUpdateGC.location"
+                          >
+                            <option selected disabled [value]="null">
+                              Choose Location
+                            </option>
+                            <option
+                              [ngValue]="item.locationId"
+                              *ngFor="let item of locationDataSites"
+                            >
+                              {{ item.locationName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Reaching Date&Time<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            type="datetime-local"
+                            class="form-control"
+                            value="Reaching Date & Time"
+                            name="reachingdate_time"
+                            [(ngModel)]="locUpdateGC.reachingdate_time"
+                            [disabled]="leavingtimeGC"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Reason For Delay(If Delay)<span
+                              class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            autocomplete="off"
+                            type="text"
+                            placeholder="Reason for Delay(If Delay)"
+                            class="form-control"
+                            name="delay_reason"
+                            [(ngModel)]="locUpdateGC.delay_reason"
+                            [disabled]="leavingtimeGC"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Goods Type<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            autocomplete="off"
+                            type="text"
+                            placeholder="Goods Type"
+                            class="form-control"
+                            name="goods_type"
+                            [(ngModel)]="locUpdateGC.goods_type"
+                            [disabled]="leavingtimeGC"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Document Type<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            autocomplete="off"
+                            type="text"
+                            placeholder="Document Type"
+                            class="form-control"
+                            name="doc_type"
+                            [(ngModel)]="locUpdateGC.doc_type"
+                            [disabled]="leavingtimeGC"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Document Number<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            autocomplete="off"
+                            type="text"
+                            placeholder="Document Number"
+                            class="form-control"
+                            name="doc_number"
+                            [(ngModel)]="locUpdateGC.doc_number"
+                            [disabled]="leavingtimeGC"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label
+                            >Packing Details<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            autocomplete="off"
+                            type="text"
+                            placeholder="Packing Details"
+                            class="form-control"
+                            name="packingdetails"
+                            [(ngModel)]="locUpdateGC.packingdetails"
+                            [disabled]="leavingtimeGC"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Item List<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            autocomplete="off"
+                            type="text"
+                            placeholder="Item List"
+                            class="form-control"
+                            name="itemlist"
+                            [(ngModel)]="locUpdateGC.itemlist"
+                            [disabled]="leavingtimeGC"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label
+                            >Tare Weight<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            autocomplete="off"
+                            type="text"
+                            placeholder="Tare Weight"
+                            class="form-control"
+                            name="tareweight"
+                            [(ngModel)]="locUpdateGC.tareweight"
+                            [disabled]="leavingtimeGC"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Gross Weight<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            autocomplete="off"
+                            type="text"
+                            placeholder="Gross Weight"
+                            class="form-control"
+                            name="grossweight"
+                            [(ngModel)]="locUpdateGC.grossweight"
+                            [disabled]="leavingtimeGC"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label
+                            >Net Weight<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            autocomplete="off"
+                            type="text"
+                            placeholder="Net Weight"
+                            class="form-control"
+                            name="netweight"
+                            [(ngModel)]="locUpdateGC.netweight"
+                            [disabled]="leavingtimeGC"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Receiver Contractor Name<span
+                              class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            autocomplete="off"
+                            type="text"
+                            placeholder="Receiver Contractor Name"
+                            class="form-control"
+                            name="reccontractorname"
+                            [(ngModel)]="locUpdateGC.reccontractorname"
+                            [disabled]="leavingtimeGC"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label
+                            >To Address Location<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            autocomplete="off"
+                            type="text"
+                            placeholder="To Address Location"
+                            class="form-control"
+                            name="toaddress"
+                            [(ngModel)]="locUpdateGC.toaddress"
+                            [disabled]="leavingtimeGC"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Hand Over From<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            autocomplete="off"
+                            type="text"
+                            placeholder="Hand Over From"
+                            class="form-control"
+                            name="handoverfrom"
+                            [(ngModel)]="locUpdateGC.handoverfrom"
+                            [disabled]="leavingtimeGC"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label
+                            >Stores Location<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            autocomplete="off"
+                            type="text"
+                            placeholder="Stores Location"
+                            class="form-control"
+                            name="storeslocation"
+                            [(ngModel)]="locUpdateGC.storeslocation"
+                            [disabled]="leavingtimeGC"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label
+                            >Purpose Status<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            autocomplete="off"
+                            type="text"
+                            placeholder="Purpose Status"
+                            class="form-control"
+                            name="purposeStatus"
+                            [(ngModel)]="locUpdateGC.purposeStatus"
+                            [disabled]="leavingtimeGC"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Remarks<span class="mandetoryinput">*</span></label
+                          >
+                          <input
+                            autocomplete="off"
+                            type="text"
+                            placeholder="Remarks"
+                            class="form-control"
+                            name="remarks"
+                            [(ngModel)]="locUpdateGC.remarks"
+                            [disabled]="leavingtimeGC"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Leaving Date&Time<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            [disabled]="!leavingtimeGC"
+                            type="datetime-local"
+                            class="form-control"
+                            value="Leaving Date & Time"
+                            name="leavingdate_time"
+                            [(ngModel)]="locUpdateGC.leavingdate_time"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row mt-1">
+                      <div class="col-md-12">
+                        <span *ngIf="!leavingtimeGC">
+                          <button
+                            type="button"
+                            class="uploadbutton1 me-2"
+                            (click)="fileInput3.click()"
+                          >
+                            <span>Upload Photo</span>
+                            <input
+                              #fileInput3
+                              type="file"
+                              (change)="onFileInputVehicle($event)"
+                              style="display: none"
+                            />
+                          </button>
+                          <span class="selectedImage">{{
+                            selectedfilevehicle
+                          }}</span>
+                          <button
+                            type="button"
+                            class="uploadbutton1 me-2"
+                            (click)="fileInput2.click()"
+                          >
+                            <span>Upload Document</span>
+                            <input
+                              #fileInput2
+                              type="file"
+                              (change)="onFileInputdoc($event)"
+                              style="display: none"
+                            />
+                          </button>
+                          <span class="selectedImage">{{
+                            selectedfiledoc
+                          }}</span>
+                        </span>
+                        <button
+                          type="button"
+                          class="viewImagemac"
+                          (click)="viewImage()"
+                          ngbTooltip="View Vehicle Image"
+                          placement="bottom"
+                        >
+                          <i
+                            class="fa fa-image imageIcon"
+                            aria-hidden="true"
+                          ></i>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="row mt-0">
+                      <div class="col-md-12">
+                        <p
+                          class="text-danger text-center"
+                          *ngIf="valMsgGCVehLocUpdate"
+                        >
+                          All Fields Are Mandatory*
+                        </p>
+                        <button
+                          mat-raised-button
+                          class="btn btn-primary Update"
+                          type="submit"
+                        >
+                          Update
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+              <!-- <div class="visitorform">
+                <div class="row mb-3">
+                 <div class="col-md-4">
+                     <input class="form-control" placeholder="Visitor Name" type="text" name="visitorname" [(ngModel)]="visitormovement.visitorname">
+                 </div>
+                 <div class="col-md-4">
+                     <input class="form-control" placeholder="Personal ID Type" type="text" name="idtype" [(ngModel)]="visitormovement.idtype">
+                 </div>
+                 <div class="col-md-4">
+                     <input class="form-control" placeholder="Escorter ID" type="text" name="escorterid" [(ngModel)]="visitormovement.escorterid">
+                 </div>
+                </div>
+             </div> -->
+            </div>
+            <div
+              class="tab-pane"
+              id="Vehicle Track"
+              role="tabpanel"
+              [ngClass]="{ active: activeTab === 'Vehicle Track' }"
+            >
+              <div class="card vehiclecard">
+                <div class="card-body cardbody">
+                  <div class="row mb-1">
+                    <div class="col-md-9"></div>
+                    <div class="col-3">
+                      <!-- <input
+    type="search"
+   placeholder="Search By Vehicle Number"
+    class="form-control padding"
+    [(ngModel)]="searchtrack.name"
+    (input)="searchbyvehicleNumber()"> -->
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div
+                        class="card vehicleCard"
+                        *ngFor="
+                          let item of vehicleTrackData
+                            | paginate
+                              : {
+                                  id: 'pagination2',
+                                  itemsPerPage: TrackpageSize,
+                                  currentPage: Trackoffset,
+                                  totalItems: totalTrackItems
+                                };
+                          let i = index
+                        "
+                      >
+                        <div class="card-body cardstyle">
+                          <div class="row">
+                            <div class="col-md-1">
+                              <div>
+                                <img
+                                  class="card-img-top img-fluid carImg"
+                                  src="{{ item.photo }}"
+                                  alt=""
+                                />
+                              </div>
+                            </div>
+                            <div class="col-md-2">
+                              <div class="mt-1 vehiclenumber">
+                                {{ item.vehicleNumber }}
+                              </div>
+                              <div class="mt-1 fontsize">
+                                <span style="font-weight: 600">In:</span
+                                >&nbsp;{{
+                                  item.inDateandTime
+                                    | date : "yyyy-MM-dd HH:mm" : "+0000"
+                                }}
+                              </div>
+                              <div class="mt-1 fontsize">
+                                <span style="font-weight: 600">Out:</span
+                                >&nbsp;<span *ngIf="item.vehicleExitData">{{
+                                  item.vehicleExitData.exitGateDateTime
+                                    | date : "yyyy-MM-dd HH:mm" : "+0000"
+                                }}</span>
+                                <span *ngIf="!item.vehicleExitData">--</span>
+                              </div>
+                              <!-- <div class="mt-1 fontsize">
+                                              {{ item.business }}
+                                            </div> -->
+                            </div>
+                            <div
+                              class="col-md-9 multi-steps-wrap"
+                              style="text-align: right"
+                            >
+                              <ul class="list-unstyled multi-steps">
+                                <li
+                                  class="job-status job-closed"
+                                  [ngClass]="{
+                                    'job-inprogress is-active negative':
+                                      item.trackingStatus == 'entered' ||
+                                      item.trackingStatus == 'exit'
+                                  }"
+                                >
+                                  Entry Gate
+                                </li>
+                                <li
+                                  *ngFor="let location of item.tracking"
+                                  class="job-status job-closed"
+                                  [ngClass]="{
+                                    'job-inprogress is-active positive':
+                                      location.reachedDateTime &&
+                                      !location.leavingDateTime,
+                                    'job-inprogress is-active negative':
+                                      location.reachedDateTime &&
+                                      location.leavingDateTime
+                                  }"
+                                >
+                                  {{ location.LocationName }}
+                                </li>
+                                <li
+                                  class="job-status job-closed"
+                                  [ngClass]="{
+                                    'job-inprogress is-active negative':
+                                      item.trackingStatus == 'exit'
+                                  }"
+                                >
+                                  Exit Gate
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                          <!-- <div class="row">
+                                          <a
+                                            class="text-decoration-none viewdetails" (click)="viewdetails()"
+                                            >View Details >></a
+                                          >
+                                        </div> -->
+                        </div>
+                      </div>
+                      <div
+                        class="text-center"
+                        *ngIf="vehicleTrackData.length === 0"
+                      >
+                        No Data Found
+                      </div>
+                      <div class="row mt-3" *ngIf="vehicleTrackData.length > 0">
+                        <pagination-controls
+                          id="pagination2"
+                          class="text-center"
+                          (pageChange)="pageChangedTrack($event)"
+                        ></pagination-controls>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="tab-pane"
+              id="Vehicle Log"
+              role="tabpanel"
+              [ngClass]="{ active: activeTab === 'Vehicle Log' }"
+            >
+              <div class="card vehiclecard">
+                <div class="card-body cardbody">
+                  <div class="row">
+                    <div class="col-md-9"></div>
+                    <div class="col-3">
+                      <!-- <input
+                                  type="search"
+                                 placeholder="Search By Vehicle Number"
+                                  class="form-control padding"
+                                  [(ngModel)]="search.name"
+                                  (input)="searchbyvehicle()"> -->
+                    </div>
+                  </div>
+                  <div class="row mt-4">
+                    <div class="table-responsive">
+                      <table class="table table-hover" style="margin-bottom: 0">
+                        <thead>
+                          <th>SNo</th>
+                          <th>In Date&Time</th>
+                          <th>Category</th>
+                          <!-- <th>Vehicle Type</th> -->
+                          <th>Vehicle Number</th>
+                          <th>Driver Name</th>
+                          <th>Driver Contact</th>
+                          <th>Driver License</th>
+                          <!-- <th>No.of Passengers</th> -->
+                          <!-- <th>Materials</th>
+                                    <th>Purpose</th> -->
+                          <th>Whom To Meet</th>
+                          <th>Created By</th>
+                          <th>Details</th>
+                          <th>Status</th>
+
+                          <th>Action</th>
+                        </thead>
+                        <tbody>
+                          <tr
+                            *ngFor="
+                              let item of vehicleLogData
+                                | paginate
+                                  : {
+                                      id: 'pagination1',
+                                      itemsPerPage: LogpageSize,
+                                      currentPage: Logoffset,
+                                      totalItems: totalLogItems
+                                    };
+                              let i = index
+                            "
+                          >
+                            <td>{{ i + 1 }}</td>
+                            <td>
+                              {{
+                                item.inDateandTime
+                                  | date : "yyyy-MM-dd HH:mm" : "+0000"
+                              }}
+                            </td>
+                            <td>{{ item.vehicleCategory }}</td>
+                            <!-- <td>{{item.vehicleType}}</td> -->
+                            <td>{{ item.vehicleNumber }}</td>
+                            <td>{{ item.driverName }}</td>
+                            <td>{{ item.driverContactDetails }}</td>
+                            <td>{{ item.driverLisenceNumber }}</td>
+                            <!-- <td>{{item.numberOfPassengers}}</td> -->
+                            <!-- <td>{{item.carryingMaterials}}</td>
+                                      <td>{{item.entryPurpose}}</td> -->
+                            <td>{{ item.whomToMeet }}</td>
+                            <td>{{ item.createdBy }}</td>
+                            <td>
+                              <div>
+                                <a
+                                  (click)="viewLogDetails(item)"
+                                  class="viewDetails"
+                                  >View Details</a
+                                >
+                              </div>
+                            </td>
+                            <td>
+                              <button
+                                type="button"
+                                (click)="
+                                  UpdateLocation(item, 'Location Update')
+                                "
+                                [ngClass]="
+                                  item.btn === 'Exited'
+                                    ? 'exitvehicle'
+                                    : 'entryvehicle'
+                                "
+                                [disabled]="item.btn === 'Exited'"
+                              >
+                                {{ item.btn }}
+                              </button>
+                            </td>
+                            <td>
+                              <div class="d-flex">
+                                <button
+                                  [disabled]="item.tracking.length !== 0"
+                                  class="editbtn"
+                                  (click)="deletedata(item)"
+                                >
+                                  <i
+                                    class="fa fa-trash trash"
+                                    aria-hidden="true"
+                                  ></i>
+                                </button>
+                                <!-- <button class="viewLogDetails" type="button" (click)="viewLogDetails()">View Details</button> -->
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <div
+                        class="text-center mt-3 mb-2"
+                        *ngIf="vehicleLogData.length === 0"
+                      >
+                        No Data Found
+                      </div>
+                    </div>
+                    <div class="row mt-3" *ngIf="vehicleLogData.length > 0">
+                      <pagination-controls
+                        id="pagination1"
+                        class="text-center"
+                        (pageChange)="pageChanged($event)"
+                      ></pagination-controls>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="tab-pane"
+              id="Exit Gate"
+              role="tabpanel"
+              [ngClass]="{ active: activeTab === 'Exit Gate' }"
+            >
+              <div class="card vehiclecard">
+                <div class="card-body cardbody">
+                  <form
+                    #exitfr="ngForm"
+                    class="vehicleform"
+                    (ngSubmit)="saveExitGateData(exitfr)"
+                  >
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Vehicle Number<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            type="text"
+                            placeholder="Vehicle Number"
+                            class="form-control"
+                            name="vehicle_number"
+                            [(ngModel)]="ExitGate.vehicle_number"
+                            readonly
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Exit Date&Time<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            autocomplete="off"
+                            type="datetime-local"
+                            placeholder="Exit Date&Time"
+                            class="form-control"
+                            name="exidatetime"
+                            [(ngModel)]="ExitGate.exidatetime"
+                          />
+                          <span
+                            *ngIf="validationMessageTime"
+                            class="text-danger"
+                          >
+                            Time should be greater than In-time & less than and
+                            equal to currentTime
+                          </span>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Reason For Delay<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            type="text"
+                            autocomplete="off"
+                            class="form-control"
+                            placeholder="Reason For Delay"
+                            name="delayreason"
+                            [(ngModel)]="ExitGate.delayreason"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Passenger Count<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            type="text"
+                            autocomplete="off"
+                            class="form-control"
+                            placeholder="Passenger Count"
+                            name="passengercount"
+                            [(ngModel)]="ExitGate.passengercount"
+                          />
+                        </div>
+                      </div>
+                      <!-- <div class="col-md-4">
+                                  <div class="form-group">
+                                    <label for="exampleInputEmail1">Leaving Date&Time<span class="mandetoryinput">*</span></label>
+                                    <input
+                                    type="datetime-local"
+                                    class="form-control" placeholder="Leaving Date&Time"
+                                    name="leavingDate"
+                                    [(ngModel)]="ExitGate.leavingDate"
+                                  />
+                                  </div>
+                                </div> -->
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Purpose Status<span class="mandetoryinput"
+                              >*</span
+                            ></label
+                          >
+                          <input
+                            type="text"
+                            autocomplete="off"
+                            class="form-control"
+                            placeholder="Purpose Status"
+                            name="purposestatus"
+                            [(ngModel)]="ExitGate.purposestatus"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1"
+                            >Remarks<span class="mandetoryinput">*</span></label
+                          >
+                          <input
+                            type="text"
+                            autocomplete="off"
+                            class="form-control"
+                            placeholder="Remarks"
+                            name="remarks"
+                            [(ngModel)]="ExitGate.remarks"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row mt-3">
+                      <div class="col-md-12">
+                        <!-- <button type="button" class="uploadbutton me-2  " (click)="opensignaturepad()">Signature</button> -->
+                        <!-- </div>
+                                  <div class="col-md-4"> -->
+                        <button
+                          type="button"
+                          class="uploadbutton1"
+                          (click)="fileInputout.click()"
+                        >
+                          <span>Upload Photo</span>
+                          <input
+                            #fileInputout
+                            type="file"
+                            (change)="onFileInputout($event)"
+                            style="display: none"
+                          />
+                        </button>
+                        <span class="selectedImage">{{ selectedfileout }}</span>
+                      </div>
+                    </div>
+                    <div class="row mt-2">
+                      <div class="col-md-12">
+                        <p
+                          class="text-danger text-center"
+                          *ngIf="validationMsgExit"
+                        >
+                          All Fields Are Mandatory*
+                        </p>
+                        <button
+                          mat-raised-button
+                          class="btn btn-primary submit"
+                          type="submit"
+                        >
+                          Save
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  bsModal
+  #signaturemodal="bs-modal"
+  class="modal fade"
+  [config]="{ backdrop: 'static' }"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="mySmallModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header border-0">
+        <div class="col-md-10">
+          <h6 class="headingsix1">Signature</h6>
+        </div>
+        <div class="col-md-2">
+          <button class="model-close" (click)="closesignaturemodal()">
+            <i class="fa fa-times"></i>
+          </button>
+        </div>
+      </div>
+      <div class="modal-body modalbody" style="padding: 10px">
+        <div>
+          <canvas
+            #canvas
+            width="350"
+            height="300"
+            class="canvasstyles"
+          ></canvas>
+        </div>
+        <div class="signaturebtn">
+          <button type="button" class="uploadbutton" (click)="clear()">
+            Clear</button
+          >&nbsp;&nbsp;
+          <button type="button" class="uploadbutton" (click)="saveSign()">
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  bsModal
+  #vehicleLogModal="bs-modal"
+  class="modal fade"
+  [config]="{ backdrop: 'static' }"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="mySmallModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header border-0">
+        <div class="col-md-10">
+          <h6 class="headingsix1">
+            View Details of {{ details.vehicle_number }}
+          </h6>
+        </div>
+        <div class="col-md-2">
+          <button class="model-close" (click)="closevehicleLogModal()">
+            <i class="fa fa-times"></i>
+          </button>
+        </div>
+      </div>
+      <div class="modal-body viewImages" style="padding: 10px">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="exampleInputEmail1"> In Date&Time</label>
+              <input
+                type="text"
+                class="form-control"
+                name="in_date_and_time"
+                [(ngModel)]="details.in_date_and_time"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label>Vehicle Category</label>
+              <input
+                type="text"
+                class="form-control"
+                name="vehicle_category"
+                [(ngModel)]="details.vehicle_category"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="exampleInputEmail1">Vehicle Type</label>
+              <input
+                type="text"
+                class="form-control"
+                name="vehicle_type"
+                [(ngModel)]="details.vehicle_type"
+                readonly
+              />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="exampleInputEmail1"> Vehicle Number</label>
+              <input
+                type="text"
+                class="form-control"
+                name="vehicle_number"
+                [(ngModel)]="details.vehicle_number"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="exampleInputEmail1"> Driver Number</label>
+              <input
+                type="text"
+                class="form-control"
+                name="driver_name"
+                [(ngModel)]="details.driver_name"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="exampleInputEmail1"> Vehicle License</label>
+              <input
+                type="text"
+                class="form-control"
+                name="driver_license"
+                [(ngModel)]="details.driver_license"
+                readonly
+              />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="exampleInputEmail1"> Driver Contact</label>
+              <input
+                type="text"
+                class="form-control"
+                name="driver_contact"
+                [(ngModel)]="details.driver_contact"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="exampleInputEmail1"> Number of Passengers</label>
+              <input
+                type="text"
+                class="form-control"
+                name="number_of_passengers"
+                [(ngModel)]="details.number_of_passengers"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="exampleInputEmail1"> Carrying Materials</label>
+              <input
+                type="text"
+                class="form-control"
+                name="carrying_materials"
+                [(ngModel)]="details.carrying_materials"
+                readonly
+              />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="exampleInputEmail1"> Entry Purpose</label>
+              <input
+                type="text"
+                class="form-control"
+                name="entry_purpose"
+                [(ngModel)]="details.entry_purpose"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="exampleInputEmail1"> Whom To Meet</label>
+              <input
+                type="text"
+                class="form-control"
+                name="whom_to_meet"
+                [(ngModel)]="details.whom_to_meet"
+                readonly
+              />
+            </div>
+          </div>
+        </div>
+        <div class="row imagesbody pt-2">
+          <div class="col-md-4" *ngIf="VehicleImage">
+            <label class="labelimage">Vehicle In Image</label>
+            <img
+              class="card-img-top img-fluid carImg1"
+              [src]="VehicleImage"
+              alt=""
+            />
+          </div>
+          <div class="col-md-4" *ngIf="SignatureImage">
+            <label class="labelimage">Signature</label>
+            <img
+              class="card-img-top img-fluid carImg1"
+              [src]="SignatureImage"
+              alt=""
+            />
+          </div>
+          <div class="col-md-4" *ngIf="vehicleOutImage">
+            <label class="labelimage">Vehicle Out Image</label>
+            <img
+              *ngIf="vehicleOutImage"
+              class="card-img-top img-fluid carImg1"
+              [src]="vehicleOutImage"
+              alt=""
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  bsModal
+  #imageModal="bs-modal"
+  class="modal fade"
+  [config]="{ backdrop: 'static' }"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="mySmallModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header border-0">
+        <div class="col-md-10">
+          <h6 class="headingsix1">View Vehicle Image</h6>
+        </div>
+        <div class="col-md-2">
+          <button class="model-close" (click)="closeimageModal()">
+            <i class="fa fa-times"></i>
+          </button>
+        </div>
+      </div>
+      <div class="modal-body viewImages" style="padding: 10px">
+        <div class="row imagesbody">
+          <!-- <div class="col-md-2"></div> -->
+          <!-- <div class="col-md-8"> -->
+          <img
+            class="card-img-top img-fluid vehicleImage"
+            [src]="viewVehicleImage"
+            alt=""
+          />
+          <!-- </div>
+          <div class="col-md-2"></div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  bsModal
+  #deletemodal="bs-modal"
+  class="modal fade"
+  [config]="{ backdrop: 'static' }"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="mySmallModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left modalhead">
+          {{ deleteVehicleNumber }}
+        </h4>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure, you want to delete vehicle Log?</p>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary deletereject"
+          (click)="hideChildModal()"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary deleteconfirm"
+          (click)="deleteperminently()"
+        >
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,302 @@
+<div class="container-fluid maindashboard">
+  <div class="row dashboard pt-1">
+    <div class="col-md-2 col-sm-2 col-xs-2 col-s-2 me-5">
+      <p><i class="bi bi-shield-check shield"></i>Dashboard</p>
+    </div>
+  </div>
+</div>
+<div class="main-content mt-2">
+  <div class="row">
+    <div class="col-md-2 col-6 pb-2 dashboardcol2">
+      <input
+        type="text"
+        autocomplete="off"
+        bsDaterangepicker
+        class="form-control form-control-sm daterange"
+        name="date"
+        [(ngModel)]="bsRangeValue"
+        [bsConfig]="{
+          containerClass: 'theme-dark-blue',
+          adaptivePosition: true,
+          rangeInputFormat: 'DD/MM/YY'
+        }"
+        (ngModelChange)="updateMyDate($event)"
+        placeholder="Date Range"
+      />
+    </div>
+    <div class="col-md-2 col-6 pb-2 dashboardcol2">
+      <select
+        class="form-select form-select-sm"
+        aria-label="Default select example"
+        [(ngModel)]="dashboard.filterfor"
+        (change)="getAllDashboardDATA()"
+      >
+        <option class="dropdown-item" value="">Filter By</option>
+
+        <option value="region">region</option>
+        <option value="state">state</option>
+        <option value="cluster">cluster</option>
+        <option value="site">site</option>
+      </select>
+    </div>
+    <div class="col-md-2 col-6 pb-2 dashboardcol3">
+      <select
+        class="form-select form-select-sm"
+        aria-label="Default select example"
+        [(ngModel)]="dashboard.region"
+        (change)="getRegionData()"
+      >
+        <option class="dropdown-item" value="">Region</option>
+
+        <option value="{{ item }}" *ngFor="let item of RegionList">
+          {{ item | titlecase }}
+        </option>
+      </select>
+    </div>
+    <div class="col-md-2 col-6 pb-2 dashboardcol3">
+      <select
+        class="form-select form-select-sm"
+        aria-label="Default select example"
+        [(ngModel)]="dashboard.state"
+        (change)="getStateData()"
+      >
+        <option class="dropdown-item" value="">State</option>
+
+        <option value="{{ item }}" *ngFor="let item of StateList">
+          {{ item | titlecase }}
+        </option>
+      </select>
+    </div>
+    <div class="col-md-2 col-6 pb-2 dashboardcol3">
+      <select
+        class="form-select form-select-sm"
+        aria-label="Default select example"
+        [(ngModel)]="dashboard.cluster"
+        (change)="getClusterData()"
+      >
+        <option class="dropdown-item" value="">Cluster</option>
+        <option value="{{ item }}" *ngFor="let item of ClusterList">
+          {{ item | titlecase }}
+        </option>
+      </select>
+    </div>
+    <div class="col-md-2 col-6 pb-2">
+      <select
+        class="form-select form-select-sm"
+        aria-label="Default select example"
+        name="site"
+        [(ngModel)]="dashboard.site"
+        (change)="getAllDashboardDATA()"
+      >
+        <option class="dropdown-item" value="">Site</option>
+
+        <option value="{{ item.siteName }}" *ngFor="let item of sitedata">
+          {{ item.name }}
+        </option>
+      </select>
+    </div>
+  </div>
+</div>
+<div class="main-content mt-2">
+  <div class="row">
+    <div class="col-md-5 col-xs-12">
+      <div class="row">
+        <div class="col-6 mb-3">
+          <div class="card customcard blue-card">
+            <p class="modelName">Total Vehicles</p>
+            <p class="modelCount">{{ vehicletotalIn }}</p>
+          </div>
+        </div>
+        <div class="col-6 mb-3">
+          <div class="card customcard orange-card">
+            <p class="modelName">Manpower</p>
+            <p class="modelCount">{{ deployedCount }}</p>
+          </div>
+        </div>
+        <div class="col-6 mb-3">
+          <div class="card customcard green-card">
+            <p class="modelName">Tree Cut</p>
+            <p class="modelCount">{{ totaltrees }}</p>
+          </div>
+        </div>
+        <div class="col-6 mb-3">
+          <div class="card customcard purple-card">
+            <p class="modelName">Visitor</p>
+            <p class="modelCount">{{ totalIn }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-7 col-xs-12">
+      <div class="table-responsive">
+        <table class="table table-hover tablee" style="margin-bottom: 0">
+          <thead class="tablehead">
+            <tr>
+              <th rowspan="3" colspan="1" style="vertical-align: middle">
+                {{ resName | titlecase }}
+              </th>
+              <th colspan="2" rowspan="1">Man Power</th>
+              <th colspan="2" rowspan="1">Visitor</th>
+              <th colspan="2" rowspan="1">Vehicle</th>
+              <th colspan="1" rowspan="1">Tree Cut</th>
+            </tr>
+            <tr>
+              <th colspan="1" rowspan="1">Req</th>
+              <th colspan="1" rowspan="1">Dep</th>
+              <th colspan="1" rowspan="1">In</th>
+              <th colspan="1" rowspan="1">Out</th>
+              <th colspan="1" rowspan="1">In</th>
+              <th colspan="1" rowspan="1">Out</th>
+              <th colspan="1" rowspan="2">Total Trees</th>
+            </tr>
+          </thead>
+
+          <tbody style="overflow-y: scroll; max-height: 100px">
+            <tr *ngFor="let item of array">
+              <td>{{ item.name | uppercase }}</td>
+              <td>{{ item.reqCount ? item.reqCount : 0 }}</td>
+              <td>{{ item.depCount ? item.depCount : 0 }}</td>
+              <td>{{ item.visitorIn ? item.visitorIn : 0 }}</td>
+              <td>{{ item.visitorOut ? item.visitorOut : 0 }}</td>
+              <td>{{ item.vehicleIn ? item.vehicleIn : 0 }}</td>
+              <td>{{ item.vehicleOut ? item.vehicleOut : 0 }}</td>
+              <td>{{ item.totalTrees ? item.totalTrees : 0 }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="text-center mt-2 mb-3" *ngIf="array.length === 0">
+          No Data Found
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row mt-2 cards1">
+  <div class="col-lg-3 col-sm-6 col-xs-12 pb-2">
+    <div class="card scroll">
+      <p class="chartheader">ManPower</p>
+      <ngx-charts-bar-vertical-2d
+        [view]="[250, 300]"
+        [scheme]="colorScheme"
+        [results]="securityGraph"
+        [gradient]="gradient"
+        [xAxis]="showXAxis"
+        [yAxis]="showYAxis"
+        [legendPosition]="'below'"
+        [legend]="showLegend"
+        [legendTitle]="''"
+        [showXAxisLabel]="showXAxisLabel"
+        [showYAxisLabel]="showXAxisLabel"
+        (select)="onSelect($event)"
+        [showDataLabel]="true"
+      >
+      </ngx-charts-bar-vertical-2d>
+      <!-- <div class="text-center mt-2 mb-3" *ngIf="deploymentData.length===0">No Data Found</div> -->
+    </div>
+  </div>
+  <div class="col-lg-3 col-sm-6 col-xs-12 pb-2">
+    <div class="card scroll">
+      <p class="chartheader">Vehicle Movement</p>
+      <ngx-charts-bar-vertical-2d
+        [view]="[250, 300]"
+        [scheme]="colorScheme"
+        [results]="vehicleGraph"
+        [gradient]="gradient"
+        [xAxis]="showXAxis"
+        [yAxis]="showYAxis"
+        [legend]="showLegend"
+        [legendTitle]="''"
+        [legendPosition]="'below'"
+        [showXAxisLabel]="showXAxisLabel"
+        [showYAxisLabel]="showXAxisLabel"
+        (select)="onSelect($event)"
+        [showDataLabel]="true"
+      >
+      </ngx-charts-bar-vertical-2d>
+      <!-- <div class="text-center mt-2 mb-3" *ngIf="vehicleData.length===0">No Data Found</div> -->
+    </div>
+  </div>
+  <div class="col-lg-3 col-sm-6 col-xs-12 pb-2">
+    <div class="card scroll">
+      <p class="chartheader">Visitor Movement</p>
+      <ngx-charts-bar-vertical-2d
+        [view]="[250, 300]"
+        [scheme]="colorScheme"
+        [results]="visitorGraph"
+        [gradient]="gradient"
+        [xAxis]="showXAxis"
+        [yAxis]="showYAxis"
+        [legendPosition]="'below'"
+        [legend]="showLegend"
+        [legendTitle]="''"
+        [showXAxisLabel]="showXAxisLabel"
+        [showYAxisLabel]="showXAxisLabel"
+        (select)="onSelect($event)"
+        [showDataLabel]="true"
+      >
+      </ngx-charts-bar-vertical-2d>
+      <!-- <div class="text-center mt-2 mb-3" *ngIf="visitorData.length===0">No Data Found</div> -->
+    </div>
+  </div>
+  <div class="col-lg-3 col-sm-6 col-xs-12 pb-2">
+    <div class="card scroll">
+      <p class="chartheader">Tree Cut</p>
+      <ngx-charts-bar-vertical-2d
+        [view]="[250, 300]"
+        [scheme]="colorScheme"
+        [results]="treecutGraph"
+        [gradient]="gradient"
+        [xAxis]="showXAxis"
+        [yAxis]="showYAxis"
+        [legend]="showLegend"
+        [legendTitle]="''"
+        [legendPosition]="'below'"
+        [showXAxisLabel]="showXAxisLabel"
+        [showYAxisLabel]="showXAxisLabel"
+        (select)="onSelect($event)"
+        [showDataLabel]="true"
+      >
+      </ngx-charts-bar-vertical-2d>
+      <!-- <div class="text-center mt-2 mb-3" *ngIf="treecutarray.length===0">No Data Found</div> -->
+    </div>
+  </div>
+</div>
+
+<div class="row mt-4 mb-3 cards1">
+  <div class="col-12 mt-1">
+    <div class="googlemap">
+      <agm-map
+        [latitude]="latitude"
+        [longitude]="longitude"
+        [zoom]="zoom"
+        (mapReady)="onMapReady($event)"
+      >
+        <agm-marker
+          *ngFor="let marker of latlngs; let i = index"
+          [latitude]="marker.latitude"
+          [longitude]="marker.longitude"
+          [iconUrl]="marker.icon"
+        >
+          <agm-info-window>
+            <div>
+              <strong>Site: </strong>
+              <span>{{ marker.siteName }}</span>
+            </div>
+            <div>
+              <strong>Segrement: </strong>
+              <span>{{ marker.cluster | titlecase }}</span>
+            </div>
+            <div>
+              <strong>State: </strong>
+              <span>{{ marker.state | titlecase }}</span>
+            </div>
+          </agm-info-window>
+        </agm-marker>
+      </agm-map>
+    </div>
+  </div>
+  <div class="col-md-6 mt-1">
+    <div class="card"></div>
+  </div>
+</div>
